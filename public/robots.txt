@@ -1,10 +1,7 @@
 User-agent: *
 Allow: /
-Sitemap: https://bintirising.org/sitemap.xml
 
-# IndexNow
-User-agent: *
-Allow: /
+Sitemap: https://binti-rising-initiative.vercel.app/sitemap.xml
 
-# Crawl-delay
+# Crawl-delay for crawlers that honour it (Google ignores it)
 Crawl-delay: 1

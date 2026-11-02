@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { absoluteUrl } from "@/lib/seo/site-url";
 
 export async function GET() {
   try {
-    const sitemapUrl = "https://bintirising.org/sitemap.xml";
+    const sitemapUrl = absoluteUrl("/sitemap.xml");
     const results: { engine: string; success: boolean; message: string }[] =
       [];
 

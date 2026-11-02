@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import ScrollRestoration from "@/components/ScrollRestoration";
+import { SITE_URL, absoluteUrl } from "@/lib/seo/site-url";
+import { FAQS, CONTACT } from "@/lib/story-data";
 
 /* Monograph type system: Playfair Display for display serif, Inter for text */
 const playfair = Playfair_Display({
@@ -18,43 +21,60 @@ const inter = Inter({
   display: "swap",
 });
 
+/** Google Analytics 4 Measurement ID — rendered only when configured on Vercel. */
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 export const metadata: Metadata = {
-  title: "BINTI Rising Initiative | Empowering Young Women in Nairobi, Kenya",
+  title: "Binti Rising Initiative | Empowering Young Women in Nairobi, Kenya",
   description:
-    "BINTI Rising Initiative is a registered Kenyan CBO empowering young women aged 15-25 through SRHR education, mental health support, financial literacy, and women empowerment programs in Nairobi, Kenya. Your support changes lives.",
+    "Binti Rising Initiative is a registered Kenyan CBO (community-based organisation) empowering adolescent girls and young women aged 15–25 through SRHR education, mental health support, financial literacy, and leadership programs in Nairobi, Kenya. Your support changes lives.",
   keywords: [
-    "BINTI Rising",
+    "Binti Rising Initiative",
+    "Binti Rising Initiative CBO",
+    "Binti Rising",
+    "Binti Rising CBO",
     "young women empowerment",
+    "girls empowerment Kenya",
     "Kenya CBO",
+    "community-based organization Nairobi",
+    "CBO in Kiambu",
     "SRHR",
+    "SRHR Kenya",
+    "sexual and reproductive health and rights",
+    "adolescent girls and young women Kenya",
+    "AGYW Nairobi",
+    "Journey to Wholeness programme",
     "mental health",
     "financial literacy",
     "women empowerment",
     "Nairobi",
     "Nairobi Kenya",
-    "community-based organization",
+    "Kibera",
+    "Mathare",
+    "Kawangware",
     "donate Kenya",
+    "volunteer Nairobi",
     "women empowerment Nairobi",
   ],
-  authors: [{ name: "BINTI Rising Initiative" }],
-  creator: "BINTI Rising Initiative",
-  publisher: "BINTI Rising Initiative",
-  metadataBase: new URL("https://bintirising.org"),
+  authors: [{ name: "Binti Rising Initiative" }],
+  creator: "Binti Rising Initiative",
+  publisher: "Binti Rising Initiative",
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "BINTI Rising Initiative | Empowering Young Women in Nairobi, Kenya",
+    title: "Binti Rising Initiative | Empowering Young Women in Nairobi, Kenya",
     description:
-      "Empowering young women aged 15-25 through comprehensive programs in SRHR, mental health, financial freedom, and leadership in Nairobi, Kenya. Your support directly transforms lives.",
-    url: "https://bintirising.org",
-    siteName: "BINTI Rising Initiative",
+      "Empowering adolescent girls and young women aged 15–25 through comprehensive programs in SRHR, mental health, financial freedom, and leadership in Nairobi, Kenya. Your support directly transforms lives.",
+    url: SITE_URL,
+    siteName: "Binti Rising Initiative",
     images: [
       {
         url: "/binti-logo.jpg",
         width: 800,
         height: 800,
-        alt: "BINTI Rising Initiative Logo",
+        alt: "Binti Rising Initiative Logo",
       },
     ],
     locale: "en_KE",
@@ -62,9 +82,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BINTI Rising Initiative",
+    title: "Binti Rising Initiative",
     description:
-      "Empowering young women in Nairobi, Kenya through education, health, and leadership programs. Donate today to change lives.",
+      "Empowering young women in Nairobi, Kenya through SRHR education, health, and leadership programs. Donate today to change lives.",
     images: ["/binti-logo.jpg"],
   },
   robots: {
@@ -78,9 +98,13 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
+  // Rendered only when NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION is set (Vercel env var),
+  // so there is never an invalid placeholder meta tag in production.
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    },
+  }),
   manifest: "/manifest.json",
   icons: {
     icon: "/binti-logo.jpg",
@@ -88,14 +112,21 @@ export const metadata: Metadata = {
   },
 };
 
+/* ─────────────────────────── Structured data (JSON-LD) ───────────────────────────
+   Every URL is absolute against SITE_URL and every fact mirrors what is visible
+   on the page (FAQ schema is generated from the same FAQS array the accordion
+   renders), per Google's structured-data guidelines. */
+
 const orgJsonLd = {
   "@context": "https://schema.org",
   "@type": "NGO",
-  name: "BINTI Rising Initiative",
-  url: "https://bintirising.org",
-  logo: "https://bintirising.org/binti-logo.jpg",
+  name: "Binti Rising Initiative",
+  alternateName: ["Binti Rising Initiative CBO", "Binti Rising"],
+  url: SITE_URL,
+  logo: absoluteUrl("/binti-logo.jpg"),
+  slogan: "From Silence, She Rises",
   description:
-    "Empowering young women aged 15-25 through SRHR education, mental health support, financial literacy, and women empowerment programs in Nairobi, Kenya.",
+    "Binti Rising Initiative is a registered Kenyan community-based organisation (CBO) empowering adolescent girls and young women aged 15–25 through SRHR education, mental health support, financial literacy, and leadership programs in Nairobi, Kenya.",
   address: {
     "@type": "PostalAddress",
     addressCountry: "KE",
@@ -108,6 +139,7 @@ const orgJsonLd = {
     sameAs: "https://en.wikipedia.org/wiki/Nairobi",
   },
   foundingDate: "2024",
+  identifier: "Reg No NC/SD/CBO/2026/0123",
   numberOfEmployees: {
     "@type": "QuantitativeValue",
     minValue: 5,
@@ -117,93 +149,57 @@ const orgJsonLd = {
     {
       "@type": "ContactPoint",
       contactType: "general",
-      email: "info@bintirising.org",
+      email: CONTACT.email,
       availableLanguage: ["English", "Swahili"],
     },
     {
       "@type": "ContactPoint",
       contactType: "customer service",
-      telephone: "+254-700-000-000",
+      telephone: CONTACT.whatsapp.replace(/\s/g, ""),
+      availableLanguage: ["English", "Swahili"],
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "hotline",
+      name: "GBV Toll-Free Hotline",
+      telephone: `tel:${CONTACT.gbvHotline}`,
       availableLanguage: ["English", "Swahili"],
     },
   ],
-  sameAs: [
-    "https://www.instagram.com/bintirising",
-    "https://www.facebook.com/bintirising",
-    "https://twitter.com/bintirising",
-  ],
+  sameAs: ["https://github.com/collins-muchiri/binti-rising-website"],
 };
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "BINTI Rising Initiative",
-  url: "https://bintirising.org",
+  name: "Binti Rising Initiative",
+  alternateName: "Binti Rising Initiative CBO",
+  url: SITE_URL,
   description:
-    "BINTI Rising Initiative - Empowering young women in Nairobi, Kenya through SRHR, mental health, financial literacy, and leadership programs.",
+    "Binti Rising Initiative — empowering young women in Nairobi, Kenya through SRHR, mental health, financial literacy, and leadership programs.",
   publisher: {
     "@type": "NGO",
-    name: "BINTI Rising Initiative",
+    name: "Binti Rising Initiative",
     logo: {
       "@type": "ImageObject",
-      url: "https://bintirising.org/binti-logo.jpg",
+      url: absoluteUrl("/binti-logo.jpg"),
     },
-  },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: "https://bintirising.org/?q={search_term_string}",
-    },
-    "query-input": "required name=search_term_string",
   },
 };
 
+/** Generated from the same FAQS array the on-page accordion renders —
+    schema content always matches visible content. */
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is BINTI Rising Initiative?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "BINTI Rising Initiative is a registered Community-Based Organization in Nairobi, Kenya, dedicated to empowering young women aged 15-25 through four comprehensive program pillars: Sexual & Reproductive Health Rights (SRHR), Mental Health & Wellbeing, Financial Freedom & Literacy, and Women Empowerment & Leadership.",
-      },
+  mainEntity: FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
     },
-    {
-      "@type": "Question",
-      name: "Where does BINTI Rising operate?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "BINTI Rising Initiative operates in Nairobi, Kenya, reaching young women across 10+ communities within Nairobi County. We partner with local health facilities, community leaders, and women's groups to deliver our programs.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How can I donate to BINTI Rising?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "You can donate to BINTI Rising via M-Pesa (Paybill: 123456, Account: BINTI) or bank transfer to KCB Bank, Account Name: BINTI Rising Initiative. Every contribution counts — KES 1,000 trains a young woman for a full session, KES 5,000 funds complete pillar training, and KES 20,000 sponsors an entire cohort.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How can I volunteer with BINTI Rising?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "You can volunteer by filling out our volunteer form on the Get Involved section of our website. We welcome volunteers with skills in facilitation, mentorship, counseling, data collection, communications, and more. Volunteers must be based in or willing to travel to Nairobi, Kenya.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What programs does BINTI Rising offer?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "BINTI Rising offers four core programs: (1) Sexual & Reproductive Health Rights with 8 sessions covering body autonomy, consent, family planning, and more; (2) Mental Health & Wellbeing with 6 sessions on stress management and emotional resilience; (3) Financial Freedom & Literacy with 6 sessions on budgeting, saving, and entrepreneurship; (4) Women Empowerment & Leadership with 6 sessions on self-advocacy and community engagement. Total: 26 sessions over 6 months.",
-      },
-    },
-  ],
+  })),
 };
 
 export default function RootLayout({
@@ -239,6 +235,24 @@ export default function RootLayout({
         <ScrollRestoration />
         {children}
         <Toaster />
+        {/* Google Analytics 4 — active only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set,
+            keeping preview deployments and local dev measurement-free. */}
+        {GA_ID && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            strategy="afterInteractive"
+          />
+        )}
+        {GA_ID && (
+          <Script id="ga4-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `}
+          </Script>
+        )}
       </body>
     </html>
   );

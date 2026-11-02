@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SITE_URL } from "@/lib/seo/site-url";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const key = process.env.INDEXNOW_KEY || "binti-2026-rise-key";
-    const host = "https://bintirising.org";
+    const host = SITE_URL;
 
     const indexNowPayload = {
       host,

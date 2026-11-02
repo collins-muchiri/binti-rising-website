@@ -130,11 +130,35 @@ This project is private and proprietary to the Binti Rising Initiative.
 
 For questions or support, please contact:
 - Email: info@bintirising.org
-- Website: [bintirising.org](https://bintirising.org)
+- Website: [binti-rising-initiative.vercel.app](https://binti-rising-initiative.vercel.app/)
 
 ---
 
 Built with ❤️ for the Binti Rising Initiative
+
+## 🔍 Search Engine Setup (SEO)
+
+The site is optimized so searches for **“Binti Rising Initiative”**, **“Binti Rising Initiative CBO”** and related terms resolve to the canonical production URL **https://binti-rising-initiative.vercel.app**. Every absolute URL the site emits (canonical link, Open Graph, Twitter card, sitemap, robots, JSON-LD structured data, IndexNow) is derived from the single constant in `src/lib/seo/site-url.ts`.
+
+### Google Search Console
+1. Add the property `https://binti-rising-initiative.vercel.app` at [search.google.com/search-console](https://search.google.com/search-console).
+2. Choose the **HTML tag** verification method and copy the `content` value of the `google-site-verification` tag.
+3. On Vercel, set the environment variable `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and redeploy — the verification meta tag is then rendered automatically.
+4. Submit `https://binti-rising-initiative.vercel.app/sitemap.xml` under **Sitemaps**. Google & Bing can also be notified via `GET /api/seo/ping`.
+
+### Google Analytics 4
+1. Create a GA4 property and copy the Measurement ID (`G-XXXXXXXXXX`).
+2. On Vercel, set `NEXT_PUBLIC_GA_MEASUREMENT_ID` and redeploy — the gtag.js snippets render only when this variable is set, so local dev and preview deployments stay measurement-free.
+
+### IndexNow (Bing, Yandex & others)
+- The key file is served at `/indexnow-key.txt`.
+- `POST /api/indexnow` with `{ "urls": ["/"] }` submits URLs for near-instant indexing.
+
+### Structured data
+Three JSON-LD blocks are rendered from `src/app/layout.tsx`:
+- `NGO` — organization identity, registration number, real contact points (email, WhatsApp, GBV hotline 1195), GitHub profile;
+- `WebSite` — site identity and publisher;
+- `FAQPage` — generated from the same `FAQS` array the on-page accordion renders, so schema always matches visible content.
 
 ## Contribution and license
 

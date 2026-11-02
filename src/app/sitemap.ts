@@ -1,49 +1,19 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo/site-url";
 
+/**
+ * Served at /sitemap.xml (see Next.js Metadata routes).
+ *
+ * Only canonical, indexable URLs belong here — search engines ignore
+ * "#fragment" URLs, so single-page section anchors are intentionally omitted.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://bintirising.org";
   return [
     {
-      url: baseUrl,
+      url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${baseUrl}/#about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#programs`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#leadership`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#impact`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#stories`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#get-involved`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
     },
   ];
 }
