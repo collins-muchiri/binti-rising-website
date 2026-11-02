@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Download, Github, MapPin, Phone, Mail, ShieldCheck, Target, LineChart } from "lucide-react";
+import { Download, MapPin, Phone, Mail, ShieldCheck, Target, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { SiteNav } from "@/components/story/site-nav";
@@ -278,26 +278,6 @@ export default function Home() {
             />
             <div className="mt-10">
               <PlatesGallery />
-            </div>
-            <div className="mt-8 flex flex-col items-center gap-3 text-center">
-              <p className="text-xs text-[#6f6a7c]">
-                The complete pack — all fourteen photographs, credits and manifest — is published
-                as an open release for press and partner use.
-              </p>
-              <Button
-                asChild
-                variant="outline"
-                className="border-[#1a1626]/25 min-h-[44px]"
-              >
-                <a
-                  href="https://github.com/collins-muchiri/binti-rising-website/releases/tag/nairobi-photos-v1.0"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Github className="size-4" aria-hidden="true" />
-                  Photo release v1.0
-                </a>
-              </Button>
             </div>
           </div>
         </section>
