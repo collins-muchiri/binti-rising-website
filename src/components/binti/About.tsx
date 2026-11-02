@@ -60,117 +60,109 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 md:py-28 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section id="about" ref={sectionRef} className="py-20 md:py-28 bg-cream">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Act heading */}
+        <div className={`max-w-3xl ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-voilet mb-4">
+            Act I · The Circle
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink leading-[1.1]">
+            Nothing begins with a{' '}
+            <em className="text-voilet">lesson.</em>
+          </h2>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start mt-12">
           {/* Text Content */}
-          <div className={isVisible ? 'animate-slide-in-left' : 'opacity-0'}>
-            <span className="inline-block text-sm font-bold uppercase tracking-widest text-binti-pink mb-3">
-              About Us
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy leading-tight">
-              Empowering the{' '}
-              <span className="text-gradient">Next Generation</span>
-            </h2>
-            <p className="mt-6 text-binti-navy/70 text-base sm:text-lg leading-relaxed">
-              <strong className="text-binti-navy">BINTI Rising Initiative</strong> is a registered
+          <div className={isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}>
+            <p className="text-mist text-base sm:text-lg leading-relaxed">
+              <strong className="text-ink">Binti Rising Initiative</strong> is a registered
               Community-Based Organization in Kenya, dedicated to transforming the lives of young women
-              aged 15-25. Founded in 2024, we work across{' '}
-              <strong className="text-binti-navy">10+ communities in Nairobi</strong> to provide
+              aged 15&ndash;25. Founded in 2024, we work across{' '}
+              <strong className="text-ink">10+ communities in Nairobi</strong> to provide
               holistic empowerment programs that address the real needs of young women in the city.
             </p>
-            <p className="mt-4 text-binti-navy/70 text-base sm:text-lg leading-relaxed">
+            <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed">
               Our comprehensive approach addresses the interconnected challenges young women face from
               limited access to sexual and reproductive health education, to mental health struggles,
               financial barriers, and gender-based violence. We believe in meeting young women where
               they are and walking alongside them on their journey to empowerment.
             </p>
-            <p className="mt-4 text-binti-navy/70 text-base sm:text-lg leading-relaxed">
-              Through our four program pillars: <strong className="text-binti-pink">SRHR</strong>,
-              {' '}<strong className="text-binti-purple">Mental Health</strong>,
-              {' '}<strong className="text-binti-teal">Financial Freedom</strong>, and
-              {' '}<strong className="text-binti-gold">Women Empowerment</strong> - we&apos;re building
+            <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed">
+              Through our four program pillars — <strong className="text-ink">SRHR</strong>,{' '}
+              <strong className="text-ink">Mental Health</strong>,{' '}
+              <strong className="text-ink">Financial Freedom</strong>, and{' '}
+              <strong className="text-ink">Women Empowerment</strong> — we&apos;re building
               a generation of informed, resilient, and economically independent young women leaders.
             </p>
 
-            {/* Why Support BINTI - Donor paragraph */}
-            <div className="mt-6 p-5 bg-gradient-to-r from-binti-pink/5 to-binti-purple/5 rounded-xl border border-binti-pink/10">
-              <div className="flex items-center gap-2 mb-2">
-                <Heart className="w-4 h-4 text-binti-pink" />
-                <h3 className="font-bold text-binti-navy text-sm">Why Support BINTI?</h3>
-              </div>
-              <p className="text-binti-navy/70 text-sm leading-relaxed">
-                Every shilling donated to BINTI Rising goes directly toward transforming a young woman&apos;s life.
+            {/* Why Support BINTI - Donor paragraph, set as a marginal note */}
+            <aside className="mt-8 border-l-2 border-voilet pl-5 py-1">
+              <h3 className="font-display text-lg text-ink flex items-center gap-2">
+                <Heart className="w-4 h-4 text-voilet" aria-hidden="true" />
+                Why support Binti?
+              </h3>
+              <p className="text-mist text-sm leading-relaxed mt-2">
+                Every shilling donated to Binti Rising goes directly toward transforming a young woman&apos;s life.
                 Our evidence-based programs are aligned with UN Sustainable Development Goals and measured
                 through rigorous monitoring and evaluation. With over 500 young women already reached across
-                Nairobi communities, your investment creates ripple effects empowered women lift families
+                Nairobi communities, your investment creates ripple effects — empowered women lift families
                 and communities out of poverty.
               </p>
-            </div>
+            </aside>
 
             {/* Trust indicators */}
-            <div className="mt-6 flex flex-wrap gap-4">
-              <div className="flex items-center gap-2">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-4 h-4 fill-binti-gold text-binti-gold" />
-                  ))}
-                </div>
-                <span className="text-sm text-binti-navy/60 font-medium">Registered CBO</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-binti-warm-gray rounded-full">
-                <MapPin className="w-3.5 h-3.5 text-binti-pink" />
-                <span className="text-sm text-binti-navy/60 font-medium">Nairobi, Kenya</span>
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-4 text-sm">
+              <span className="inline-flex items-center gap-1.5 text-mist">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className="w-3.5 h-3.5 fill-voilet text-voilet" aria-hidden="true" />
+                ))}
+                <span className="ml-1.5">Registered CBO</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-parchment text-mist">
+                <MapPin className="w-3.5 h-3.5 text-voilet" aria-hidden="true" />
+                Nairobi, Kenya
+              </span>
             </div>
           </div>
 
-          {/* Visual */}
-          <div className={isVisible ? 'animate-slide-in-right' : 'opacity-0'}>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-binti-pink/10 via-binti-purple/10 to-binti-teal/10 rounded-3xl blur-xl" />
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/about-visual.jpg"
-                  alt="Young women in BINTI Rising programs"
-                  width={600}
-                  height={600}
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-              {/* Overlay card */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-4 animate-fade-in delay-500">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-binti-pink/10 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-binti-pink" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-extrabold text-binti-navy">500+</div>
-                    <div className="text-xs text-binti-navy/60">Lives Impacted</div>
-                  </div>
-                </div>
-              </div>
+          {/* Plate */}
+          <figure className={isVisible ? 'animate-slide-in-right' : 'opacity-0'}>
+            <div className="bg-white p-2 sm:p-3 plate-shadow">
+              <Image
+                src="/nairobi-team/nairobi-11.webp"
+                alt="A large dialogue circle of young women in a community hall in Nairobi"
+                width={720}
+                height={1280}
+                className="w-full h-auto object-cover"
+              />
             </div>
-          </div>
+            <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2 text-xs text-mist">
+              <span>
+                <span className="font-semibold text-ink">Plate II.</span> The dialogue circle —
+                where every voice is heard first.
+              </span>
+              <span className="tracking-[0.2em] uppercase text-[10px]">Community hall, Nairobi</span>
+            </figcaption>
+          </figure>
         </div>
 
-        {/* Stats Counter Row */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        {/* Stats Counter Row — ruled ledger style */}
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/10 border border-ink/10">
           {stats.map((stat, i) => (
             <div
               key={stat.label}
-              className={`text-center p-6 rounded-2xl bg-binti-warm-gray/60 hover:bg-binti-warm-gray transition-colors ${
+              className={`bg-cream px-6 py-8 text-center transition-colors hover:bg-white ${
                 isVisible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
               style={{ animationDelay: `${0.3 + i * 0.15}s` }}
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-white shadow-sm mb-4">
-                <stat.icon className="w-7 h-7 text-binti-pink" />
-              </div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-binti-navy">
+              <stat.icon className="w-5 h-5 text-voilet mx-auto mb-3" aria-hidden="true" />
+              <div className="font-display text-4xl sm:text-5xl text-ink">
                 <AnimatedCounter target={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="mt-1 text-sm text-binti-navy/60 font-medium">{stat.label}</div>
+              <div className="mt-2 text-[11px] tracking-[0.15em] uppercase text-mist font-medium">{stat.label}</div>
             </div>
           ))}
         </div>

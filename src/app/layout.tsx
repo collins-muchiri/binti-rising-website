@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import ScrollRestoration from "@/components/ScrollRestoration";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/* Monograph type system: Playfair Display for display serif, Inter for text */
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -230,7 +234,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-background text-foreground`}
       >
         <ScrollRestoration />
         {children}
