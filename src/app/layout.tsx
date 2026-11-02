@@ -212,7 +212,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth motion-reduce:scroll-auto">
       <head>
         <meta name="geo.region" content="KE-NBO" />
         <meta name="geo.placename" content="Nairobi" />
