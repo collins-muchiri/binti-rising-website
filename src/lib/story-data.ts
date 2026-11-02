@@ -9,11 +9,17 @@
 /** The fourteen verified archive photographs, in narrative order. */
 export type Plate = {
   src: string;
+  /** Intrinsic pixel dimensions — the lightbox renders the uncropped photo. */
+  width: number;
+  height: number;
   /** Roman numeral shown on the plate frame, as in a printed monograph. */
   numeral: string;
   act: string;
   caption: string;
   tag: string;
+  /** object-position hint so portrait photos keep their subjects in frame
+      when cropped to the uniform 4:3 mosaic cells. */
+  focus?: string;
   /** Tailwind grid span classes for the editorial mosaic (desktop). */
   span: string;
 };
@@ -21,6 +27,9 @@ export type Plate = {
 export const PLATES: Plate[] = [
   {
     src: "/nairobi-team/nairobi-01.webp",
+    width: 1200,
+    height: 1600,
+    focus: "center 25%",
     numeral: "I",
     act: "The Circle",
     caption: "The opening circle — beneath a community tent, trust is built shoulder to shoulder.",
@@ -29,6 +38,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-02.webp",
+    width: 1600,
+    height: 900,
     numeral: "II",
     act: "The Classroom",
     caption: "A classroom session — learners clapping through the alphabet of self-worth.",
@@ -37,6 +48,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-03.webp",
+    width: 1599,
+    height: 1066,
     numeral: "III",
     act: "The Classroom",
     caption: "Facilitators with a Certificate of Achievement — Surround Sound Kenya tees, balloons, pride.",
@@ -45,6 +58,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-04.webp",
+    width: 1599,
+    height: 1066,
     numeral: "IV",
     act: "The Classroom",
     caption: "Peer-led — a mentor shakes the hand of a young woman receiving her certificate.",
@@ -53,6 +68,9 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-05.webp",
+    width: 899,
+    height: 1599,
+    focus: "center 25%",
     numeral: "V",
     act: "The Voice",
     caption: "Hands stay busy — a young hand colours a flame during creative expression.",
@@ -61,6 +79,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-06.webp",
+    width: 1600,
+    height: 1204,
     numeral: "VI",
     act: "The Proof",
     caption: "Graduation in the corridor — uniformed participants lift their certificates.",
@@ -69,22 +89,30 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-07.webp",
+    width: 1200,
+    height: 1600,
+    focus: "center 25%",
     numeral: "VII",
     act: "The Voice",
     caption: "A girl takes the whiteboard — her group's findings presented to the room.",
     tag: "#leadership",
-    span: "",
+    span: "sm:col-span-2 sm:row-span-2",
   },
   {
     src: "/nairobi-team/nairobi-08.webp",
+    width: 1200,
+    height: 1600,
+    focus: "center 25%",
     numeral: "VIII",
     act: "The Voice",
     caption: "Myths, marched off — a flipchart crosses out harmful gender norms.",
     tag: "#gender-equality",
-    span: "sm:col-span-2",
+    span: "",
   },
   {
     src: "/nairobi-team/nairobi-09.webp",
+    width: 1599,
+    height: 720,
     numeral: "IX",
     act: "The Proof",
     caption: "Celebration — certificates raised, laughter louder than doubt.",
@@ -93,6 +121,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-10.webp",
+    width: 1280,
+    height: 960,
     numeral: "X",
     act: "The Circle",
     caption: "Olympic Handball Team (SSK · MTV Shuga · Shujaaz) before the congratulations board.",
@@ -101,6 +131,9 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-11.webp",
+    width: 720,
+    height: 1280,
+    focus: "center 25%",
     numeral: "XI",
     act: "The Circle",
     caption: "The dialogue circle — where every voice is heard first.",
@@ -109,6 +142,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-12.webp",
+    width: 720,
+    height: 480,
     numeral: "XII",
     act: "The Voice",
     caption: "Learning by screening — a youth session watches SRHR video content together.",
@@ -117,6 +152,8 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-13.webp",
+    width: 1600,
+    height: 900,
     numeral: "XIII",
     act: "The Voice",
     caption: "Materials that speak — the team holds Shujaaz magazines, health communication for young people.",
@@ -125,11 +162,13 @@ export const PLATES: Plate[] = [
   },
   {
     src: "/nairobi-team/nairobi-14.webp",
+    width: 1600,
+    height: 900,
     numeral: "XIV",
     act: "The Proof",
     caption: "Rising — a fist lifted: Knowledge is Power.",
     tag: "#power",
-    span: "sm:col-span-2 sm:row-span-2",
+    span: "",
   },
 ];
 
