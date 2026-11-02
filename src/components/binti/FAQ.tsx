@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { HelpCircle } from 'lucide-react';
 
 const faqs = [
   {
@@ -53,40 +52,41 @@ export default function FAQ() {
   }, []);
 
   return (
-    <section id="faq" ref={sectionRef} className="py-20 md:py-28 bg-white">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <HelpCircle className="w-8 h-8 text-binti-pink" />
-            <span className="text-sm font-bold uppercase tracking-widest text-binti-pink">
-              Questions & Answers
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy leading-tight">
-            Frequently Asked{' '}
-            <span className="text-gradient">Questions</span>
+    <section id="faq" ref={sectionRef} className="py-20 md:py-28 bg-cream">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        {/* Section heading — apparatus */}
+        <div className={`text-center ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-voilet mb-4">
+            Apparatus · Questions &amp; Answers
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink leading-[1.1]">
+            Asked, <em className="text-voilet">answered.</em>
           </h2>
-          <p className="mt-4 text-binti-navy/70 text-lg leading-relaxed max-w-2xl mx-auto">
-            Find answers to common questions about BINTI Rising, our programs, and how you can get involved.
+          <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed">
+            Find answers to common questions about Binti Rising, our programs, and how you can get involved.
           </p>
         </div>
 
-        {/* FAQ Accordion */}
-        <div className={`space-y-3 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
-          <Accordion type="single" collapsible className="space-y-3">
+        {/* FAQ Accordion — ruled ledger */}
+        <div className={`mt-12 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
+          <Accordion type="single" collapsible className="border-t border-ink/15">
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-binti-warm-gray/50 border border-binti-warm-gray rounded-lg px-6 overflow-hidden hover:bg-binti-warm-gray/70 transition-colors shadow-sm"
+                className="border-b border-ink/10 px-1 sm:px-2"
               >
                 <AccordionTrigger className="py-5 hover:no-underline group">
-                  <span className="text-left font-semibold text-binti-navy group-hover:text-binti-pink transition-colors">
-                    {faq.question}
+                  <span className="text-left flex items-baseline gap-4">
+                    <span className="font-display text-lg text-ink/25 shrink-0" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="font-medium text-ink group-hover:text-voilet transition-colors">
+                      {faq.question}
+                    </span>
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="pb-5 text-binti-navy/70 leading-relaxed">
+                <AccordionContent className="pb-5 pl-9 text-mist leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -94,14 +94,11 @@ export default function FAQ() {
           </Accordion>
         </div>
 
-        {/* Bottom CTA */}
-        <div className={`mt-12 text-center p-6 bg-gradient-to-r from-binti-pink/10 to-binti-purple/10 rounded-2xl border border-binti-pink/20 ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
-          <p className="text-binti-navy font-medium mb-2">
-            Still have questions?
-          </p>
-          <p className="text-binti-navy/70">
-            Contact us at{' '}
-            <a href="mailto:info@bintirising.org" className="text-binti-pink font-semibold hover:underline">
+        {/* Bottom note */}
+        <div className={`mt-10 text-center ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+          <p className="text-mist">
+            Still have questions? Contact us at{' '}
+            <a href="mailto:info@bintirising.org" className="text-voilet font-medium hover:underline">
               info@bintirising.org
             </a>
             {' '}or call us on our hotline.

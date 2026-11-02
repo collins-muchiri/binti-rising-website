@@ -132,146 +132,141 @@ export default function GetInvolved() {
   };
 
   return (
-    <section id="get-involved" ref={sectionRef} className="py-20 md:py-28 bg-binti-warm-gray/50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-12 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <span className="inline-block text-sm font-bold uppercase tracking-widest text-binti-pink mb-3">
-            Make a Difference
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy">
-            Get{' '}
-            <span className="text-gradient">Involved</span>
+    <section id="get-involved" ref={sectionRef} className="py-20 md:py-28 bg-white border-b border-ink/10">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Act heading */}
+        <div className={`max-w-3xl ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-voilet mb-4">
+            Act VI · Join the Journey
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink leading-[1.1]">
+            Add your voice to the <em className="text-voilet">rising.</em>
           </h2>
-          <p className="mt-4 text-binti-navy/70 text-base sm:text-lg">
+          <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed">
             Whether you donate, volunteer, or partner with us — every action counts in empowering
             young women across Nairobi.
           </p>
         </div>
 
-        {/* Quick Ways to Help */}
-        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
+        {/* Quick Ways to Help — index cards */}
+        <div className={`grid grid-cols-2 md:grid-cols-4 gap-px bg-ink/10 border border-ink/10 mt-12 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
           {[
             { icon: Heart, title: 'Donate', desc: 'Every KES transforms lives', onClick: () => setActiveTab('donate') },
             { icon: HandHeart, title: 'Volunteer', desc: 'Share your skills and time', onClick: () => setActiveTab('volunteer') },
             { icon: Users, title: 'Partner', desc: 'Collaborate for impact', onClick: () => setActiveTab('partner') },
             { icon: Share2, title: 'Share', desc: 'Spread the word', onClick: () => {} },
-          ].map((way, i) => (
+          ].map((way) => (
             <button
               key={way.title}
               onClick={way.onClick}
-              className="group p-5 bg-white rounded-xl border border-binti-warm-gray hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-left"
+              className="group p-5 bg-white hover:bg-cream transition-colors text-left"
             >
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-binti-pink/10 mb-3 transition-transform group-hover:scale-110">
-                <way.icon className="w-6 h-6 text-binti-pink" />
-              </div>
-              <h4 className="font-bold text-binti-navy mb-1">{way.title}</h4>
-              <p className="text-xs text-binti-navy/60 leading-relaxed">{way.desc}</p>
+              <way.icon className="w-5 h-5 text-voilet mb-3" aria-hidden="true" />
+              <h4 className="font-medium text-ink mb-1">{way.title}</h4>
+              <p className="text-xs text-mist leading-relaxed">{way.desc}</p>
             </button>
           ))}
         </div>
 
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto mb-8">
-            <TabsTrigger value="donate" className="rounded-full text-sm font-medium">
-              <Banknote className="w-4 h-4 mr-1.5" />
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-10">
+          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto rounded-none border border-ink/15 bg-cream">
+            <TabsTrigger value="donate" className="rounded-none text-sm font-medium data-[state=active]:bg-ink data-[state=active]:text-cream">
+              <Banknote className="w-4 h-4 mr-1.5" aria-hidden="true" />
               Donate
             </TabsTrigger>
-            <TabsTrigger value="volunteer" className="rounded-full text-sm font-medium">
-              <HandHeart className="w-4 h-4 mr-1.5" />
+            <TabsTrigger value="volunteer" className="rounded-none text-sm font-medium data-[state=active]:bg-ink data-[state=active]:text-cream">
+              <HandHeart className="w-4 h-4 mr-1.5" aria-hidden="true" />
               Volunteer
             </TabsTrigger>
-            <TabsTrigger value="partner" className="rounded-full text-sm font-medium">
-              <Users className="w-4 h-4 mr-1.5" />
+            <TabsTrigger value="partner" className="rounded-none text-sm font-medium data-[state=active]:bg-ink data-[state=active]:text-cream">
+              <Users className="w-4 h-4 mr-1.5" aria-hidden="true" />
               Partner
             </TabsTrigger>
           </TabsList>
 
           {/* Donate Tab */}
           <TabsContent value="donate">
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 mt-6">
               {/* M-Pesa */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-binti-warm-gray shadow-sm">
+              <div className="bg-cream border border-ink/10 p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
-                    <Smartphone className="w-6 h-6 text-green-600" />
+                  <div className="w-11 h-11 bg-ink text-cream flex items-center justify-center">
+                    <Smartphone className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-binti-navy text-lg">M-Pesa (Lipa na M-Pesa)</h3>
-                    <p className="text-sm text-binti-navy/60">Every KES counts</p>
+                    <h3 className="font-display text-xl text-ink">M-Pesa (Lipa na M-Pesa)</h3>
+                    <p className="text-sm text-mist">Every KES counts</p>
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
-                    <div className="text-sm text-binti-navy/60 mb-1">Paybill Number</div>
-                    <div className="text-2xl font-extrabold text-binti-navy">123456</div>
+                  <div className="p-4 bg-white border border-ink/10">
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-mist mb-1">Paybill Number</div>
+                    <div className="font-display text-3xl text-ink">123456</div>
                   </div>
-                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
-                    <div className="text-sm text-binti-navy/60 mb-1">Account Number</div>
-                    <div className="text-xl font-bold text-binti-pink">BINTI</div>
+                  <div className="p-4 bg-white border border-ink/10">
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-mist mb-1">Account Number</div>
+                    <div className="font-display text-2xl text-voilet">BINTI</div>
                   </div>
-                  <div className="p-3 bg-binti-pink/5 rounded-xl border border-binti-pink/10">
-                    <p className="text-xs text-binti-navy/70 leading-relaxed">
-                      Go to M-Pesa &gt; Lipa na M-Pesa &gt; Paybill &gt; Enter 123456 &gt; Account: BINTI &gt; Enter Amount &gt; Confirm
-                    </p>
-                  </div>
+                  <p className="p-3 border-l-2 border-voilet bg-white/60 text-xs text-mist leading-relaxed">
+                    Go to M-Pesa &gt; Lipa na M-Pesa &gt; Paybill &gt; Enter 123456 &gt; Account: BINTI &gt; Enter Amount &gt; Confirm
+                  </p>
                 </div>
               </div>
 
               {/* Bank Transfer */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-binti-warm-gray shadow-sm">
+              <div className="bg-cream border border-ink/10 p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-binti-teal/10 flex items-center justify-center">
-                    <Building2 className="w-6 h-6 text-binti-teal" />
+                  <div className="w-11 h-11 bg-ink text-cream flex items-center justify-center">
+                    <Building2 className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-binti-navy text-lg">Bank Transfer</h3>
-                    <p className="text-sm text-binti-navy/60">Direct bank deposit</p>
+                    <h3 className="font-display text-xl text-ink">Bank Transfer</h3>
+                    <p className="text-sm text-mist">Direct bank deposit</p>
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
-                    <div className="text-sm text-binti-navy/60 mb-1">Bank</div>
-                    <div className="text-lg font-bold text-binti-navy">Kenya Commercial Bank (KCB)</div>
+                  <div className="p-4 bg-white border border-ink/10">
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-mist mb-1">Bank</div>
+                    <div className="text-lg font-medium text-ink">Kenya Commercial Bank (KCB)</div>
                   </div>
-                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
-                    <div className="text-sm text-binti-navy/60 mb-1">Account Name</div>
-                    <div className="text-lg font-bold text-binti-navy">BINTI Rising Initiative</div>
+                  <div className="p-4 bg-white border border-ink/10">
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-mist mb-1">Account Name</div>
+                    <div className="text-lg font-medium text-ink">BINTI Rising Initiative</div>
                   </div>
-                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
-                    <div className="text-sm text-binti-navy/60 mb-1">Branch</div>
-                    <div className="text-lg font-bold text-binti-navy">Nairobi Main</div>
+                  <div className="p-4 bg-white border border-ink/10">
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-mist mb-1">Branch</div>
+                    <div className="text-lg font-medium text-ink">Nairobi Main</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Donation Impact Calculator */}
-            <div className="mt-8 bg-gradient-navy rounded-2xl p-6 sm:p-8 text-white">
-              <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-                <Heart className="w-5 h-5 text-binti-pink" />
+            {/* Donation Impact — ink plate */}
+            <div className="mt-8 bg-ink text-cream p-6 sm:p-8">
+              <h3 className="font-display text-2xl text-center mb-6 flex items-center justify-center gap-3">
+                <Heart className="w-5 h-5 text-flamingo" aria-hidden="true" />
                 Your Donation&apos;s Impact
               </h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-cream/15 border border-cream/15">
                 {[
                   { amount: 'KES 1,000', impact: '1 training session for a young woman' },
                   { amount: 'KES 5,000', impact: 'Complete pillar training (6-8 sessions)' },
                   { amount: 'KES 10,000', impact: 'Materials for a cohort of 20 participants' },
                   { amount: 'KES 20,000', impact: 'Sponsor an entire cohort of 20 young women' },
                 ].map((tier) => (
-                  <div key={tier.amount} className="bg-white/10 rounded-xl p-4 text-center border border-white/10">
-                    <div className="text-binti-gold font-extrabold text-lg">{tier.amount}</div>
-                    <div className="text-white/70 text-xs mt-1 leading-relaxed">{tier.impact}</div>
+                  <div key={tier.amount} className="bg-ink p-4 text-center">
+                    <div className="font-display text-lg text-flamingo">{tier.amount}</div>
+                    <div className="text-cream/70 text-xs mt-1.5 leading-relaxed">{tier.impact}</div>
                   </div>
                 ))}
               </div>
               <div className="text-center mt-6">
                 <Button
                   size="lg"
-                  className="bg-binti-pink hover:bg-binti-pink/90 text-white rounded-full px-10 shadow-lg shadow-binti-pink/25 transition-all hover:shadow-binti-pink/40"
+                  className="bg-cream text-ink hover:bg-cream/90 rounded-none px-10 min-h-[48px] tracking-wide"
                 >
-                  Donate Now - Change a Life
+                  Donate Now — Change a Life
                 </Button>
               </div>
             </div>
@@ -279,26 +274,26 @@ export default function GetInvolved() {
 
           {/* Volunteer Tab */}
           <TabsContent value="volunteer">
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-binti-warm-gray">
-                <h3 className="text-xl font-bold text-binti-navy mb-2">Volunteer With Us</h3>
-                <p className="text-sm text-binti-navy/60 mb-6">
+            <div className="max-w-2xl mx-auto mt-6">
+              <div className="bg-cream border border-ink/10 p-6 sm:p-8">
+                <h3 className="font-display text-2xl text-ink mb-2">Volunteer With Us</h3>
+                <p className="text-sm text-mist mb-6">
                   Join our mission in Nairobi. Fill out the form below and we&apos;ll get back to you within 48 hours.
                 </p>
 
                 {submitted === 'volunteer' ? (
                   <div className="text-center py-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-                      <CheckCircle2 className="w-7 h-7 text-green-600" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-ink mb-4">
+                      <CheckCircle2 className="w-7 h-7 text-cream" aria-hidden="true" />
                     </div>
-                    <h4 className="text-lg font-bold text-binti-navy mb-2">Application Submitted!</h4>
-                    <p className="text-sm text-binti-navy/60">
+                    <h4 className="font-display text-xl text-ink mb-2">Application Submitted!</h4>
+                    <p className="text-sm text-mist">
                       Thank you for volunteering! We&apos;ll review your application and reach out soon.
                     </p>
                     <Button
                       onClick={() => setSubmitted('')}
                       variant="outline"
-                      className="mt-4 border-binti-pink text-binti-pink hover:bg-binti-pink/5"
+                      className="mt-4 border-ink/25 text-ink hover:bg-ink/5 rounded-none"
                     >
                       Submit Another Application
                     </Button>
@@ -314,7 +309,7 @@ export default function GetInvolved() {
                           value={volunteerForm.name}
                           onChange={(e) => setVolunteerForm(prev => ({ ...prev, name: e.target.value }))}
                           required
-                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                          className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                         />
                       </div>
                       <div className="space-y-2">
@@ -326,7 +321,7 @@ export default function GetInvolved() {
                           value={volunteerForm.email}
                           onChange={(e) => setVolunteerForm(prev => ({ ...prev, email: e.target.value }))}
                           required
-                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                          className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                         />
                       </div>
                     </div>
@@ -339,7 +334,7 @@ export default function GetInvolved() {
                           value={volunteerForm.phone}
                           onChange={(e) => setVolunteerForm(prev => ({ ...prev, phone: e.target.value }))}
                           required
-                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                          className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                         />
                       </div>
                       <div className="space-y-2">
@@ -349,7 +344,7 @@ export default function GetInvolved() {
                           value={volunteerForm.county}
                           onChange={(e) => setVolunteerForm(prev => ({ ...prev, county: e.target.value }))}
                           required
-                          className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+                          className="w-full h-10 rounded-none border border-ink/20 bg-white px-3 py-2 text-sm focus:border-voilet focus:ring-voilet/20 focus:outline-none"
                         >
                           <option value="">Select sub-county</option>
                           {nairobiSubCounties.map((sc) => (
@@ -367,7 +362,7 @@ export default function GetInvolved() {
                           <Badge
                             key={skill}
                             variant="secondary"
-                            className="bg-binti-pink/10 text-binti-pink border-binti-pink/20 cursor-pointer hover:bg-binti-pink/20"
+                            className="bg-voilet/10 text-voilet border border-voilet/25 rounded-none cursor-pointer hover:bg-voilet/20"
                             onClick={() => removeSkill(skill)}
                           >
                             {skill} ×
@@ -379,16 +374,17 @@ export default function GetInvolved() {
                         value={skillInput}
                         onChange={(e) => setSkillInput(e.target.value)}
                         onFocus={() => setSkillInput(' ')}
-                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                        className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
+                        aria-label="Search skills"
                       />
                       {skillInput && filteredSkills.length > 0 && (
-                        <div className="bg-white rounded-lg border border-binti-warm-gray shadow-lg max-h-32 overflow-y-auto custom-scrollbar">
+                        <div className="bg-white border border-ink/15 shadow-lg max-h-32 overflow-y-auto custom-scrollbar">
                           {filteredSkills.map((skill) => (
                             <button
                               key={skill}
                               type="button"
                               onClick={() => addSkill(skill)}
-                              className="w-full text-left px-3 py-2 text-sm text-binti-navy/70 hover:bg-binti-warm-gray transition-colors"
+                              className="w-full text-left px-3 py-2 text-sm text-mist hover:bg-cream hover:text-ink transition-colors"
                             >
                               + {skill}
                             </button>
@@ -404,7 +400,7 @@ export default function GetInvolved() {
                         value={volunteerForm.availability}
                         onChange={(e) => setVolunteerForm(prev => ({ ...prev, availability: e.target.value }))}
                         required
-                        className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+                        className="w-full h-10 rounded-none border border-ink/20 bg-white px-3 py-2 text-sm focus:border-voilet focus:ring-voilet/20 focus:outline-none"
                       >
                         <option value="">Select availability</option>
                         <option value="Weekdays (Morning)">Weekdays (Morning)</option>
@@ -423,23 +419,23 @@ export default function GetInvolved() {
                         rows={3}
                         value={volunteerForm.message}
                         onChange={(e) => setVolunteerForm(prev => ({ ...prev, message: e.target.value }))}
-                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20 resize-none"
+                        className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white resize-none"
                       />
                     </div>
 
                     <Button
                       type="submit"
                       disabled={isSubmitting === 'volunteer'}
-                      className="w-full bg-binti-pink hover:bg-binti-pink/90 text-white rounded-full py-6 shadow-lg shadow-binti-pink/25 transition-all hover:shadow-binti-pink/40"
+                      className="w-full bg-ink text-cream hover:bg-ink/85 rounded-none py-6 tracking-wide"
                     >
                       {isSubmitting === 'volunteer' ? (
                         <span className="flex items-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                           Submitting...
                         </span>
                       ) : (
                         <span className="flex items-center gap-2">
-                          <Send className="w-4 h-4" />
+                          <Send className="w-4 h-4" aria-hidden="true" />
                           Submit Volunteer Application
                         </span>
                       )}
@@ -452,27 +448,27 @@ export default function GetInvolved() {
 
           {/* Partner Tab */}
           <TabsContent value="partner">
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-binti-warm-gray">
-                <h3 className="text-xl font-bold text-binti-navy mb-2">Partner With Us</h3>
-                <p className="text-sm text-binti-navy/60 mb-6">
+            <div className="max-w-2xl mx-auto mt-6">
+              <div className="bg-cream border border-ink/10 p-6 sm:p-8">
+                <h3 className="font-display text-2xl text-ink mb-2">Partner With Us</h3>
+                <p className="text-sm text-mist mb-6">
                   We welcome partnerships with NGOs, government agencies, private sector, and academic
                   institutions working in Nairobi.
                 </p>
 
                 {submitted === 'partner' ? (
                   <div className="text-center py-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-                      <CheckCircle2 className="w-7 h-7 text-green-600" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-ink mb-4">
+                      <CheckCircle2 className="w-7 h-7 text-cream" aria-hidden="true" />
                     </div>
-                    <h4 className="text-lg font-bold text-binti-navy mb-2">Inquiry Submitted!</h4>
-                    <p className="text-sm text-binti-navy/60">
-                      Thank you for your interest in partnering with BINTI Rising. We&apos;ll be in touch soon.
+                    <h4 className="font-display text-xl text-ink mb-2">Inquiry Submitted!</h4>
+                    <p className="text-sm text-mist">
+                      Thank you for your interest in partnering with Binti Rising. We&apos;ll be in touch soon.
                     </p>
                     <Button
                       onClick={() => setSubmitted('')}
                       variant="outline"
-                      className="mt-4 border-binti-pink text-binti-pink hover:bg-binti-pink/5"
+                      className="mt-4 border-ink/25 text-ink hover:bg-ink/5 rounded-none"
                     >
                       Submit Another Inquiry
                     </Button>
@@ -487,7 +483,7 @@ export default function GetInvolved() {
                         value={partnerForm.orgName}
                         onChange={(e) => setPartnerForm(prev => ({ ...prev, orgName: e.target.value }))}
                         required
-                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                        className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                       />
                     </div>
                     <div className="space-y-2">
@@ -498,7 +494,7 @@ export default function GetInvolved() {
                         value={partnerForm.contactPerson}
                         onChange={(e) => setPartnerForm(prev => ({ ...prev, contactPerson: e.target.value }))}
                         required
-                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                        className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                       />
                     </div>
                     <div className="grid sm:grid-cols-2 gap-4">
@@ -511,7 +507,7 @@ export default function GetInvolved() {
                           value={partnerForm.email}
                           onChange={(e) => setPartnerForm(prev => ({ ...prev, email: e.target.value }))}
                           required
-                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                          className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                         />
                       </div>
                       <div className="space-y-2">
@@ -522,7 +518,7 @@ export default function GetInvolved() {
                           value={partnerForm.phone}
                           onChange={(e) => setPartnerForm(prev => ({ ...prev, phone: e.target.value }))}
                           required
-                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+                          className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white"
                         />
                       </div>
                     </div>
@@ -533,7 +529,7 @@ export default function GetInvolved() {
                         value={partnerForm.partnershipType}
                         onChange={(e) => setPartnerForm(prev => ({ ...prev, partnershipType: e.target.value }))}
                         required
-                        className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+                        className="w-full h-10 rounded-none border border-ink/20 bg-white px-3 py-2 text-sm focus:border-voilet focus:ring-voilet/20 focus:outline-none"
                       >
                         <option value="">Select partnership type</option>
                         {partnershipTypes.map((pt) => (
@@ -550,22 +546,22 @@ export default function GetInvolved() {
                         value={partnerForm.message}
                         onChange={(e) => setPartnerForm(prev => ({ ...prev, message: e.target.value }))}
                         required
-                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20 resize-none"
+                        className="border-ink/20 focus:border-voilet focus:ring-voilet/20 rounded-none bg-white resize-none"
                       />
                     </div>
                     <Button
                       type="submit"
                       disabled={isSubmitting === 'partner'}
-                      className="w-full bg-binti-teal hover:bg-binti-teal/90 text-white rounded-full py-6 shadow-lg shadow-binti-teal/25 transition-all hover:shadow-binti-teal/40"
+                      className="w-full bg-ink text-cream hover:bg-ink/85 rounded-none py-6 tracking-wide"
                     >
                       {isSubmitting === 'partner' ? (
                         <span className="flex items-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                           Submitting...
                         </span>
                       ) : (
                         <span className="flex items-center gap-2">
-                          <Send className="w-4 h-4" />
+                          <Send className="w-4 h-4" aria-hidden="true" />
                           Submit Partnership Inquiry
                         </span>
                       )}
@@ -577,26 +573,26 @@ export default function GetInvolved() {
           </TabsContent>
         </Tabs>
 
-        {/* Contact Info */}
+        {/* Contact strip — ink plate */}
         <div className={`mt-12 ${isVisible ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
-          <div className="p-6 bg-binti-navy rounded-2xl text-white">
-            <h4 className="font-bold mb-4 text-center">Contact Information</h4>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+          <div className="p-8 bg-ink text-cream">
+            <h4 className="font-display text-xl mb-5 text-center">Contact Information</h4>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
               <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-binti-gold shrink-0" />
-                <span className="text-sm text-white/80">Nairobi, Kenya</span>
+                <MapPin className="w-4 h-4 text-flamingo shrink-0" aria-hidden="true" />
+                <span className="text-sm text-cream/80">Nairobi, Kenya</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-binti-gold shrink-0" />
-                <span className="text-sm text-white/80">+254 700 000 000</span>
+                <Phone className="w-4 h-4 text-flamingo shrink-0" aria-hidden="true" />
+                <span className="text-sm text-cream/80">+254 700 000 000</span>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-binti-gold shrink-0" />
-                <span className="text-sm text-white/80">info@bintirising.org</span>
+                <Mail className="w-4 h-4 text-flamingo shrink-0" aria-hidden="true" />
+                <span className="text-sm text-cream/80">info@bintirising.org</span>
               </div>
             </div>
             {/* Social Links */}
-            <div className="mt-4 flex justify-center gap-3">
+            <div className="mt-5 flex justify-center gap-3">
               {[
                 { icon: Instagram, label: 'Instagram' },
                 { icon: Facebook, label: 'Facebook' },
@@ -605,9 +601,9 @@ export default function GetInvolved() {
                 <button
                   key={social.label}
                   aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-binti-pink flex items-center justify-center transition-colors"
+                  className="w-10 h-10 bg-cream/10 hover:bg-voilet flex items-center justify-center transition-colors"
                 >
-                  <social.icon className="w-4 h-4" />
+                  <social.icon className="w-4 h-4" aria-hidden="true" />
                 </button>
               ))}
             </div>

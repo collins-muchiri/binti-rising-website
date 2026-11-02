@@ -1,18 +1,15 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Quote, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 const stories = [
   {
     name: 'Amina Wanjiku',
     location: 'Kayole, Nairobi',
     quote:
-      'Before joining BINTI Rising, I had no idea about my reproductive health rights. The SRHR sessions gave me knowledge and confidence I never had. Now I help other young women in Kayole understand their bodies and make informed choices about their health.',
+      'Before joining Binti Rising, I had no idea about my reproductive health rights. The SRHR sessions gave me knowledge and confidence I never had. Now I help other young women in Kayole understand their bodies and make informed choices about their health.',
     pillar: 'SRHR',
-    pillarColor: 'bg-binti-pink/10 text-binti-pink border-binti-pink/20',
     initials: 'AW',
   },
   {
@@ -21,25 +18,22 @@ const stories = [
     quote:
       'The financial literacy program changed my life completely. I learned how to budget, save, and even started a small business selling handmade jewelry. For the first time, I feel economically independent and hopeful about my future.',
     pillar: 'Financial Freedom',
-    pillarColor: 'bg-binti-teal/10 text-binti-teal border-binti-teal/20',
     initials: 'WN',
   },
   {
     name: 'Faith Atieno',
     location: 'Dagoretti, Nairobi',
     quote:
-      'Mental health was never something we talked about in my community. BINTI Rising created a safe space for us to share our struggles. I learned coping strategies that help me every day. I am stronger and more resilient now.',
+      'Mental health was never something we talked about in my community. Binti Rising created a safe space for us to share our struggles. I learned coping strategies that help me every day. I am stronger and more resilient now.',
     pillar: 'Mental Health',
-    pillarColor: 'bg-binti-purple/10 text-binti-purple border-binti-purple/20',
     initials: 'FA',
   },
   {
     name: 'Njeri Kamau',
     location: 'Mathare, Nairobi',
     quote:
-      'The Women Empowerment program taught me that my voice matters. I now speak up at community meetings and advocate for girls\' education. I never saw myself as a leader, but BINTI Rising helped me discover my potential.',
+      'The Women Empowerment program taught me that my voice matters. I now speak up at community meetings and advocate for girls\' education. I never saw myself as a leader, but Binti Rising helped me discover my potential.',
     pillar: 'Leadership',
-    pillarColor: 'bg-binti-gold/10 text-binti-gold border-binti-gold/20',
     initials: 'NK',
   },
   {
@@ -48,16 +42,14 @@ const stories = [
     quote:
       'After completing all four program pillars, I became a peer mentor. I now help new participants navigate the program and share my own journey. Watching other young women transform is the most rewarding experience of my life.',
     pillar: 'SRHR',
-    pillarColor: 'bg-binti-pink/10 text-binti-pink border-binti-pink/20',
     initials: 'AO',
   },
   {
     name: 'Syombua Musyoka',
     location: 'Rongai, Nairobi',
     quote:
-      'I used to think starting a business was only for people with capital. Through BINTI\'s entrepreneurship sessions, I learned that with KES 500 and determination, I could start something meaningful. Today I run a small grocery kiosk.',
+      'I used to think starting a business was only for people with capital. Through Binti\'s entrepreneurship sessions, I learned that with KES 500 and determination, I could start something meaningful. Today I run a small grocery kiosk.',
     pillar: 'Financial Freedom',
-    pillarColor: 'bg-binti-teal/10 text-binti-teal border-binti-teal/20',
     initials: 'SM',
   },
 ];
@@ -85,86 +77,60 @@ export default function Stories() {
   }, []);
 
   return (
-    <section id="stories" ref={sectionRef} className="py-20 md:py-28 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-16 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <span className="inline-block text-sm font-bold uppercase tracking-widest text-binti-pink mb-3">
-            Community Impact
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy">
-            Stories of{' '}
-            <span className="text-gradient">Change</span>
+    <section id="stories" ref={sectionRef} className="py-20 md:py-28 bg-cream">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Act heading */}
+        <div className={`max-w-3xl ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-voilet mb-4">
+            Act IV · In Their Own Words
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink leading-[1.1]">
+            Voices carry further than <em className="text-voilet">flyers.</em>
           </h2>
-          <p className="mt-4 text-binti-navy/70 text-base sm:text-lg">
+          <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed">
             Hear from the young women across Nairobi whose lives have been transformed through our programs.
             Their stories inspire our work every day.
           </p>
         </div>
 
-        {/* Testimonial Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Pull-quotes — editorial two-column flow */}
+        <div className="mt-14 columns-1 md:columns-2 gap-10 [column-fill:_balance]">
           {stories.map((story, i) => (
-            <div
+            <blockquote
               key={story.name}
-              className={`group relative bg-binti-warm-gray/40 rounded-2xl p-6 sm:p-8 hover:bg-binti-warm-gray/70 transition-all duration-300 hover:shadow-lg ${
-                isVisible ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${0.1 + i * 0.1}s` }}
+              className={`break-inside-avoid mb-10 border-l-2 border-voilet/70 pl-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+              style={{ animationDelay: `${0.1 + i * 0.08}s` }}
             >
-              {/* Quote Icon */}
-              <div className="absolute top-6 right-6 opacity-10">
-                <Quote className="w-12 h-12 text-binti-pink" />
-              </div>
-
-              {/* Quote Text */}
-              <p className="text-binti-navy/70 text-sm sm:text-base leading-relaxed mb-6 relative">
+              <p className="font-display italic text-xl sm:text-[1.35rem] leading-snug text-ink">
                 &ldquo;{story.quote}&rdquo;
               </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-3 mt-auto">
-                <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
-                  <AvatarFallback className="bg-binti-pink text-white font-bold text-sm">
-                    {story.initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="font-bold text-binti-navy text-sm">{story.name}</div>
-                  <div className="flex items-center gap-1 text-binti-navy/50 text-xs">
-                    <MapPin className="w-3 h-3" />
-                    {story.location}
-                  </div>
-                </div>
-              </div>
-
-              {/* Pillar Badge */}
-              <Badge
-                variant="outline"
-                className={`mt-4 text-xs ${story.pillarColor}`}
-              >
-                {story.pillar}
-              </Badge>
-            </div>
+              <footer className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                <span className="font-medium text-ink">{story.name}</span>
+                <span className="inline-flex items-center gap-1 text-mist text-xs">
+                  <MapPin className="w-3 h-3" aria-hidden="true" />
+                  {story.location}
+                </span>
+                <span className="text-[10px] tracking-[0.2em] uppercase text-voilet border border-voilet/30 px-2 py-0.5">
+                  {story.pillar}
+                </span>
+              </footer>
+            </blockquote>
           ))}
         </div>
 
-        {/* Community Partners */}
-        <div className={`mt-20 ${isVisible ? 'animate-fade-in-up delay-500' : 'opacity-0'}`}>
-          <div className="text-center mb-8">
-            <h3 className="text-lg font-bold text-binti-navy">Our Community Partners</h3>
-            <p className="text-sm text-binti-navy/50 mt-1">Working together for lasting impact across Nairobi</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3">
+        {/* Community Partners — colophon list */}
+        <div className={`mt-16 border-t border-ink/10 pt-10 ${isVisible ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+          <h3 className="text-[11px] font-semibold tracking-[0.3em] uppercase text-ink text-center">
+            Our Community Partners
+          </h3>
+          <p className="text-xs text-mist text-center mt-2">Working together for lasting impact across Nairobi</p>
+          <ul className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-3">
             {partners.map((partner) => (
-              <div
-                key={partner}
-                className="px-4 py-2 bg-binti-warm-gray/60 rounded-full text-sm text-binti-navy/70 font-medium border border-binti-warm-gray hover:border-binti-pink/30 hover:text-binti-pink transition-colors"
-              >
+              <li key={partner} className="text-sm text-mist hover:text-voilet transition-colors">
                 {partner}
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </section>

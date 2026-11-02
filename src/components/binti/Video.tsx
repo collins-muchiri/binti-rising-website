@@ -18,89 +18,86 @@ export default function Video() {
   }, []);
 
   return (
-    <section id="video" ref={sectionRef} className="py-20 md:py-28 bg-binti-warm-gray/30">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className={`text-center max-w-2xl mx-auto mb-12 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-          <span className="inline-block text-sm font-bold uppercase tracking-widest text-binti-pink mb-3">
-            Educational Content
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy leading-tight">
-            Learn About{' '}
-            <span className="text-gradient">SRHR</span>
+    <section id="video" ref={sectionRef} className="py-20 md:py-28 bg-white border-b border-ink/10">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Act heading */}
+        <div className={`text-center ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+          <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-voilet mb-4">
+            Act III · The Voice — Educational Content
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink leading-[1.1]">
+            Learn about <em className="text-voilet">SRHR.</em>
           </h2>
-          <p className="mt-4 text-binti-navy/70 text-lg leading-relaxed">
-            Watch our comprehensive guide on Sexual and Reproductive Health and Rights to understand key concepts and empowerment strategies.
+          <p className="mt-5 text-mist text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            Watch our comprehensive guide on Sexual and Reproductive Health and Rights to
+            understand key concepts and empowerment strategies.
           </p>
         </div>
 
-        {/* Video Container */}
-        <div className={`max-w-4xl mx-auto ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
-          <div className="relative group rounded-2xl overflow-hidden shadow-2xl">
-            {/* Background gradient */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-binti-pink via-binti-purple to-binti-teal opacity-75 rounded-2xl blur group-hover:opacity-100 transition duration-500" />
-            
-            {/* Video Frame */}
-            <div className="relative bg-white rounded-2xl overflow-hidden">
-              <div className="aspect-video bg-gradient-to-br from-binti-warm-gray/50 to-binti-warm-gray/80 flex items-center justify-center relative">
-                {/* Play Button */}
-                <a
-                  href="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group/play"
-                >
-                  <div className="absolute inset-0 bg-black/20 group-hover/play:bg-black/40 transition-all duration-300 rounded-2xl" />
-                  <div className="flex items-center justify-center h-full">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-binti-pink/20 rounded-full blur-lg group-hover/play:bg-binti-pink/40 transition-all duration-300" />
-                      <Button
-                        size="lg"
-                        className="relative bg-binti-pink hover:bg-binti-pink/90 text-white rounded-full w-20 h-20 flex items-center justify-center"
-                      >
-                        <Play className="w-8 h-8 fill-white" />
-                      </Button>
-                    </div>
-                  </div>
-                </a>
+        {/* Video plate */}
+        <div className={`mt-12 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
+          <div className="bg-white p-2 sm:p-3 plate-shadow">
+            <div className="aspect-video bg-parchment flex items-center justify-center relative overflow-hidden">
+              {/* Play Button */}
+              <a
+                href="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group/play"
+                aria-label="Play the SRHR education video"
+              >
+                <div className="absolute inset-0 bg-ink/10 group-hover/play:bg-ink/25 transition-all duration-300" />
+                <div className="flex items-center justify-center h-full relative">
+                  <Button
+                    size="lg"
+                    className="relative bg-ink text-cream hover:bg-voilet rounded-full w-20 h-20 flex items-center justify-center transition-colors"
+                  >
+                    <Play className="w-8 h-8 fill-cream" aria-hidden="true" />
+                  </Button>
+                </div>
+              </a>
 
-                {/* Video Title Overlay */}
-                <div className="absolute inset-0 flex items-end">
-                  <div className="w-full p-6 bg-gradient-to-t from-black/60 to-transparent">
-                    <h3 className="text-white font-bold text-lg">Understanding SRHR: Empowerment Through Education</h3>
-                    <p className="text-white/70 text-sm mt-1">A comprehensive guide for young women</p>
-                  </div>
+              {/* Video Title Overlay */}
+              <div className="absolute inset-0 flex items-end pointer-events-none">
+                <div className="w-full p-6 bg-gradient-to-t from-ink/70 to-transparent">
+                  <h3 className="text-cream font-medium text-lg">Understanding SRHR: Empowerment Through Education</h3>
+                  <p className="text-cream/70 text-sm mt-1">A comprehensive guide for young women</p>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* CTA Below Video */}
-          <div className="mt-8 text-center">
-            <p className="text-binti-navy/70 mb-4 text-sm">
-              Want to join our programs? Learn more about our SRHR initiatives.
-            </p>
-            <a href="#get-involved" className="inline-block">
-              <Button className="bg-binti-pink hover:bg-binti-pink/90 text-white">
-                Get Involved Today
-              </Button>
-            </a>
-          </div>
+          <figcaption className="mt-3 text-center text-xs text-mist">
+            <span className="font-semibold text-ink">Plate VII.</span> The screening — SRHR, told
+            in their own language.
+          </figcaption>
         </div>
 
-        {/* Video Stats */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+        {/* CTA Below Video */}
+        <div className="mt-10 text-center">
+          <p className="text-mist mb-4 text-sm">
+            Want to join our programs? Learn more about our SRHR initiatives.
+          </p>
+          <Button
+            asChild
+            className="bg-ink text-cream hover:bg-ink/85 rounded-none px-8 min-h-[44px] tracking-wide"
+          >
+            <a href="#get-involved">Get Involved Today</a>
+          </Button>
+        </div>
+
+        {/* Video Stats — ledger line */}
+        <dl className={`mt-12 grid grid-cols-3 gap-px bg-ink/10 border border-ink/10 max-w-xl mx-auto ${isVisible ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
           {[
             { label: 'Views', value: '2.5K+' },
             { label: 'Duration', value: '12 mins' },
             { label: 'Rating', value: '4.8/5' },
           ].map((stat) => (
-            <div key={stat.label} className={`text-center p-4 rounded-xl bg-white shadow-sm border border-binti-warm-gray ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-              <div className="text-2xl font-bold text-binti-pink">{stat.value}</div>
-              <div className="text-sm text-binti-navy/60 mt-1">{stat.label}</div>
+            <div key={stat.label} className="bg-white text-center px-3 py-5">
+              <dd className="font-display text-2xl text-ink">{stat.value}</dd>
+              <dt className="text-[10px] tracking-[0.2em] uppercase text-mist mt-1.5">{stat.label}</dt>
             </div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   );
