@@ -1,5 +1,5 @@
 /**
- * Canonical site URL — the single source of truth for every absolute URL the
+ * Canonical site URL: the single source of truth for every absolute URL the
  * site emits: metadata (canonical / Open Graph / Twitter), sitemap.xml,
  * robots.txt, JSON-LD structured data, and the SEO ping/IndexNow APIs.
  *
@@ -7,7 +7,7 @@
  *   https://binti-rising-initiative.vercel.app
  *
  * To move to a custom domain later (e.g. https://bintirising.org), change this
- * one constant — every consumer updates automatically.
+ * one constant: every consumer updates automatically.
  */
 export const SITE_URL = "https://binti-rising-initiative.vercel.app";
 

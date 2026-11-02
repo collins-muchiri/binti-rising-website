@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * back-to-top.tsx — a fixed, floating "back to top" arrow.
+ * back-to-top.tsx: a fixed, floating "back to top" arrow.
  *
  * • Appears only after the user has scrolled past the hero (~640px).
  * • Smooth-scrolls to the top; honours prefers-reduced-motion (instant jump).

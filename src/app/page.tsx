@@ -1,5 +1,15 @@
 import Image from "next/image";
-import { Download, MapPin, Phone, Mail, ShieldCheck, Target, LineChart } from "lucide-react";
+import {
+  Download,
+  MapPin,
+  Phone,
+  Mail,
+  ShieldCheck,
+  Target,
+  LineChart,
+  Facebook,
+  MessageCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { SiteNav } from "@/components/story/site-nav";
@@ -9,13 +19,14 @@ import { PlatesGallery } from "@/components/story/plates-gallery";
 import { VideoFacade } from "@/components/story/video-facade";
 import { KpiSection } from "@/components/story/kpi-section";
 import { GetInvolved } from "@/components/story/get-involved";
-import { PILLARS, VOICES, STEWARDS, FAQS, CONTACT, NAV_LINKS } from "@/lib/story-data";
+import { PILLARS, VOICES, STEWARDS, FAQS, CONTACT, NAV_LINKS, PARTNERS } from "@/lib/story-data";
+import { SITE_URL } from "@/lib/seo/site-url";
 
 /**
- * Binti Rising Initiative — "From Silence, She Rises"
+ * Binti Rising Initiative: "From Silence, She Rises"
  * A one-page storytelling monograph for a Nairobi CBO (registered in Kiambu).
  *
- * Structure — the six-act spine:
+ * Structure, the six-act spine:
  *   Cover (#home) → Act I The Circle (#story) → Act II The Classroom (#pillars)
  *   → Interlude The Plates (#plates) → Act III The Voice (#video)
  *   → Act IV In Their Own Words (#voices) → The Stewards (#stewards)
@@ -61,7 +72,7 @@ function ActHeader({
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f6f3ee] text-[#1a1626]">
-      {/* Skip link — first tab stop for keyboard/screen-reader readers */}
+      {/* Skip link: first tab stop for keyboard/screen-reader readers */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-[#1a1626] focus:px-4 focus:py-2 focus:text-[#f6f3ee]"
@@ -86,8 +97,8 @@ export default function Home() {
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-relaxed text-[#6f6a7c] sm:text-base">
                 In Kibera, Mathare and Kawangware, the Binti Rising Initiative runs a peer-led
-                mentorship programme — the Journey to Wholeness — for adolescent girls and young
-                women aged 15–25. This monograph follows one arc through fourteen plates from the
+                mentorship programme, the Journey to Wholeness, for adolescent girls and young
+                women aged 15-25. This monograph follows one arc through fourteen plates from the
                 team&apos;s own archive: community circles, classrooms, quiet craft, loud
                 celebration, and the measured proof that lives are changing.
               </p>
@@ -109,9 +120,9 @@ export default function Home() {
                   </a>
                 </Button>
               </div>
-              {/* Trust chips */}
+              {/* Trust chips: registration year, the founding collaboration, and M&E rigour */}
               <ul className="mt-6 flex flex-wrap gap-2 text-[11px] text-[#6f6a7c]">
-                {["Registered CBO", "UN-aligned Programs", "Evidence-based M&E"].map((chip) => (
+                {["Registered CBO 2026", "Shuga × Shujaaz × PATH", "Evidence-based M&E"].map((chip) => (
                   <li
                     key={chip}
                     className="rounded-full border border-[#1a1626]/15 bg-white/60 px-3 py-1.5"
@@ -122,12 +133,12 @@ export default function Home() {
               </ul>
             </div>
 
-            {/* Cover plate — Plate XIV, the raised fist */}
+            {/* Cover plate: Plate XIV, the raised fist */}
             <Reveal>
               <figure className="bg-white p-2 shadow-[0_2px_40px_rgba(26,22,38,0.16)] sm:p-3">
                 <Image
                   src="/nairobi-team/nairobi-14.webp"
-                  alt="Plate XIV — a young woman raises her fist: Knowledge is Power. Binti Rising Nairobi archive."
+                  alt="Plate XIV: a young woman raises her fist, Knowledge is Power. Binti Rising Nairobi archive."
                   width={1600}
                   height={1200}
                   priority
@@ -138,7 +149,7 @@ export default function Home() {
                   <span className="font-semibold uppercase tracking-[0.2em] text-[#b4472e]">
                     Plate XIV.
                   </span>{" "}
-                  Rising — a fist lifted: <em className="font-display">Knowledge is Power.</em>
+                  Rising: a fist lifted, <em className="font-display">Knowledge is Power.</em>
                 </figcaption>
               </figure>
             </Reveal>
@@ -177,23 +188,32 @@ export default function Home() {
                 <p>
                   <strong className="text-[#1a1626]">Binti Rising Initiative</strong> is a
                   registered Community-Based Organization in Kenya (Kiambu), dedicated to
-                  transforming the lives of young women aged 15–25. Founded in 2024, we work
+                  transforming the lives of young women aged 15-25. Founded in 2026, we work
                   across 10+ communities in Nairobi to provide holistic empowerment programs that
                   address the real needs of young women in the city.
                 </p>
+                {/* Origin story: founded in 2026, born of the Shuga x Shujaaz x PATH
+                    collaboration. Partner facts are validated against Shuga Global /
+                    Shujaaz Inc / PATH public listings; see PARTNERS in story-data.ts. */}
+                <p>
+                  Binti Rising was started in 2026 through the{" "}
+                  <strong className="text-[#1a1626]">Shuga × Shujaaz × PATH</strong>{" "}
+                  collaboration. Peer education is based on{" "}
+                  <strong className="text-[#1a1626]">Shuga Global</strong> (formerly the MTV
+                  Staying Alive Foundation, the team behind the award-winning MTV Shuga
+                  franchise), and Shujaaz magazines, East Africa&apos;s biggest youth media
+                  platform, feature in our sessions as health communication for young people.
+                </p>
                 <p>
                   Our comprehensive approach addresses the interconnected challenges young women
-                  face — from limited access to sexual and reproductive health education, to
+                  face: from limited access to sexual and reproductive health education, to
                   mental health struggles, financial barriers, and gender-based violence. We
                   believe in meeting young women where they are and walking alongside them on
                   their journey to empowerment.
                 </p>
                 <p>
-                  Through our four program pillars —{" "}
-                  <strong className="text-[#1a1626]">SRHR</strong>,{" "}
-                  <strong className="text-[#1a1626]">Mental Health</strong>,{" "}
-                  <strong className="text-[#1a1626]">Financial Freedom</strong>, and{" "}
-                  <strong className="text-[#1a1626]">Women Empowerment</strong> — we&apos;re
+                  Through our four program pillars (SRHR, Mental Health, Financial Freedom, and{" "}
+                  <strong className="text-[#1a1626]">Women Empowerment</strong>), we&apos;re
                   building a generation of informed, resilient, and economically independent
                   young women leaders.
                 </p>
@@ -209,7 +229,7 @@ export default function Home() {
                 woman&apos;s life. Our evidence-based programs are aligned with UN Sustainable
                 Development Goals and measured through rigorous monitoring and evaluation. With
                 over 500 young women already reached across Nairobi communities, your investment
-                creates ripple effects — empowered women lift families and communities out of
+                creates ripple effects: empowered women lift families and communities out of
                 poverty.
               </p>
               <p className="mt-4 flex items-center gap-2 text-xs text-[#6f6a7c]">
@@ -228,9 +248,9 @@ export default function Home() {
               act="Act II · The Classroom"
               line1="The work moves through"
               line2="classrooms and halls."
-              lede="Four pillars — twenty-six structured sessions across six months. The curriculum is consistent, but the rooms are not: school blocks, community halls, open-air corridors. Each chapter below opens into its full syllabus."
+              lede="Four pillars, twenty-six structured sessions across six months. The curriculum is consistent, but the rooms are not: school blocks, community halls, open-air corridors. Each chapter below opens into its full syllabus."
             />
-            {/* Pillar cards — CSS Grid: 1 → 2 → 4 columns */}
+            {/* Pillar cards: CSS Grid: 1 → 2 → 4 columns */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {PILLARS.map((pillar, i) => (
                 <Reveal key={pillar.title} delay={i * 80}>
@@ -275,7 +295,7 @@ export default function Home() {
               act="The Plates · Nairobi Archive"
               line1="Fourteen photographs,"
               line2="one arc."
-              lede="Every image on this page comes from the initiative's own Google Drive “Nairobi” folder — no stock photography, no invented scenes. Each file is traceable through manifest.json and tagged nairobi-photos-v1.0 in the public release. Select any plate to view it full size."
+              lede="Every image on this page comes from the initiative's own Google Drive “Nairobi” folder: no stock photography, no invented scenes. Each file is traceable through manifest.json and tagged nairobi-photos-v1.0 in the public release. Select any plate to view it full size."
             />
             <div className="mt-10">
               <PlatesGallery />
@@ -283,15 +303,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ──────────────────── ACT III · THE VOICE — VIDEO (#video) ──────────────────── */}
+        {/* ──────────────────── ACT III · THE VOICE · VIDEO (#video) ──────────────────── */}
         <section id="video" aria-labelledby="video-heading" className="scroll-mt-20 border-y border-[#1a1626]/10 bg-[#1a1626] text-[#f6f3ee]">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             <ActHeader
               id="video-heading"
-              act="Act III · The Voice — Educational Content"
+              act="Act III · The Voice: Educational Content"
               line1="Learn about"
               line2="SRHR."
-              lede="Our comprehensive guide on Sexual and Reproductive Health and Rights — key concepts and empowerment strategies, told in the language of the young women themselves."
+              lede="Our comprehensive guide on Sexual and Reproductive Health and Rights: key concepts and empowerment strategies, told in the language of the young women themselves."
             />
             <div className="mt-10 [&_p]:text-[#f6f3ee]/70 [&_h3]:text-[#f6f3ee] [&_em]:text-[#e8a28f] [&_dd]:text-[#f6f3ee] [&_dt]:text-[#f6f3ee]/60 [&_span.absolute]:text-[#1a1626]">
               <VideoFacade />
@@ -309,7 +329,7 @@ export default function Home() {
               line2="flyers."
               lede="Hear from the young women across Nairobi whose lives have been transformed through our programs. Their stories inspire our work every day."
             />
-            {/* Testimonial cards — CSS Grid: 1 → 2 → 3 columns */}
+            {/* Testimonial cards: CSS Grid: 1 → 2 → 3 columns */}
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {VOICES.map((voice, i) => (
                 <Reveal key={voice.name} delay={(i % 3) * 80}>
@@ -376,10 +396,10 @@ export default function Home() {
               <div className="lg:col-span-1">
                 <ActHeader
                   id="proof-heading"
-                  act="Act V · The Proof — Monitoring & Evaluation"
+                  act="Act V · The Proof: Monitoring & Evaluation"
                   line1="Then the corridor becomes"
                   line2="a stage."
-                  lede="Every young woman who joins Binti Rising experiences measurable change. We track six key performance indicators — from SRHR knowledge and service utilization to mental wellbeing, savings habits, leadership, and GBV awareness. The results speak for themselves."
+                  lede="Every young woman who joins Binti Rising experiences measurable change. We track six key performance indicators, from SRHR knowledge and service utilization to mental wellbeing, savings habits, leadership, and GBV awareness. The results speak for themselves."
                 />
                 <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-[#6f6a7c]">
                   <LineChart className="mt-0.5 size-4 shrink-0 text-[#b4472e]" aria-hidden="true" />
@@ -453,7 +473,7 @@ export default function Home() {
               act="Act VI · Join the Journey"
               line1="Add your voice to the"
               line2="rising."
-              lede="Whether you donate, volunteer, or partner with us — every action counts in empowering young women across Nairobi."
+              lede="Whether you donate, volunteer, or partner with us, every action counts in empowering young women across Nairobi."
             />
             <div className="mt-8">
               <GetInvolved />
@@ -486,66 +506,183 @@ export default function Home() {
 
       {/* ───────────────────────────────── FOOTER ───────────────────────────────── */}
       {/* mt-auto keeps the footer pinned to the viewport bottom on short pages
-          and pushes it down naturally on long ones. */}
-      <footer className="mt-auto border-t border-[#1a1626]/10 bg-[#f6f3ee]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#6f6a7c]">
+          and pushes it down naturally on long ones. Dark ink mirrors the Act III
+          section for a professional NGO close: brand + mission + socials, quick
+          links, programmes, contact, partner strip, and a legal colophon. */}
+      <footer className="mt-auto bg-[#1a1626] text-[#f6f3ee]">
+        {/* Upper grid: mission / explore / programmes / contact */}
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-12 lg:py-14">
+          {/* Brand, mission statement, social links, official URL */}
+          <div className="lg:col-span-5">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#e8a28f]">
               Binti Rising Initiative
             </p>
             <p className="mt-2 font-display text-2xl italic">From silence, she rises.</p>
-            <p className="mt-3 max-w-md text-xs leading-relaxed text-[#6f6a7c]">
-              Peer-led Journey to Wholeness (JTW) · AGYW 15–25 · Kibera, Mathare &amp;
-              Kawangware. Empowering young women through comprehensive programs in SRHR, mental
-              health, financial literacy, and women&apos;s leadership in Nairobi, Kenya.
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f6f3ee]/70">
+              A Kenyan community-based organisation founded in 2026, running the peer-led
+              Journey to Wholeness programme for adolescent girls and young women aged 15-25
+              in Kibera, Mathare &amp; Kawangware. Peer education is based on Shuga Global&apos;s
+              MTV Shuga model, in collaboration with Shujaaz and PATH.
             </p>
-            <p className="mt-3 text-xs text-[#6f6a7c]">
-              GBV Hotline <a href="tel:1195" className="font-semibold text-[#b4472e] hover:underline">1195</a>{" "}
-              · WhatsApp {CONTACT.whatsapp} · Shortcode {CONTACT.shortcode}
+            {/* Social profiles (verified public presences only) */}
+            <ul className="mt-5 flex flex-wrap gap-3">
+              <li>
+                <a
+                  href="https://www.facebook.com/esther.gitaranga.1"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Binti Rising Initiative on Facebook"
+                  className="flex size-11 items-center justify-center rounded-full border border-white/15 text-[#f6f3ee]/80 transition-colors hover:border-[#b4472e] hover:bg-[#b4472e] hover:text-[#f6f3ee]"
+                >
+                  <Facebook className="size-4" aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Chat with Binti Rising Initiative on WhatsApp"
+                  className="flex size-11 items-center justify-center rounded-full border border-white/15 text-[#f6f3ee]/80 transition-colors hover:border-[#b4472e] hover:bg-[#b4472e] hover:text-[#f6f3ee]"
+                >
+                  <MessageCircle className="size-4" aria-hidden="true" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  aria-label="Email Binti Rising Initiative"
+                  className="flex size-11 items-center justify-center rounded-full border border-white/15 text-[#f6f3ee]/80 transition-colors hover:border-[#b4472e] hover:bg-[#b4472e] hover:text-[#f6f3ee]"
+                >
+                  <Mail className="size-4" aria-hidden="true" />
+                </a>
+              </li>
+            </ul>
+            {/* Explicit official URL: the string AI assistants cite when asked
+                about Binti Rising Initiative CBO. */}
+            <p className="mt-5 text-xs text-[#f6f3ee]/50">
+              Official website:{" "}
+              <a
+                href={`${SITE_URL}/#home`}
+                className="font-medium text-[#e8a28f] hover:underline"
+              >
+                binti-rising-initiative.vercel.app
+              </a>
             </p>
           </div>
-          <nav aria-label="Quick links">
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#1a1626]">Quick Links</h2>
-            <ul className="mt-3 space-y-2 text-xs text-[#6f6a7c]">
+
+          {/* Explore: chapter anchors */}
+          <nav aria-label="Footer quick links" className="lg:col-span-2">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#f6f3ee]">Explore</h2>
+            <ul className="mt-3 space-y-2 text-sm text-[#f6f3ee]/60">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="hover:text-[#1a1626] hover:underline">
+                  <a href={link.href} className="transition-colors hover:text-[#e8a28f] hover:underline">
                     {link.label}
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
-          <div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#1a1626]">Contact</h2>
-            <ul className="mt-3 space-y-2 text-xs text-[#6f6a7c]">
-              <li>Nairobi, Kenya</li>
+
+          {/* Programmes: the four pillars */}
+          <div className="lg:col-span-2">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#f6f3ee]">
+              Programmes
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm text-[#f6f3ee]/60">
               <li>
-                <a href={`mailto:${CONTACT.email}`} className="hover:text-[#1a1626] hover:underline">
+                <a href="#pillars" className="transition-colors hover:text-[#e8a28f] hover:underline">
+                  Journey to Wholeness
+                </a>
+              </li>
+              {PILLARS.map((pillar) => (
+                <li key={pillar.title}>
+                  <a href="#pillars" className="transition-colors hover:text-[#e8a28f] hover:underline">
+                    {pillar.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact: address, email, WhatsApp, GBV hotline, registration */}
+          <div className="lg:col-span-3">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#f6f3ee]">Contact</h2>
+            <ul className="mt-3 space-y-2.5 text-sm text-[#f6f3ee]/60">
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-[#e8a28f]" aria-hidden="true" />
+                Nairobi, Kenya · Kiambu County
+              </li>
+              <li className="flex items-start gap-2">
+                <Mail className="mt-0.5 size-4 shrink-0 text-[#e8a28f]" aria-hidden="true" />
+                <a href={`mailto:${CONTACT.email}`} className="hover:text-[#e8a28f] hover:underline">
                   {CONTACT.email}
                 </a>
               </li>
-              <li>{CONTACT.registration} · Kiambu</li>
-              <li className="pt-2">
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-[#b4472e] text-[#f6f3ee] hover:bg-[#b4472e]/85 min-h-[44px]"
+              <li className="flex items-start gap-2">
+                <MessageCircle className="mt-0.5 size-4 shrink-0 text-[#e8a28f]" aria-hidden="true" />
+                <a
+                  href={`https://wa.me/${CONTACT.whatsapp.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-[#e8a28f] hover:underline"
                 >
-                  <a href="#get-involved">Make a Donation</a>
-                </Button>
+                  WhatsApp {CONTACT.whatsapp}
+                </a>
               </li>
+              <li className="flex items-start gap-2">
+                <Phone className="mt-0.5 size-4 shrink-0 text-[#e8a28f]" aria-hidden="true" />
+                <span>
+                  GBV Hotline{" "}
+                  <a href="tel:1195" className="font-semibold text-[#e8a28f] hover:underline">
+                    1195
+                  </a>{" "}
+                  (toll free) · Shortcode {CONTACT.shortcode}
+                </span>
+              </li>
+            </ul>
+            <p className="mt-3 text-xs text-[#f6f3ee]/40">{CONTACT.registration}</p>
+            <Button
+              asChild
+              size="sm"
+              className="mt-4 bg-[#b4472e] text-[#f6f3ee] hover:bg-[#b4472e]/85 min-h-[44px]"
+            >
+              <a href="#get-involved">Make a Donation</a>
+            </Button>
+          </div>
+        </div>
+
+        {/* Partner strip: the collaboration the initiative grew out of (see PARTNERS) */}
+        <div className="border-t border-white/10">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-[#f6f3ee]/40">
+              In collaboration with
+            </span>
+            <ul className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              {PARTNERS.map((partner) => (
+                <li
+                  key={partner.name}
+                  title={partner.note}
+                  className="font-display text-sm italic text-[#f6f3ee]/80"
+                >
+                  {partner.name}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-        {/* Colophon */}
-        <div className="border-t border-[#1a1626]/10">
-          <p className="mx-auto max-w-6xl px-4 py-4 text-[11px] leading-relaxed text-[#6f6a7c] sm:px-6">
-            © {new Date().getFullYear()} Binti Rising Initiative. Photographs: Binti Rising
-            Initiative archive — Nairobi folder, tagged{" "}
+
+        {/* Colophon: copyright, registration, archive provenance.
+            Extra bottom padding on small screens keeps the last lines clear
+            of the floating back-to-top arrow. */}
+        <div className="border-t border-white/10">
+          <p className="mx-auto max-w-6xl px-4 pb-16 pt-4 text-[11px] leading-relaxed text-[#f6f3ee]/40 sm:px-6 sm:pb-4">
+            © {new Date().getFullYear()} Binti Rising Initiative · {CONTACT.registration},
+            Kiambu, Kenya. Photographs: the initiative&apos;s own Nairobi archive, tagged{" "}
             <span className="font-mono">nairobi-photos-v1.0</span>, traceable via{" "}
-            <span className="font-mono">manifest.json</span>. No stock imagery. Kenya DPA 2019 —
-            aggregates only, no personal identifiers.
+            <span className="font-mono">manifest.json</span>. No stock imagery. Kenya DPA
+            2019: aggregates only, no personal identifiers.
           </p>
         </div>
       </footer>

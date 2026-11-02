@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * kpi-section.tsx — Act V · The Proof.
+ * kpi-section.tsx: Act V · The Proof.
  *
  * Six M&E indicators rendered as baseline→target bars with count-up numbers.
  * Animations trigger once, when the section scrolls into view, and are
@@ -17,7 +17,7 @@ function useCountUp(target: number, run: boolean) {
   useEffect(() => {
     if (!run) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Defer by one frame — avoids synchronous setState inside the effect.
+      // Defer by one frame: avoids synchronous setState inside the effect.
       const raf = requestAnimationFrame(() => setValue(target));
       return () => cancelAnimationFrame(raf);
     }

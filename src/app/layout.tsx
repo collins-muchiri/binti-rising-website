@@ -21,13 +21,13 @@ const inter = Inter({
   display: "swap",
 });
 
-/** Google Analytics 4 Measurement ID — rendered only when configured on Vercel. */
+/** Google Analytics 4 Measurement ID: rendered only when configured on Vercel. */
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export const metadata: Metadata = {
   title: "Binti Rising Initiative | Empowering Young Women in Nairobi, Kenya",
   description:
-    "Binti Rising Initiative is a registered Kenyan CBO (community-based organisation) empowering adolescent girls and young women aged 15–25 through SRHR education, mental health support, financial literacy, and leadership programs in Nairobi, Kenya. Your support changes lives.",
+    "Binti Rising Initiative is a Kenyan CBO registered in 2026, empowering adolescent girls and young women aged 15-25 through Shuga Global based peer education, SRHR, mental health, financial literacy, and leadership programs in Nairobi, Kenya. Your support changes lives.",
   keywords: [
     "Binti Rising Initiative",
     "Binti Rising Initiative CBO",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Binti Rising Initiative | Empowering Young Women in Nairobi, Kenya",
     description:
-      "Empowering adolescent girls and young women aged 15–25 through comprehensive programs in SRHR, mental health, financial freedom, and leadership in Nairobi, Kenya. Your support directly transforms lives.",
+      "Empowering adolescent girls and young women aged 15-25 through comprehensive programs in SRHR, mental health, financial freedom, and leadership in Nairobi, Kenya. Your support directly transforms lives.",
     url: SITE_URL,
     siteName: "Binti Rising Initiative",
     images: [
@@ -126,7 +126,7 @@ const orgJsonLd = {
   logo: absoluteUrl("/binti-logo.jpg"),
   slogan: "From Silence, She Rises",
   description:
-    "Binti Rising Initiative is a registered Kenyan community-based organisation (CBO) empowering adolescent girls and young women aged 15–25 through SRHR education, mental health support, financial literacy, and leadership programs in Nairobi, Kenya.",
+    "Binti Rising Initiative is a Kenyan community-based organisation (CBO) registered in 2026 (Kiambu). Born out of the Shuga x Shujaaz x PATH collaboration, it empowers adolescent girls and young women aged 15-25 through peer education based on Shuga Global's MTV Shuga model, plus SRHR education, mental health support, financial literacy, and leadership programs in Nairobi, Kenya.",
   address: {
     "@type": "PostalAddress",
     addressCountry: "KE",
@@ -138,8 +138,21 @@ const orgJsonLd = {
     name: "Nairobi",
     sameAs: "https://en.wikipedia.org/wiki/Nairobi",
   },
-  foundingDate: "2024",
+  foundingDate: "2026",
+  foundingLocation: {
+    "@type": "Place",
+    name: "Kiambu, Kenya",
+  },
   identifier: "Reg No NC/SD/CBO/2026/0123",
+  knowsAbout: [
+    "Sexual and Reproductive Health and Rights",
+    "Shuga Global",
+    "MTV Shuga peer education",
+    "Shujaaz youth media",
+    "PATH global health",
+    "Financial literacy",
+    "Mental health",
+  ],
   numberOfEmployees: {
     "@type": "QuantitativeValue",
     minValue: 5,
@@ -176,7 +189,7 @@ const websiteJsonLd = {
   alternateName: "Binti Rising Initiative CBO",
   url: SITE_URL,
   description:
-    "Binti Rising Initiative — empowering young women in Nairobi, Kenya through SRHR, mental health, financial literacy, and leadership programs.",
+    "Binti Rising Initiative: empowering young women in Nairobi, Kenya through SRHR, mental health, financial literacy, and leadership programs.",
   publisher: {
     "@type": "NGO",
     name: "Binti Rising Initiative",
@@ -187,7 +200,7 @@ const websiteJsonLd = {
   },
 };
 
-/** Generated from the same FAQS array the on-page accordion renders —
+/** Generated from the same FAQS array the on-page accordion renders:
     schema content always matches visible content. */
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -235,7 +248,7 @@ export default function RootLayout({
         <ScrollRestoration />
         {children}
         <Toaster />
-        {/* Google Analytics 4 — active only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set,
+        {/* Google Analytics 4: active only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set,
             keeping preview deployments and local dev measurement-free. */}
         {GA_ID && (
           <Script

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * site-nav.tsx — Sticky chapter navigation for the six-act monograph.
+ * site-nav.tsx: sticky chapter navigation for the six-act monograph.
  *
  * • Desktop: inline anchor links + a reading-progress bar (CSS Grid/Flexbox).
  * • Mobile:  a Sheet menu (44px touch targets throughout).
@@ -61,7 +61,7 @@ export function SiteNav() {
         <a
           href="#home"
           className="flex min-h-[44px] items-center gap-2 font-semibold leading-tight"
-          aria-label="Binti Rising Initiative — back to the cover"
+          aria-label="Binti Rising Initiative, back to the cover"
         >
           <BookOpen className="size-5 shrink-0" aria-hidden="true" />
           <span className="flex flex-col">

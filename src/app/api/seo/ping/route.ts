@@ -9,7 +9,7 @@ import { SITE_URL, absoluteUrl } from "@/lib/seo/site-url";
  * longer a supported submission channel. Sitemaps are discovered by crawlers
  * through robots.txt and submitted manually via Search Console.
  *
- * IndexNow (api.indexnow.org — used by Bing, Yandex, Seznam and others) is
+ * IndexNow (api.indexnow.org: used by Bing, Yandex, Seznam and others) is
  * still an active submission channel, so this route submits the canonical
  * URL and the sitemap URL through it.
  */

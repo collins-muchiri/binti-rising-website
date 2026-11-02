@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * get-involved.tsx — Act VI · Join the Journey.
+ * get-involved.tsx: Act VI · Join the Journey.
  *
  * Four support routes (Donate / Volunteer / Partner / Share) as accessible
  * tabs, with M-Pesa & bank details, copy-to-clipboard helpers, and the
@@ -18,7 +18,7 @@ async function copyText(text: string) {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
-    // Clipboard API can be unavailable on http or older browsers — ignore.
+    // Clipboard API can be unavailable on http or older browsers; ignore.
   }
 }
 
@@ -58,7 +58,7 @@ export function GetInvolved() {
 
   return (
     <Tabs defaultValue="donate" className="w-full">
-      {/* Tab strip — Flexbox, scrollable on very small screens */}
+      {/* Tab strip: Flexbox, scrollable on very small screens */}
       <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 rounded-md border border-[#1a1626]/10 bg-white/60 p-1 sm:inline-flex">
         {TABS.map(({ value, label, icon: Icon, blurb }) => (
           <TabsTrigger
@@ -156,7 +156,7 @@ export function GetInvolved() {
         <div className="rounded-md border border-[#1a1626]/10 bg-white/60 p-6">
           <p className="max-w-2xl text-sm leading-relaxed text-[#6f6a7c]">
             Voices carry further than flyers. Share the monograph with a friend, a school, a
-            community group — awareness is the first act of the journey.
+            community group. Awareness is the first act of the journey.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Button
@@ -164,7 +164,7 @@ export function GetInvolved() {
               className="border-[#1a1626]/25 min-h-[44px]"
               onClick={async () => {
                 const shareData = {
-                  title: "Binti Rising — From Silence, She Rises",
+                  title: "Binti Rising: From Silence, She Rises",
                   text: "A photographic monograph from the Binti Rising Initiative, Nairobi.",
                   url: typeof window !== "undefined" ? window.location.origin : "",
                 };

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * reveal.tsx — Fades/lifts children in as they enter the viewport.
+ * reveal.tsx: Fades/lifts children in as they enter the viewport.
  *
  * Uses a single IntersectionObserver per instance and disables itself when the
  * reader prefers reduced motion (accessibility requirement).
@@ -26,7 +26,7 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
     // (Reduced-motion readers are handled purely in CSS via motion-reduce:
-    //  overrides below — the element is always visible for them.)
+    //  overrides below: the element is always visible for them.)
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {

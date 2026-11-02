@@ -1,11 +1,11 @@
 "use client";
 
 /**
- * plates-gallery.tsx — "The Plates": a full-bleed CSS-Grid mosaic of the
+ * plates-gallery.tsx: "The Plates", a full-bleed CSS-Grid mosaic of the
  * fourteen verified archive photographs, with an accessible lightbox.
  *
  * Layout maths (no white gaps anywhere):
- *   • mobile  : 2 columns × 7 rows          (14 singles — perfectly filled)
+ *   • mobile  : 2 columns × 7 rows          (14 singles, perfectly filled)
  *   • ≥sm     : 4 columns × 5 rows          (I + VII span 2×2 = 8 cells,
  *                                              12 singles = 12 cells → 20
  *                                              cells = exactly 5 full rows)
@@ -43,7 +43,7 @@ export function PlatesGallery() {
               type="button"
               onClick={() => setOpenIdx(i)}
               className="absolute inset-0 block h-full w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b4472e]"
-              aria-label={`Open Plate ${p.numeral} — ${p.caption}`}
+              aria-label={`Open Plate ${p.numeral}: ${p.caption}`}
             >
               <Image
                 src={p.src}
@@ -53,7 +53,7 @@ export function PlatesGallery() {
                 style={{ objectPosition: p.focus ?? "center" }}
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
-              {/* Caption — ink gradient overlay, no white strip below the photo */}
+              {/* Caption: ink gradient overlay, no white strip below the photo */}
               <span
                 className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1a1626]/90 via-[#1a1626]/45 to-transparent p-2.5 pt-10 text-left sm:p-3 sm:pt-12"
                 aria-hidden="true"
@@ -99,7 +99,7 @@ export function PlatesGallery() {
                 />
               </div>
               <p className="mt-2 text-[11px] text-[#6f6a7c]">
-                Binti Rising Initiative archive — Nairobi team folder, traceable via
+                Binti Rising Initiative archive, Nairobi team folder, traceable via
                 manifest.json · release nairobi-photos-v1.0
               </p>
             </div>

@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * video-facade.tsx — Act III · The Voice.
+ * video-facade.tsx: Act III · The Voice.
  *
  * Click-to-play facade: the YouTube iframe is injected ONLY after the reader
  * presses play, so no third-party script or ~1 MB of media is loaded on page
  * view (loading-efficiency requirement). The poster is a real photograph from
- * the Nairobi archive (Plate XII — the SRHR screening).
+ * the Nairobi archive (Plate XII, the SRHR screening).
  *
  * Featured film: "What Is Sexual and Reproductive Health and Rights?"
- * by Global Citizen — https://www.youtube.com/watch?v=snc-fAeslH4
+ * by Global Citizen: https://www.youtube.com/watch?v=snc-fAeslH4
  * (Swap SRHR_VIDEO_ID for the initiative's own SRHR film when published.)
  */
 
@@ -26,14 +26,14 @@ export function VideoFacade() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-5 lg:gap-10">
-      {/* Poster / player — Grid takes 3 of 5 columns on desktop */}
+      {/* Poster / player: Grid takes 3 of 5 columns on desktop */}
       <div className="lg:col-span-3">
         <div className="relative aspect-video w-full overflow-hidden bg-white shadow-[0_2px_40px_rgba(26,22,38,0.14)]">
           {playing ? (
             <iframe
               className="h-full w-full"
               src={`https://www.youtube-nocookie.com/embed/${SRHR_VIDEO_ID}?autoplay=1&rel=0`}
-              title={`${SRHR_VIDEO_TITLE} — ${SRHR_VIDEO_BY}`}
+              title={`${SRHR_VIDEO_TITLE} by ${SRHR_VIDEO_BY}`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
@@ -42,17 +42,17 @@ export function VideoFacade() {
               {/* Poster: a verified archive photograph */}
               <Image
                 src="/nairobi-team/nairobi-12.webp"
-                alt="Poster: a youth session watching SRHR video content together — Plate XII of the Nairobi archive"
+                alt="Poster: a youth session watching SRHR video content together, Plate XII of the Nairobi archive"
                 fill
                 sizes="(max-width: 1024px) 100vw, 640px"
                 className="object-cover"
               />
-              {/* Play overlay — replaced entirely by the iframe once clicked */}
+              {/* Play overlay: replaced entirely by the iframe once clicked */}
               <button
                 type="button"
                 onClick={() => setPlaying(true)}
                 className="group absolute inset-0 flex items-center justify-center bg-[#1a1626]/35 transition-colors hover:bg-[#1a1626]/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b4472e]"
-                aria-label={`Play: ${SRHR_VIDEO_TITLE} — ${SRHR_VIDEO_BY}`}
+                aria-label={`Play: ${SRHR_VIDEO_TITLE} by ${SRHR_VIDEO_BY}`}
               >
                 <span className="flex size-16 items-center justify-center rounded-full bg-[#b4472e] text-white shadow-lg transition-transform duration-300 group-hover:scale-110 sm:size-20">
                   <Play className="size-7 translate-x-0.5 sm:size-8" aria-hidden="true" />
@@ -66,10 +66,10 @@ export function VideoFacade() {
         </div>
       </div>
 
-      {/* Chapter text — 2 of 5 columns (section heading lives in page.tsx) */}
+      {/* Chapter text: 2 of 5 columns (section heading lives in page.tsx) */}
       <div className="flex flex-col justify-center lg:col-span-2">
         <p className="text-sm leading-relaxed text-[#6f6a7c]">
-          Plate VII — the screening: SRHR, told in their own language. Press play to watch the
+          Plate VII, the screening: SRHR, told in their own language. Press play to watch the
           guide with your cohort, or use it in your own facilitation sessions.
         </p>
         {/* Featured film credit */}
