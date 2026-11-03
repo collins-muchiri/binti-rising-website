@@ -10,7 +10,8 @@
  */
 
 import { useEffect, useState } from "react";
-import { Menu, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS } from "@/lib/story-data";
@@ -57,13 +58,22 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-[#1a1626]/10 bg-[#f6f3ee]/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
-        {/* Wordmark */}
+        {/* Wordmark: official logo mark beside the monograph title.
+            The mark sits on a white plate because the artwork is designed
+            for light backgrounds, echoing the footer brand row. */}
         <a
           href="#home"
-          className="flex min-h-[44px] items-center gap-2 font-semibold leading-tight"
+          className="flex min-h-[44px] items-center gap-2.5 font-semibold leading-tight"
           aria-label="Binti Rising Initiative, back to the cover"
         >
-          <BookOpen className="size-5 shrink-0" aria-hidden="true" />
+          <Image
+            src="/binti-mark.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="size-10 shrink-0 rounded-full bg-white p-0.5 ring-1 ring-[#1a1626]/10"
+          />
           <span className="flex flex-col">
             <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-[#6f6a7c]">
               Binti Rising Initiative

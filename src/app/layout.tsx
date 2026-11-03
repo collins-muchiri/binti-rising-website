@@ -72,8 +72,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/binti-logo.jpg",
-        width: 800,
-        height: 800,
+        width: 1024,
+        height: 1024,
         alt: "Binti Rising Initiative Logo",
       },
     ],
@@ -106,10 +106,9 @@ export const metadata: Metadata = {
     },
   }),
   manifest: "/manifest.json",
-  icons: {
-    icon: "/binti-logo.jpg",
-    apple: "/binti-logo.jpg",
-  },
+  // Favicon and Apple touch icon come from the src/app/icon.png and
+  // src/app/apple-icon.png file conventions (generated from the official
+  // logo in scripts/prepare-assets.py), so no explicit icons entry is needed.
 };
 
 /* ─────────────────────────── Structured data (JSON-LD) ───────────────────────────

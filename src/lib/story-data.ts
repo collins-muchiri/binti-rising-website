@@ -317,6 +317,10 @@ export const FAQS = [
     a: "We collaborate with health facilities, schools, youth networks, and funders. Write to info@bintirising.org. We are a registered CBO (Reg No NC/SD/CBO/2026/0123, Kiambu) with evidence-based programming.",
   },
   {
+    q: "Who do Binti Rising work with to deliver programmes and events?",
+    a: "We deliver programmes with a network of partners: peer education is based on Shuga Global's MTV Shuga model; Shujaaz magazines feature in sessions as youth media; PATH brings global health expertise; and Campus Connect KE co-hosts our campus events focused on the Journey to Wholeness and peer education. Official website: https://binti-rising-initiative.vercel.app/#home",
+  },
+  {
     q: "When was Binti Rising Initiative founded?",
     a: "Binti Rising Initiative was registered and started in 2026 (Reg No NC/SD/CBO/2026/0123, Kiambu). We grew out of the Shuga x Shujaaz x PATH collaboration, and our peer educators facilitate sessions based on Shuga Global's MTV Shuga model alongside Shujaaz youth media. Official website: https://binti-rising-initiative.vercel.app/#home",
   },
@@ -332,26 +336,75 @@ export const NAV_LINKS = [
   { href: "#pillars", label: "Pillars" },
   { href: "#plates", label: "Plates" },
   { href: "#voices", label: "Voices" },
+  { href: "#partners", label: "Partners" },
   { href: "#proof", label: "The Proof" },
   { href: "#faq", label: "FAQ" },
   { href: "#get-involved", label: "Get Involved" },
 ];
 
-/** Partners: the collaboration Binti Rising grew out of (validated online, 2026). */
-export const PARTNERS = [
+/**
+ * Partners & collaborators (Act: The Allies).
+ *
+ * Facts are validated against each organization's own public materials:
+ *   • Shuga Global: the team behind the MTV Shuga franchise (mtvshuga.com).
+ *   • Shujaaz: East Africa's biggest multimedia youth platform (shujaazinc.com).
+ *   • PATH: global health nonprofit driving innovation so health is within
+ *     reach for everyone (path.org).
+ *   • Campus Connect KE: campus youth engagement partner named by the
+ *     initiative; no official web presence could be verified online, so no
+ *     URL is claimed and the card renders a typographic wordmark instead of
+ *     a logo (we never fabricate or misattribute third-party logos).
+ *
+ * `logo` points at optimized assets under /public/partners (see
+ * scripts/prepare-assets.py for how each logo was extracted from official
+ * sources). `dark` renders the card on the ink background, needed when a
+ * partner logo is designed for dark surfaces (Shuga Global's yellow mark).
+ */
+export type Partner = {
+  name: string;
+  note: string;
+  logo?: string;
+  logoAlt?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  dark?: boolean;
+  href?: string;
+};
+
+export const PARTNERS: Partner[] = [
   {
     name: "Shuga Global",
     note: "Formerly the MTV Staying Alive Foundation; the team behind the award-winning MTV Shuga SRHR franchise. Our peer education is based on the Shuga Global model.",
+    logo: "/partners/shuga-global.png",
+    logoAlt: "Shuga Global wordmark",
+    logoWidth: 560,
+    logoHeight: 149,
+    dark: true,
+    href: "https://www.mtvshuga.com",
   },
   {
     name: "Shujaaz",
     note: "East Africa's biggest multimedia youth platform (Shujaaz Inc). Shujaaz magazines feature in our sessions as youth health communication.",
+    logo: "/partners/shujaaz-logo.png",
+    logoAlt: "Shujaaz comic wordmark",
+    logoWidth: 680,
+    logoHeight: 175,
+    href: "https://www.shujaazinc.com",
   },
   {
     name: "PATH",
     note: "A global health nonprofit driving innovation so health is within reach for everyone, with long-standing work in Kenya.",
+    logo: "/partners/path-logo.png",
+    logoAlt: "PATH wordmark",
+    logoWidth: 640,
+    logoHeight: 246,
+    href: "https://www.path.org",
   },
-] as const;
+  {
+    name: "Campus Connect KE",
+    note: "Campus youth engagement partner. Together we conduct events focused on the Journey to Wholeness and peer education, taking Shuga-based sessions to students across Nairobi.",
+  },
+];
 
 /** Contact facts: carried verbatim from the initiative's own materials. */
 export const CONTACT = {

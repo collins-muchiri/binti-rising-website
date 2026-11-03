@@ -9,6 +9,9 @@ import {
   LineChart,
   Facebook,
   MessageCircle,
+  CalendarDays,
+  GraduationCap,
+  ArrowUpRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -30,7 +33,8 @@ import { SITE_URL } from "@/lib/seo/site-url";
  *   Cover (#home) → Act I The Circle (#story) → Act II The Classroom (#pillars)
  *   → Interlude The Plates (#plates) → Act III The Voice (#video)
  *   → Act IV In Their Own Words (#voices) → The Stewards (#stewards)
- *   → Act V The Proof (#proof) → Apparatus FAQ (#faq) → Act VI Get Involved
+ *   → The Allies (#partners) → Act V The Proof (#proof) → Apparatus FAQ (#faq)
+ *   → Act VI Get Involved
  *
  * Layout: CSS Grid for card mosaics, Flexbox for rows/nav; every section is a
  * semantic <section> with an aria-labelledby heading. Animations respect
@@ -87,6 +91,16 @@ export default function Home() {
         <section id="home" aria-label="Cover" className="relative">
           <div className="mx-auto grid max-w-6xl gap-8 px-4 pb-10 pt-10 sm:px-6 sm:pt-14 lg:grid-cols-2 lg:items-center lg:gap-12 lg:pb-16">
             <div>
+              {/* Brand mark: the initiative's official logo artwork (the sun,
+                  flower and rising face), cropped square from the full lockup. */}
+              <Image
+                src="/binti-mark.png"
+                alt="Binti Rising Initiative logo: a young woman's profile rising toward the sun"
+                width={72}
+                height={72}
+                priority
+                className="mb-4 size-[72px] rounded-full bg-white p-1 shadow-[0_2px_16px_rgba(26,22,38,0.12)] ring-1 ring-[#1a1626]/10"
+              />
               <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#6f6a7c] sm:text-[11px]">
                 A Photographic Monograph · Nairobi
               </p>
@@ -120,9 +134,15 @@ export default function Home() {
                   </a>
                 </Button>
               </div>
-              {/* Trust chips: registration year, the founding collaboration, and M&E rigour */}
+              {/* Trust chips: registration year, the founding collaboration,
+                  the campus events partner, and M&E rigour */}
               <ul className="mt-6 flex flex-wrap gap-2 text-[11px] text-[#6f6a7c]">
-                {["Registered CBO 2026", "Shuga × Shujaaz × PATH", "Evidence-based M&E"].map((chip) => (
+                {[
+                  "Registered CBO 2026",
+                  "Shuga × Shujaaz × PATH",
+                  "Campus Connect KE partner",
+                  "Evidence-based M&E",
+                ].map((chip) => (
                   <li
                     key={chip}
                     className="rounded-full border border-[#1a1626]/15 bg-white/60 px-3 py-1.5"
@@ -203,6 +223,15 @@ export default function Home() {
                   Staying Alive Foundation, the team behind the award-winning MTV Shuga
                   franchise), and Shujaaz magazines, East Africa&apos;s biggest youth media
                   platform, feature in our sessions as health communication for young people.
+                </p>
+                {/* Campus partnership: events focus stated by the initiative itself
+                    (Journey to Wholeness + peer education with Campus Connect KE). */}
+                <p>
+                  Through our partnership with{" "}
+                  <strong className="text-[#1a1626]">Campus Connect KE</strong>, we conduct
+                  events focused on the Journey to Wholeness and peer education, bringing
+                  Shuga-based sessions, SRHR conversations, and mentorship to students across
+                  Nairobi.
                 </p>
                 <p>
                   Our comprehensive approach addresses the interconnected challenges young women
@@ -389,6 +418,120 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ────────────────────── THE ALLIES · PARTNERS (#partners) ────────────────────── */}
+        <section id="partners" aria-labelledby="partners-heading" className="scroll-mt-20">
+          <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+            <ActHeader
+              id="partners-heading"
+              act="The Allies · Partners & Collaborators"
+              line1="No one rises"
+              line2="alone."
+              lede="Binti Rising grew out of the Shuga × Shujaaz × PATH collaboration and works hand in hand with campus partner Campus Connect KE. Each ally brings a different strength: edutainment, youth media, global health expertise, and campus reach."
+            />
+            {/* Partner cards: 1 → 2 → 4 columns. Official logos are shown where a
+                verified mark exists (see PARTNERS notes); partners without a
+                verifiable logo get a typographic wordmark, never a guessed one. */}
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {PARTNERS.map((partner, i) => (
+                <Reveal key={partner.name} delay={i * 80}>
+                  <article
+                    className={`flex h-full flex-col rounded-md border p-5 transition-shadow hover:shadow-[0_2px_24px_rgba(26,22,38,0.14)] ${
+                      partner.dark
+                        ? "border-[#1a1626] bg-[#1a1626] text-[#f6f3ee]"
+                        : "border-[#1a1626]/10 bg-white/70 text-[#1a1626]"
+                    }`}
+                  >
+                    {/* Logo plate: fixed-height stage so every card aligns */}
+                    <div className="flex h-14 items-center">
+                      {partner.logo ? (
+                        <Image
+                          src={partner.logo}
+                          alt={partner.logoAlt ?? `${partner.name} logo`}
+                          width={partner.logoWidth ?? 320}
+                          height={partner.logoHeight ?? 120}
+                          sizes="(max-width: 640px) 50vw, 220px"
+                          className={`w-auto max-w-full object-contain ${
+                            partner.dark ? "max-h-12" : "max-h-11"
+                          }`}
+                        />
+                      ) : (
+                        /* Typographic wordmark for partners with no verifiable
+                           logo asset (Campus Connect KE). */
+                        <span className="flex items-center gap-2 font-display text-lg italic leading-tight">
+                          <GraduationCap
+                            className="size-6 shrink-0 text-[#b4472e]"
+                            aria-hidden="true"
+                          />
+                          <span>
+                            Campus <span className="text-[#b4472e]">Connect</span> KE
+                          </span>
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-4 text-sm font-bold">{partner.name}</h3>
+                    <p
+                      className={`mt-1 flex-1 text-xs leading-relaxed ${
+                        partner.dark ? "text-[#f6f3ee]/70" : "text-[#6f6a7c]"
+                      }`}
+                    >
+                      {partner.note}
+                    </p>
+                    {/* Official-site link only where publicly verifiable */}
+                    {partner.href && (
+                      <a
+                        href={partner.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`mt-3 inline-flex min-h-[44px] items-center gap-1 text-xs font-semibold ${
+                          partner.dark
+                            ? "text-[#e8a28f] hover:underline"
+                            : "text-[#b4472e] hover:underline"
+                        }`}
+                      >
+                        Official website
+                        <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                        <span className="sr-only">(opens in a new tab)</span>
+                      </a>
+                    )}
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Engagement banner: the Campus Connect KE events programme.
+                Gives readers a concrete, low-barrier way to bring Binti Rising
+                to their campus or community, supporting the partnership's
+                Journey to Wholeness + peer education events. */}
+            <div className="mt-8 flex flex-col items-start gap-4 rounded-md border border-[#b4472e]/25 bg-[#b4472e]/5 p-6 sm:flex-row sm:items-center">
+              <span
+                aria-hidden="true"
+                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#b4472e] text-[#f6f3ee]"
+              >
+                <CalendarDays className="size-6" />
+              </span>
+              <div className="flex-1">
+                <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-[#b4472e]">
+                  Journey to Wholeness on Campus
+                </h3>
+                <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[#6f6a7c]">
+                  With Campus Connect KE we conduct events focused on the Journey to Wholeness
+                  and peer education: Shuga-based session circles, SRHR conversations, and
+                  mentorship for students. Host one at your campus, school, or community
+                  space; we bring the facilitators, the materials, and the evidence.
+                </p>
+              </div>
+              <Button
+                asChild
+                className="min-h-[44px] shrink-0 bg-[#b4472e] text-[#f6f3ee] hover:bg-[#b4472e]/85"
+              >
+                <a href="mailto:info@bintirising.org?subject=Campus%20event%20request">
+                  Host an Event
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* ──────────────────────── ACT V · THE PROOF (#proof) ──────────────────────── */}
         <section id="proof" aria-labelledby="proof-heading" className="scroll-mt-20">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
@@ -514,10 +657,23 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-12 lg:py-14">
           {/* Brand, mission statement, social links, official URL */}
           <div className="lg:col-span-5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#e8a28f]">
-              Binti Rising Initiative
-            </p>
-            <p className="mt-2 font-display text-2xl italic">From silence, she rises.</p>
+            {/* Brand row: the official logo mark on a white plate (the artwork
+                is designed for light backgrounds) beside the wordmark. */}
+            <div className="flex items-center gap-3">
+              <Image
+                src="/binti-mark.png"
+                alt="Binti Rising Initiative logo"
+                width={56}
+                height={56}
+                className="size-14 shrink-0 rounded-xl bg-white p-1 ring-1 ring-white/20"
+              />
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#e8a28f]">
+                  Binti Rising Initiative
+                </p>
+                <p className="font-display text-2xl italic">From silence, she rises.</p>
+              </div>
+            </div>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f6f3ee]/70">
               A Kenyan community-based organisation founded in 2026, running the peer-led
               Journey to Wholeness programme for adolescent girls and young women aged 15-25
@@ -653,7 +809,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Partner strip: the collaboration the initiative grew out of (see PARTNERS) */}
+        {/* Partner strip: the collaboration the initiative grew out of (see PARTNERS).
+            Logo marks live in the Partners section; here we keep the typographic
+            strip that works on the ink background. */}
         <div className="border-t border-white/10">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#f6f3ee]/40">
@@ -673,7 +831,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Colophon: copyright, registration, archive provenance.
+        {/* Colophon: copyright, registration, archive provenance, and the
+            trademark note for third-party partner logos.
             Extra bottom padding on small screens keeps the last lines clear
             of the floating back-to-top arrow. */}
         <div className="border-t border-white/10">
@@ -682,7 +841,9 @@ export default function Home() {
             Kiambu, Kenya. Photographs: the initiative&apos;s own Nairobi archive, tagged{" "}
             <span className="font-mono">nairobi-photos-v1.0</span>, traceable via{" "}
             <span className="font-mono">manifest.json</span>. No stock imagery. Kenya DPA
-            2019: aggregates only, no personal identifiers.
+            2019: aggregates only, no personal identifiers. Partner names and logos are
+            trademarks of their respective organizations and appear here for partnership
+            acknowledgement only.
           </p>
         </div>
       </footer>

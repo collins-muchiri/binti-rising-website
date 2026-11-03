@@ -160,6 +160,25 @@ Three JSON-LD blocks are rendered from `src/app/layout.tsx`:
 - `WebSite` — site identity and publisher;
 - `FAQPage` — generated from the same `FAQS` array the on-page accordion renders, so schema always matches visible content.
 
+## 🎨 Brand & Partner Assets
+
+All brand imagery lives in `public/` and is regenerated from the official
+sources by `scripts/prepare-assets.py` (Pillow), which documents the exact
+crop/extraction steps:
+
+| Asset | Source |
+| --- | --- |
+| `public/binti-mark.png`, `src/app/icon.png`, `src/app/apple-icon.png` | Square crop of the official Binti Rising Initiative logo artwork (sun, flower, rising face). Used in the nav, cover, footer, favicon and PWA manifest. |
+| `public/partners/shuga-global.png` | Official "shuga GLOBAL®" wordmark (Shuga Global's public channel avatar), background chroma-keyed to transparency. |
+| `public/partners/shujaaz-logo.png` | "Shujaaz" comic masthead cropped from an official Shujaaz magazine cover, background removed via border flood-fill. |
+| `public/partners/path-logo.png` | Official PATH wordmark from `media.path.org`. |
+
+Partner facts are validated against each organization's own public materials.
+Campus Connect KE renders as a typographic wordmark because no official logo
+could be verified online; we never guess or misattribute third-party logos.
+Partner names and logos remain trademarks of their respective organizations
+and are shown for partnership acknowledgement only.
+
 ## Contribution and license
 
 Issues and pull requests are welcome — please open an issue describing the proposed change before submitting substantive work. No license file is present; the work remains under the author's default copyright. Contact the owner for reuse terms.
