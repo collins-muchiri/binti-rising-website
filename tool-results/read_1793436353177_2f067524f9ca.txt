@@ -1,0 +1,622 @@
+   851→            </motion.div>
+   852→          )}
+   853→        </AnimatePresence>
+   854→      </DialogContent>
+   855→    </Dialog>
+   856→  );
+   857→}
+   858→
+   859→/* ------------------------------------------------------------------ */
+   860→/* PARTNER INQUIRY FORM - For Partners tab (full-stack, /api/partners) */
+   861→/* Institutional contacts only (not beneficiary data). Data-minimised, */
+   862→/* DPA 2019 consent mandatory, honeypot anti-spam, ref code returned.  */
+   863→/* ------------------------------------------------------------------ */
+   864→const PARTNER_ORG_TYPES = [
+   865→  { value: "funder", label: "Funder / Foundation", icon: "💰" },
+   866→  { value: "ngo", label: "NGO / CBO", icon: "🤝" },
+   867→  { value: "government", label: "Government / County", icon: "🏛️" },
+   868→  { value: "corporate", label: "Corporate / CSR", icon: "🏢" },
+   869→  { value: "community", label: "Community Group", icon: "🌍" },
+   870→] as const;
+   871→
+   872→const PARTNER_INTERESTS = [
+   873→  { value: "funding", label: "Funding a cohort" },
+   874→  { value: "referral", label: "Referral pathway" },
+   875→  { value: "content", label: "Content / Shujaaz" },
+   876→  { value: "technical", label: "Technical help" },
+   877→  { value: "volunteering", label: "Skilled volunteering" },
+   878→] as const;
+   879→
+   880→/* ------------------------------------------------------------------ */
+   881→/* PARTNER REF LOOKUP - check an inquiry status by reference code.     */
+   882→/* Privacy: the API returns ONLY status + received month (no PII).     */
+   883→/* ------------------------------------------------------------------ */
+   884→function PartnerRefLookup() {
+   885→  const [ref, setRef] = useState("");
+   886→  const [busy, setBusy] = useState(false);
+   887→  const [result, setResult] = useState<null | { found: boolean; status?: string; receivedAt?: string }>(null);
+   888→
+   889→  const check = async () => {
+   890→    const value = ref.trim().toUpperCase();
+   891→    if (!/^PTN-2026-\d{6}$/.test(value)) {
+   892→      setResult({ found: false });
+   893→      toast({ title: "Check the format", description: "References look like PTN-2026-123456.", variant: "destructive" });
+   894→      return;
+   895→    }
+   896→    setBusy(true);
+   897→    setResult(null);
+   898→    try {
+   899→      const res = await fetch(`/api/partners?ref=${encodeURIComponent(value)}`);
+   900→      const data = await res.json();
+   901→      if (res.ok && data.found) {
+   902→        setResult({ found: true, status: data.status, receivedAt: data.receivedAt });
+   903→      } else {
+   904→        setResult({ found: false });
+   905→      }
+   906→    } catch {
+   907→      toast({ title: "Lookup failed", description: "Network hiccup. Try again in a moment.", variant: "destructive" });
+   908→    } finally {
+   909→      setBusy(false);
+   910→    }
+   911→  };
+   912→
+   913→  return (
+   914→    <Card className="rounded-3xl border-binti-sand bg-binti-card p-6">
+   915→      <h4 className="flex items-center gap-2 font-display text-[15px] font-extrabold text-binti-ink">
+   916→        <ScanSearch className="size-4.5 text-binti dark:text-indigo-300" aria-hidden="true" /> Track your inquiry
+   917→      </h4>
+   918→      <p className="mt-1.5 text-[12.5px] leading-relaxed text-binti-slate">
+   919→        Enter the reference we gave you (e.g. PTN-2026-123456) to see where your inquiry sits. Only the status is shown,
+   920→        never your details (Kenya DPA 2019).
+   921→      </p>
+   922→      <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+   923→        <Input
+   924→          value={ref}
+   925→          onChange={(e) => setRef(e.target.value.toUpperCase())}
+   926→          placeholder="PTN-2026-XXXXXX"
+   927→          aria-label="Partnership inquiry reference"
+   928→          className="h-11 flex-1 rounded-full border-binti/30 bg-binti-cream/60 px-4 font-mono text-[13px] tracking-wide"
+   929→          maxLength={15}
+   930→          onKeyDown={(e) => e.key === "Enter" && check()}
+   931→        />
+   932→        <Button
+   933→          onClick={check}
+   934→          disabled={busy}
+   935→          className="h-11 rounded-full bg-binti px-5 font-bold hover:bg-binti-deep"
+   936→        >
+   937→          {busy ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Search className="size-4" aria-hidden="true" />}
+   938→          Check status
+   939→        </Button>
+   940→      </div>
+   941→      {result && (
+   942→        <div
+   943→          role="status"
+   944→          className={cn(
+   945→            "mt-3 flex items-start gap-2.5 rounded-xl border p-3.5",
+   946→            result.found ? "border-green-300 bg-green-50" : "border-amber-300 bg-amber-50"
+   947→          )}
+   948→        >
+   949→          <CheckCircle2
+   950→            className={cn(
+   951→              "mt-0.5 size-4.5 shrink-0",
+   952→              result.found ? "text-green-600 dark:text-green-400" : "text-amber-600"
+   953→            )}
+   954→            aria-hidden="true"
+   955→          />
+   956→          {result.found ? (
+   957→            <p className="text-[13px] leading-relaxed text-green-800">
+   958→              <strong className="font-display">{ref.trim().toUpperCase()}</strong> · received {result.receivedAt}. Status: {" "}
+   959→              <strong>{result.status}</strong>.
+   960→            </p>
+   961→          ) : (
+   962→            <p className="text-[13px] leading-relaxed text-amber-800">
+   963→              No inquiry found for <strong className="font-display">{ref.trim().toUpperCase()}</strong>. Double-check the
+   964→              code, or WhatsApp {ORG.whatsapp} and we will find it.
+   965→            </p>
+   966→          )}
+   967→        </div>
+   968→      )}
+   969→    </Card>
+   970→  );}
+   971→
+   972→function PartnerInquiryForm() {
+   973→  const [orgName, setOrgName] = useState("");
+   974→  const [contactName, setContactName] = useState("");
+   975→  const [role, setRole] = useState("");
+   976→  const [email, setEmail] = useState("");
+   977→  const [orgType, setOrgType] = useState("");
+   978→  const [interests, setInterests] = useState<string[]>([]);
+   979→  const [message, setMessage] = useState("");
+   980→  const [website, setWebsite] = useState(""); // honeypot - humans never see/fill this
+   981→  const [consent, setConsent] = useState(false);
+   982→  const [sending, setSending] = useState(false);
+   983→  const [error, setError] = useState<string | null>(null);
+   984→  const [ref, setRef] = useState<string | null>(null);
+   985→
+   986→  const toggleInterest = (v: string) =>
+   987→    setInterests((cur) => (cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v]));
+   988→
+   989→  const reset = () => {
+   990→    setOrgName("");
+   991→    setContactName("");
+   992→    setRole("");
+   993→    setEmail("");
+   994→    setOrgType("");
+   995→    setInterests([]);
+   996→    setMessage("");
+   997→    setConsent(false);
+   998→    setError(null);
+   999→  };
+  1000→
+  1001→  const submit = async (e: React.FormEvent) => {
+  1002→    e.preventDefault();
+  1003→    setError(null);
+  1004→    setSending(true);
+  1005→    try {
+  1006→      const res = await fetch("/api/partners", {
+  1007→        method: "POST",
+  1008→        headers: { "Content-Type": "application/json" },
+  1009→        body: JSON.stringify({ orgName, contactName, role, email, orgType, interests, message, website, consentDpa: consent }),
+  1010→      });
+  1011→      const data = (await res.json()) as { ok?: boolean; reference?: string; error?: string };
+  1012→      if (!res.ok || !data.ok) {
+  1013→        setError(data.error ?? "Could not send your inquiry. Please try again.");
+  1014→        return;
+  1015→      }
+  1016→      setRef(data.reference ?? "PTN-2026-000000");
+  1017→      toast({ title: "Partnership inquiry sent", description: `Reference ${data.reference} - we reply within 3 working days.` });
+  1018→    } catch {
+  1019→      setError("Network error. Check your connection and try again, or reach us on WhatsApp +254 758 919 709.");
+  1020→    } finally {
+  1021→      setSending(false);
+  1022→    }
+  1023→  };
+  1024→
+  1025→  /* Success state - reference code + next steps */
+  1026→  if (ref) {
+  1027→    return (
+  1028→      <motion.div
+  1029→        initial={{ opacity: 0, scale: 0.96 }}
+  1030→        animate={{ opacity: 1, scale: 1 }}
+  1031→        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+  1032→      >
+  1033→        <Card className="binti-gradient-border rounded-3xl bg-binti-card p-6 text-center md:p-8">
+  1034→          <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-binti to-binti-pink text-white shadow-lg shadow-binti/25" aria-hidden="true">
+  1035→            <CheckCircle2 className="size-7" />
+  1036→          </span>
+  1037→          <h4 className="mt-4 font-display text-xl font-extrabold text-binti-ink">Inquiry received - asante!</h4>
+  1038→          <p className="mx-auto mt-2 max-w-sm text-[13.5px] leading-relaxed text-binti-slate">
+  1039→            Our partnerships lead replies within <strong className="text-binti-ink">3 working days</strong>. Meanwhile,
+  1040→            download and review the MOU template so we can move fast when we meet.
+  1041→          </p>
+  1042→          <div className="mx-auto mt-4 w-fit rounded-2xl border border-binti/25 bg-binti-cream px-5 py-3 dark:bg-binti-sand/40">
+  1043→            <p className="text-[11px] font-bold uppercase tracking-widest text-binti-slate">Your reference</p>
+  1044→            <p className="mt-0.5 flex items-center justify-center gap-2 font-display text-lg font-extrabold tabular-nums text-binti dark:text-indigo-300">
+  1045→              {ref}
+  1046→              <button
+  1047→                onClick={() => {
+  1048→                  navigator.clipboard?.writeText(ref).catch(() => {});
+  1049→                  toast({ title: "Reference copied", description: ref });
+  1050→                }}
+  1051→                aria-label="Copy reference code"
+  1052→                className="rounded-full p-1.5 text-binti-slate transition hover:bg-binti-sand hover:text-binti-ink"
+  1053→              >
+  1054→                <Copy className="size-3.5" aria-hidden="true" />
+  1055→              </button>
+  1056→            </p>
+  1057→          </div>
+  1058→          <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
+  1059→            <a
+  1060→              href="/policies/binti-mou-template.pdf"
+  1061→              target="_blank"
+  1062→              rel="noreferrer"
+  1063→              className="inline-flex h-11 items-center gap-2 rounded-full bg-binti px-5 text-[13.5px] font-bold text-white transition hover:bg-binti-deep"
+  1064→            >
+  1065→              <FileDown className="size-4" aria-hidden="true" /> MOU Template
+  1066→            </a>
+  1067→            <Button
+  1068→              variant="outline"
+  1069→              onClick={reset}
+  1070→              className="h-11 rounded-full border-binti/40 px-5 font-bold text-binti dark:text-indigo-300 hover:bg-binti hover:text-white"
+  1071→            >
+  1072→              Send another inquiry
+  1073→            </Button>
+  1074→          </div>
+  1075→        </Card>
+  1076→      </motion.div>
+  1077→    );
+  1078→  }
+  1079→
+  1080→  return (
+  1081→    <Card className="binti-gradient-border rounded-3xl bg-binti-card p-6 md:p-8">
+  1082→      <h4 className="flex items-center gap-2 font-display text-lg font-extrabold text-binti-ink">
+  1083→        <Handshake className="size-5 text-binti dark:text-indigo-300" aria-hidden="true" />
+  1084→        Start a partnership
+  1085→      </h4>
+  1086→      <p className="mt-1 text-[13px] leading-relaxed text-binti-slate">
+  1087→        Tell us who you are and how you'd like to work together - 3 minutes, answered in 3 working days.
+  1088→      </p>
+  1089→
+  1090→      <form onSubmit={submit} className="mt-5 space-y-4" noValidate>
+  1091→        {/* Honeypot - visually hidden, ignored by humans, filled by bots */}
+  1092→        <div aria-hidden="true" className="absolute -left-[9999px] top-auto size-px overflow-hidden">
+  1093→          <label htmlFor="ptn-website">Leave this field empty</label>
+  1094→          <input id="ptn-website" type="text" value={website} onChange={(e) => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" />
+  1095→        </div>
+  1096→
+  1097→        <div className="grid gap-4 sm:grid-cols-2">
+  1098→          <div className="space-y-1.5">
+  1099→            <Label htmlFor="ptn-org" className="text-[12.5px] font-bold text-binti-ink">Organisation *</Label>
+  1100→            <Input
+  1101→              id="ptn-org"
+  1102→              value={orgName}
+  1103→              onChange={(e) => setOrgName(e.target.value)}
+  1104→              placeholder="e.g. LVCT Health"
+  1105→              required
+  1106→              maxLength={160}
+  1107→              className="h-11 rounded-xl border-binti/25 bg-binti-cream/50 focus-visible:ring-binti"
+  1108→            />
+  1109→          </div>
+  1110→          <div className="space-y-1.5">
+  1111→            <Label htmlFor="ptn-contact" className="text-[12.5px] font-bold text-binti-ink">Contact person *</Label>
+  1112→            <Input
+  1113→              id="ptn-contact"
+  1114→              value={contactName}
+  1115→              onChange={(e) => setContactName(e.target.value)}
+  1116→              placeholder="Full name"
+  1117→              required
+  1118→              maxLength={120}
+  1119→              className="h-11 rounded-xl border-binti/25 bg-binti-cream/50 focus-visible:ring-binti"
+  1120→            />
+  1121→          </div>
+  1122→        </div>
+  1123→
+  1124→        <div className="grid gap-4 sm:grid-cols-2">
+  1125→          <div className="space-y-1.5">
+  1126→            <Label htmlFor="ptn-role" className="text-[12.5px] font-bold text-binti-ink">Role / title</Label>
+  1127→            <Input
+  1128→              id="ptn-role"
+  1129→              value={role}
+  1130→              onChange={(e) => setRole(e.target.value)}
+  1131→              placeholder="e.g. Programme Director"
+  1132→              maxLength={120}
+  1133→              className="h-11 rounded-xl border-binti/25 bg-binti-cream/50 focus-visible:ring-binti"
+  1134→            />
+  1135→          </div>
+  1136→          <div className="space-y-1.5">
+  1137→            <Label htmlFor="ptn-email" className="text-[12.5px] font-bold text-binti-ink">Work email *</Label>
+  1138→            <Input
+  1139→              id="ptn-email"
+  1140→              type="email"
+  1141→              value={email}
+  1142→              onChange={(e) => setEmail(e.target.value)}
+  1143→              placeholder="you@organisation.org"
+  1144→              required
+  1145→              maxLength={254}
+  1146→              className="h-11 rounded-xl border-binti/25 bg-binti-cream/50 focus-visible:ring-binti"
+  1147→            />
+  1148→          </div>
+  1149→        </div>
+  1150→
+  1151→        {/* Org type - selectable chips */}
+  1152→        <div className="space-y-2">
+  1153→          <Label className="text-[12.5px] font-bold text-binti-ink">Organisation type *</Label>
+  1154→          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Organisation type">
+  1155→            {PARTNER_ORG_TYPES.map((t) => (
+  1156→              <button
+  1157→                key={t.value}
+  1158→                type="button"
+  1159→                role="radio"
+  1160→                aria-checked={orgType === t.value}
+  1161→                onClick={() => setOrgType(t.value)}
+  1162→                className={cn(
+  1163→                  "rounded-full border px-3.5 py-2 text-[12.5px] font-semibold transition",
+  1164→                  orgType === t.value
+  1165→                    ? "border-binti bg-binti text-white shadow-sm"
+  1166→                    : "border-binti/25 bg-binti-cream/50 text-binti-slate hover:border-binti/50 hover:text-binti-ink"
+  1167→                )}
+  1168→              >
+  1169→                <span aria-hidden="true" className="mr-1">{t.icon}</span>
+  1170→                {t.label}
+  1171→              </button>
+  1172→            ))}
+  1173→          </div>
+  1174→        </div>
+  1175→
+  1176→        {/* Interests - multi-select chips */}
+  1177→        <div className="space-y-2">
+  1178→          <Label className="text-[12.5px] font-bold text-binti-ink">How would you like to partner? *</Label>
+  1179→          <div className="flex flex-wrap gap-2" aria-label="Partnership interests">
+  1180→            {PARTNER_INTERESTS.map((i) => {
+  1181→              const on = interests.includes(i.value);
+  1182→              return (
+  1183→                <button
+  1184→                  key={i.value}
+  1185→                  type="button"
+  1186→                  aria-pressed={on}
+  1187→                  onClick={() => toggleInterest(i.value)}
+  1188→                  className={cn(
+  1189→                    "rounded-full border px-3.5 py-2 text-[12.5px] font-semibold transition",
+  1190→                    on
+  1191→                      ? "border-binti-pink bg-binti-pink text-white shadow-sm"
+  1192→                      : "border-binti/25 bg-binti-cream/50 text-binti-slate hover:border-binti-pink/50 hover:text-binti-ink"
+  1193→                  )}
+  1194→                >
+  1195→                  {on && <CheckCircle2 className="mr-1 inline size-3.5" aria-hidden="true" />}
+  1196→                  {i.label}
+  1197→                </button>
+  1198→              );
+  1199→            })}
+  1200→          </div>
+  1201→        </div>
+  1202→
+  1203→        <div className="space-y-1.5">
+  1204→          <Label htmlFor="ptn-message" className="text-[12.5px] font-bold text-binti-ink">
+  1205→            Anything else? <span className="font-normal text-binti-slate">(optional)</span>
+  1206→          </Label>
+  1207→          <textarea
+  1208→            id="ptn-message"
+  1209→            value={message}
+  1210→            onChange={(e) => setMessage(e.target.value)}
+  1211→            rows={3}
+  1212→            maxLength={2000}
+  1213→            placeholder="Timeline, cohort size, geography, questions…"
+  1214→            className="w-full resize-none rounded-xl border border-binti/25 bg-binti-cream/50 px-3.5 py-2.5 text-[14px] text-binti-ink placeholder:text-binti-slate/60 focus-visible:outline-2 focus-visible:outline-binti"
+  1215→          />
+  1216→        </div>
+  1217→
+  1218→        {/* DPA notice + consent */}
+  1219→        <div className="rounded-xl border border-binti-cyan/40 bg-binti-cyan/5 p-3.5">
+  1220→          <p className="text-[12px] leading-relaxed text-binti-slate">
+  1221→            <strong className="text-binti-ink">Privacy note (Kenya DPA 2019):</strong> partner contacts are institutional
+  1222→            records - kept only to run this partnership, never published, never shared, deleted on request. Beneficiary
+  1223→            data everywhere else on this site stays aggregated and name-free.
+  1224→          </p>
+  1225→          <label className="mt-2.5 flex cursor-pointer items-start gap-2.5">
+  1226→            <input
+  1227→              type="checkbox"
+  1228→              checked={consent}
+  1229→              onChange={(e) => setConsent(e.target.checked)}
+  1230→              className="mt-0.5 size-4.5 shrink-0 accent-binti"
+  1231→              required
+  1232→            />
+  1233→            <span className="text-[12.5px] font-semibold leading-snug text-binti-ink">
+  1234→              I consent to Binti Rising storing this inquiry for partnership correspondence. *
+  1235→            </span>
+  1236→          </label>
+  1237→        </div>
+  1238→
+  1239→        {error && (
+  1240→          <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-3.5 py-2.5 text-[12.5px] font-semibold text-red-700">
+  1241→            {error}
+  1242→          </p>
+  1243→        )}
+  1244→
+  1245→        <div className="flex flex-wrap items-center gap-3">
+  1246→          <Button
+  1247→            type="submit"
+  1248→            disabled={sending}
+  1249→            className="h-12 flex-1 rounded-full bg-binti font-display text-[15px] font-extrabold hover:bg-binti-deep sm:flex-none sm:px-8"
+  1250→          >
+  1251→            {sending ? (
+  1252→              <>
+  1253→                <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Sending…
+  1254→              </>
+  1255→            ) : (
+  1256→              <>
+  1257→                <Handshake className="size-4.5" aria-hidden="true" /> Send inquiry
+  1258→              </>
+  1259→            )}
+  1260→          </Button>
+  1261→          <p className="text-[11.5px] text-binti-slate">
+  1262→            You'll get a <strong className="text-binti-ink">PTN-2026-XXXXXX</strong> reference instantly.
+  1263→          </p>
+  1264→        </div>
+  1265→      </form>
+  1266→    </Card>
+  1267→  );
+  1268→}
+  1269→
+  1270→/* ------------------------------------------------------------------ */
+  1271→/* GET INVOLVED - tabs: Youth / Donors / Partners                      */
+  1272→/* ------------------------------------------------------------------ */
+  1273→export function InvolvedSection({ onDonate }: { onDonate: () => void }) {
+  1274→  return (
+  1275→    <section aria-label="Get Involved" className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
+  1276→      <SectionHeading
+  1277→        eyebrow="Get Involved"
+  1278→        title={
+  1279→          <>
+  1280→            Join a circle, fund one, or{" "}
+  1281→            <span className="font-hand text-4xl font-bold text-binti-pink">partner with us</span>
+  1282→          </>
+  1283→        }
+  1284→        sub="For Youth · For Donors · For Partners - one page, three ways to rise."
+  1285→      />
+  1286→
+  1287→      <Tabs defaultValue="youth" className="mt-8">
+  1288→        <TabsList className="mx-auto flex w-full max-w-2xl rounded-full bg-binti-cream p-1.5">
+  1289→          <TabsTrigger value="youth" className="flex-1 rounded-full font-display text-[13.5px] font-bold data-[state=active]:bg-binti data-[state=active]:text-white">
+  1290→            For Youth
+  1291→          </TabsTrigger>
+  1292→          <TabsTrigger value="donors" className="flex-1 rounded-full font-display text-[13.5px] font-bold data-[state=active]:bg-binti data-[state=active]:text-white">
+  1293→            For Donors
+  1294→          </TabsTrigger>
+  1295→          <TabsTrigger value="partners" className="flex-1 rounded-full font-display text-[13.5px] font-bold data-[state=active]:bg-binti data-[state=active]:text-white">
+  1296→            For Partners
+  1297→          </TabsTrigger>
+  1298→        </TabsList>
+  1299→
+  1300→        {/* YOUTH */}
+  1301→        <TabsContent value="youth" className="mt-6">
+  1302→          <div className="grid items-start gap-6 lg:grid-cols-[1fr_380px]">
+  1303→            <JoinCircle />
+  1304→            <div className="space-y-4">
+  1305→              <Card className="overflow-hidden rounded-3xl border-binti-sand pt-0">
+  1306→                <div className="relative h-44">
+  1307→                  <NairobiPhoto src="/nairobi-team/nairobi-13.webp" alt="Nairobi team - circle facilitators" sizes="(max-width: 1024px) 100vw, 380px" />
+  1308→                  <span className="absolute left-3 top-3 rounded-full bg-binti-card/95 px-3 py-1 text-[11px] font-bold text-binti dark:text-indigo-300">Your facilitators</span>
+  1309→                </div>
+  1310→                <CardContent className="p-4">
+  1311→                  {/* Facilitators co-lead every session in PAIRS of 2 */}
+  1312→                  {Array.from(new Set(FACILITATORS.map((f) => f.pair))).map((pairName) => {
+  1313→                    const pairMembers = FACILITATORS.filter((f) => f.pair === pairName);
+  1314→                    return (
+  1315→                      <div key={pairName} className="mb-3 last:mb-0">
+  1316→                        <p className="mb-1.5 font-display text-[10.5px] font-extrabold uppercase tracking-widest text-binti dark:text-indigo-300">
+  1317→                          {pairName}
+  1318→                        </p>
+  1319→                        <ul className="space-y-2.5 rounded-xl border border-dashed border-binti-pink/30 bg-binti-sand/30 p-2.5" role="list">
+  1320→                          {pairMembers.map((f) => (
+  1321→                            <li key={`${f.name}-${f.area}`} className="flex items-center gap-3">
+  1322→                              <div className="relative size-11 shrink-0 overflow-hidden rounded-full border-2 border-binti-pink/40">
+  1323→                                <NairobiPhoto src={f.photo} alt="" circle sizes="44px" />
+  1324→                              </div>
+  1325→                              <div className="min-w-0">
+  1326→                                <p className="font-display text-[13.5px] font-bold text-binti-ink">
+  1327→                                  {f.name} · {f.area}
+  1328→                                </p>
+  1329→                                <p className="text-[11.5px] text-binti-slate">
+  1330→                                  {f.role} · {f.sessions}
+  1331→                                </p>
+  1332→                              </div>
+  1333→                            </li>
+  1334→                          ))}
+  1335→                        </ul>
+  1336→                      </div>
+  1337→                    );
+  1338→                  })}
+  1339→                  <DataNote className="mt-3">{FACILITATOR_NOTE} Names masked per Kenya DPA 2019. Photos: real Nairobi team.</DataNote>
+  1340→                </CardContent>
+  1341→              </Card>
+  1342→              <Card className="rounded-3xl border-binti-amber/50 bg-binti-sand/40 p-4">
+  1343→                <p className="flex items-start gap-2 text-[13px] leading-relaxed text-binti-ink">
+  1344→                  <Info className="mt-0.5 size-4 shrink-0 text-binti dark:text-indigo-300" aria-hidden="true" />
+  1345→                  Under 18? We ask a guardian to consent before you join - it's the law (DPA 2019) and it keeps you safe.
+  1346→                </p>
+  1347→              </Card>
+  1348→            </div>
+  1349→          </div>
+  1350→        </TabsContent>
+  1351→
+  1352→        {/* DONORS */}
+  1353→        <TabsContent value="donors" className="mt-6">
+  1354→          <div className="space-y-6">
+  1355→            <FundThermometer onDonate={onDonate} />
+  1356→            <div className="grid gap-6 lg:grid-cols-2">
+  1357→              <ImpactCalculator onDonate={onDonate} />
+  1358→              <div className="space-y-6">
+  1359→                <Card className="rounded-3xl border-binti-sand bg-binti-card p-6 md:p-8">
+  1360→                  <h3 className="font-display text-xl font-extrabold text-binti-ink">Fund a full journey</h3>
+  1361→                  <p className="mt-1.5 text-[13.5px] leading-relaxed text-binti-slate">
+  1362→                    KES 10,000 takes one girl through all 8 sessions - materials, facilitator, referrals and the alumni wall.
+  1363→                  </p>
+  1364→                  <ul className="mt-5 space-y-3" role="list">
+  1365→                    {DONATE_TIERS.map((t) => (
+  1366→                      <li key={t.amount} className="flex items-center justify-between rounded-xl border border-binti-sand bg-binti-cream/50 px-4 py-3">
+  1367→                        <div>
+  1368→                          <p className="font-display text-[14.5px] font-extrabold text-binti-ink">{t.label}</p>
+  1369→                          <p className="text-[12px] text-binti-slate">{t.impact}</p>
+  1370→                        </div>
+  1371→                        <Button onClick={onDonate} size="sm" className="rounded-full bg-mpesa font-bold text-white hover:bg-green-600">
+  1372→                          Donate
+  1373→                        </Button>
+  1374→                      </li>
+  1375→                    ))}
+  1376→                  </ul>
+  1377→                  <Button onClick={onDonate} className="mt-5 h-12 w-full rounded-full bg-binti font-bold hover:bg-binti-deep">
+  1378→                    Open Donate - M-Pesa Paybill {ORG.paybill}
+  1379→                  </Button>
+  1380→                </Card>
+  1381→                <Card className="rounded-3xl border-binti-sand bg-gradient-to-br from-binti to-binti-deep p-6 text-white md:p-8">
+  1382→                  <h3 className="font-display text-xl font-extrabold">Why donors trust Binti</h3>
+  1383→                  <ul className="mt-4 space-y-3" role="list">
+  1384→                    {[
+  1385→                      "✓ No cash - M-Pesa Till 522522 only, receipts auto-generated",
+  1386→                      "✓ Board unpaid · ED cannot sign alone · FO not related to ED",
+  1387→                      "✓ 94% data quality, live aggregated dashboard, DATIM-ready",
+  1388→                      "✓ Financials published in aggregate on the Accountability page",
+  1389→                      "✓ Kenya DPA 2019 compliant - no PII in any report",
+  1390→                    ].map((t) => (
+  1391→                      <li key={t} className="text-[13.5px] leading-relaxed text-white/90">{t}</li>
+  1392→                    ))}
+  1393→                  </ul>
+  1394→                  <p className="mt-5 rounded-xl bg-white/10 p-3.5 text-[12.5px] text-white/80">
+  1395→                    Malala Sisterhood · Gold Tier partner. USAID · Global Fund · Mastercard Foundation - audit pack ready.
+  1396→                  </p>
+  1397→                </Card>
+  1398→              </div>
+  1399→            </div>
+  1400→          </div>
+  1401→        </TabsContent>
+  1402→
+  1403→        {/* PARTNERS */}
+  1404→        <TabsContent value="partners" className="mt-6">
+  1405→          <div className="grid items-start gap-6 lg:grid-cols-[1fr_1fr]">
+  1406→            {/* Left: intro, downloads, partner badges */}
+  1407→            <div className="space-y-4">
+  1408→              <Card className="rounded-3xl border-binti-sand bg-binti-card p-6 text-center md:p-8">
+  1409→                <Handshake className="mx-auto size-12 text-binti dark:text-indigo-300" aria-hidden="true" />
+  1410→                <h3 className="mt-3 font-display text-xl font-extrabold text-binti-ink">Partner with Binti Rising</h3>
+  1411→                <p className="mx-auto mt-2 max-w-md text-[13.5px] leading-relaxed text-binti-slate">
+  1412→                  Referral partners (LVCT Health, Nairobi County health), content partners (Shujaaz Inc) and funders -
+  1413→                  start with our MOU template, then meet the team in Kibera.
+  1414→                </p>
+  1415→                <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
+  1416→                  <a
+  1417→                    href="/policies/binti-mou-template.pdf"
+  1418→                    target="_blank"
+  1419→                    rel="noreferrer"
+  1420→                    className="inline-flex h-12 items-center gap-2 rounded-full bg-binti px-6 text-[15px] font-bold text-white transition hover:bg-binti-deep"
+  1421→                  >
+  1422→                    <FileDown className="size-5" aria-hidden="true" /> Download MOU Template PDF
+  1423→                  </a>
+  1424→                  <a
+  1425→                    href="/policies/binti-donor-onepager.pdf"
+  1426→                    target="_blank"
+  1427→                    rel="noreferrer"
+  1428→                    className="inline-flex h-11 items-center gap-2 rounded-full border-2 border-binti/40 px-5 text-[13.5px] font-bold text-binti transition hover:bg-binti hover:text-white"
+  1429→                  >
+  1430→                    <FileDown className="size-4" aria-hidden="true" /> Donor One-Pager (FY24/25)
+  1431→                  </a>
+  1432→                </div>
+  1433→                <div className="mt-6 flex flex-wrap justify-center gap-2">
+  1434→                  {["LVCT Health", "Shujaaz Inc", "Nairobi County", "Malala Sisterhood", "PATH", "Global Fund"].map((p) => (
+  1435→                    <Badge key={p} variant="outline" className="rounded-full border-binti/30 text-binti dark:text-indigo-300">{p}</Badge>
+  1436→                  ))}
+  1437→                </div>
+  1438→                <DataNote className="mt-5">
+  1439→                  Partnerships are institutional - this form never collects beneficiary data. Existing partner? Reach the
+  1440→                  partnerships lead directly on WhatsApp {ORG.whatsapp}.
+  1441→                </DataNote>
+  1442→              </Card>
+  1443→              <Card className="rounded-3xl border-binti-sand bg-gradient-to-br from-binti-cyan/10 to-binti-pink/10 p-6">
+  1444→                <h4 className="font-display text-[15px] font-extrabold text-binti-ink">What a partnership looks like</h4>
+  1445→                <ol className="mt-3 space-y-2.5" role="list">
+  1446→                  {[
+  1447→                    "Send the inquiry form → reference code PTN-2026-XXXXXX",
+  1448→                    "30-min intro call within 3 working days (Zoom or Kibera site visit)",
+  1449→                    "Sign the MOU template - scope, safeguarding annex, data clause",
+  1450→                    "Quarterly aggregate report + invite to a circle graduation",
+  1451→                  ].map((step, i) => (
+  1452→                    <li key={step} className="flex items-start gap-3 text-[13px] leading-relaxed text-binti-slate">
+  1453→                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-binti font-display text-[11px] font-extrabold text-white" aria-hidden="true">
+  1454→                        {i + 1}
+  1455→                      </span>
+  1456→                      {step}
+  1457→                    </li>
+  1458→                  ))}
+  1459→                </ol>
+  1460→              </Card>
+  1461→              <PartnerRefLookup />
+  1462→            </div>
+  1463→
+  1464→            {/* Right: inquiry form */}
+  1465→            <PartnerInquiryForm />
+  1466→          </div>
+  1467→        </TabsContent>
+  1468→      </Tabs>
+  1469→    </section>
+  1470→  );
+  1471→}
+  1472→

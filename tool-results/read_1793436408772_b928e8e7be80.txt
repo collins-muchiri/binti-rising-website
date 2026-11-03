@@ -1,0 +1,807 @@
+     1→     1→"use client";
+     2→     2→
+     3→     3→import { useState } from "react";
+     4→     4→import { motion } from "framer-motion";
+     5→     5→import { Button } from "@/components/ui/button";
+     6→     6→import { Card, CardContent } from "@/components/ui/card";
+     7→     7→import { Badge } from "@/components/ui/badge";
+     8→     8→import {
+     9→     9→  Accordion,
+    10→    10→  AccordionContent,
+    11→    11→  AccordionItem,
+    12→    12→  AccordionTrigger,
+    13→    13→} from "@/components/ui/accordion";
+    14→    14→import { Input } from "@/components/ui/input";
+    15→    15→import { toast } from "@/hooks/use-toast";
+    16→    16→import {
+    17→    17→  Heart,
+    18→    18→  Users,
+    19→    19→  ShieldCheck,
+    20→    20→  BarChart3,
+    21→    21→  ArrowRight,
+    22→    22→  Eye,
+    23→    23→  Sparkles,
+    24→    24→  Zap,
+    25→    25→  Globe,
+    26→    26→  Mail,
+    27→    27→  Send,
+    28→    28→  CheckCircle2,
+    29→    29→  Quote as QuoteIcon,
+    30→    30→  Search,
+    31→    31→  X,
+    32→    32→  MessageCircleQuestion,
+    33→    33→} from "lucide-react";
+    34→    34→import type { SectionId } from "@/lib/binti/data";
+    35→    35→import { IMPACT_STRIP, WHAT_WE_DO, JTW, PARTNERS, TRUSTED_BY, HERO_QUOTE, STORIES, FAQS, MILESTONES, ALUMNI_WALL, type AlumniTile } from "@/lib/binti/data";
+    36→    36→import { CountUp, NairobiPhoto, SectionHeading, RiskBadge, DataNote, SectionReveal } from "../ui";
+    37→    37→import { CircleGallery } from "../gallery";
+    38→    38→import { cn } from "@/lib/utils";
+    39→    39→
+    40→    40→const ICONS = { Heart, Users, ShieldCheck, BarChart3 } as const;
+    41→    41→
+    42→    42→/* ------------------------------------------------------------------ */
+    43→    43→/* HERO - "From Silence, She Rises." 56px + circle photo + S4 overlay  */
+    44→    44→/* ------------------------------------------------------------------ */
+    45→    45→function Hero({ onNavigate }: { onNavigate: (s: SectionId) => void }) {
+    46→    46→  return (
+    47→    47→    <section aria-label="Hero" className="relative overflow-hidden bg-binti-cream">
+    48→    48→      {/* decorative sun rays */}
+    49→    49→      <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-gradient-to-br from-binti-amber/30 via-binti-pink/20 to-transparent blur-2xl" />
+    50→    50→      <div aria-hidden="true" className="pointer-events-none absolute -left-32 bottom-0 size-80 rounded-full bg-binti-cyan/10 blur-3xl" />
+    51→    51→
+    52→    52→      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 md:px-6 md:py-16 lg:grid-cols-2 lg:gap-14">
+    53→    53→        {/* Left: headline + CTAs */}
+    54→    54→        <div>
+    55→    55→          <Badge className="mb-4 gap-1.5 rounded-full bg-binti-pink/10 px-3 py-1.5 text-[12px] font-bold text-binti-pinkdeep dark:text-pink-300 border border-binti-pink/30">
+    56→    56→            <Sparkles className="size-3.5" aria-hidden="true" />
+    57→    57→            Peer-led · Journey to Wholeness · All genders 15–25
+    58→    58→          </Badge>
+    59→    59→          <h1 className="font-display text-[40px] font-extrabold leading-[1.05] tracking-tight text-binti-ink sm:text-5xl md:text-[56px]">
+    60→    60→            From Silence,{" "}
+    61→    61→            <span className="binti-gradient-text">She Rises.</span>
+    62→    62→          </h1>
+    63→    63→          {/* Kiswahili micro-gloss - the programme's soul language, handwritten.
+    64→    64→              lang attrs let screen readers switch voice: sw line, en gloss. */}
+    65→    65→          <p
+    66→    66→            lang="sw"
+    67→    67→            className="mt-3 -rotate-1 font-hand text-[24px] font-bold leading-none text-binti-pinkdeep dark:text-pink-300"
+    68→    68→          >
+    69→    69→            Kimya kwisha, yeye anainuka.{" "}
+    70→    70→            <span
+    71→    71→              lang="en"
+    72→    72→              className="ml-1 hidden align-middle font-sans text-[12.5px] font-semibold tracking-wide text-binti-slate/70 sm:inline dark:text-slate-400"
+    73→    73→            >
+    74→    74→              Kiswahili for &ldquo;From silence, she rises.&rdquo;
+    75→    75→            </span>
+    76→    76→          </p>
+    77→    77→          <p className="mt-5 max-w-xl text-[18px] leading-[28px] text-binti-slate">
+    78→    78→            Peer-led 8-session mentorship for young people aged 15–25 (all genders) on SRH, mental
+    79→    79→            health and healthy relationships in Kibera, Mathare & Kawangware. Binti does not just
+    80→    80→            support the She, but also the He. Co-created by 50 youth, backed by live data, audited
+    81→    81→            finances.
+    82→    82→          </p>
+    83→    83→          <div className="mt-7 flex flex-wrap items-center gap-3">
+    84→    84→            <Button
+    85→    85→              onClick={() => onNavigate("work")}
+    86→    86→              className="h-12 rounded-full bg-binti px-6 text-[15px] font-bold shadow-lg shadow-binti/25 hover:bg-binti-deep hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-binti-pink"
+    87→    87→            >
+    88→    88→              Meet Binti <ArrowRight className="size-4" aria-hidden="true" />
+    89→    89→            </Button>
+    90→    90→            <Button
+    91→    91→              onClick={() => onNavigate("dashboard")}
+    92→    92→              variant="outline"
+    93→    93→              className="h-12 rounded-full border-2 border-binti/40 bg-binti-card/70 px-6 text-[15px] font-bold text-binti dark:text-indigo-300 hover:bg-binti hover:text-white hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-binti-pink"
+    94→    94→            >
+    95→    95→              <Eye className="size-4" aria-hidden="true" /> View Live Data
+    96→    96→            </Button>
+    97→    97→          </div>
+    98→    98→          <p className="mt-5 flex items-center gap-2 text-[13px] text-binti-slate/80">
+    99→    99→            <span className="inline-block size-2 rounded-full bg-green-500" aria-hidden="true" />
+   100→   100→            Live dashboard synced {HERO_QUOTE.detail === "S4 Graduate" ? "2 min ago" : ""} · Data Quality 94% · DPA 2019
+   101→   101→          </p>
+   102→   102→        </div>
+   103→   103→
+   104→   104→        {/* Right: circle photo with overlay S4 Very Heavy + floating chips */}
+   105→   105→        <div className="relative mx-auto w-full max-w-[440px]">
+   106→   106→          <motion.div
+   107→   107→            initial={{ scale: 0.94, opacity: 0 }}
+   108→   108→            animate={{ scale: 1, opacity: 1 }}
+   109→   109→            transition={{ duration: 0.6, ease: "easeOut" }}
+   110→   110→            className="relative aspect-square"
+   111→   111→          >
+   112→   112→            {/* slow-spinning sun rays behind the circle */}
+   113→   113→            <svg
+   114→   114→              viewBox="0 0 200 200"
+   115→   115→              aria-hidden="true"
+   116→   116→              className="binti-spin-slow absolute -inset-8 z-0 h-[calc(100%+4rem)] w-[calc(100%+4rem)] opacity-45"
+   117→   117→            >
+   118→   118→              {Array.from({ length: 12 }).map((_, i) => (
+   119→   119→                <line
+   120→   120→                  key={i}
+   121→   121→                  x1="100"
+   122→   122→                  y1="100"
+   123→   123→                  x2="100"
+   124→   124→                  y2={i % 2 === 0 ? "2" : "10"}
+   125→   125→                  stroke={i % 3 === 0 ? "#f59e0b" : i % 3 === 1 ? "#ec4899" : "#4f46e5"}
+   126→   126→                  strokeWidth="2.5"
+   127→   127→                  strokeLinecap="round"
+   128→   128→                  transform={`rotate(${i * 30} 100 100)`}
+   129→   129→                  opacity={0.55}
+   130→   130→                />
+   131→   131→              ))}
+   132→   132→            </svg>
+   133→   133→            <div aria-hidden="true" className="absolute -inset-3 rounded-full bg-gradient-to-tr from-binti-pink/35 via-binti-amber/25 to-binti-cyan/30 blur-md" />
+   134→   134→            <NairobiPhoto
+   135→   135→              src="/nairobi-team/nairobi-01.webp"
+   136→   136→              alt="Nairobi team - Binti Rising sisterhood circle member, portrait"
+   137→   137→              circle
+   138→   138→              priority
+   139→   139→              sizes="(max-width: 768px) 90vw, 440px"
+   140→   140→              className="relative h-full w-full border-[6px] border-white shadow-2xl shadow-binti/20"
+   141→   141→            />
+   142→   142→            {/* floating stat chips */}
+   143→   143→            <div className="binti-float absolute left-0 top-10 rounded-2xl border border-binti-sand bg-binti-card/95 px-3.5 py-2 shadow-lg backdrop-blur sm:-left-8">
+   144→   144→              <p className="font-display text-[17px] font-extrabold leading-none text-binti dark:text-indigo-300">94%</p>
+   145→   145→              <p className="text-[10px] font-semibold uppercase tracking-wide text-binti-slate">attendance</p>
+   146→   146→            </div>
+   147→   147→            <div className="binti-float-delay absolute bottom-14 right-0 rounded-2xl border border-binti-sand bg-binti-card/95 px-3.5 py-2 shadow-lg backdrop-blur sm:-right-6">
+   148→   148→              <p className="font-display text-[17px] font-extrabold leading-none text-binti-pink">87%</p>
+   149→   149→              <p className="text-[10px] font-semibold uppercase tracking-wide text-binti-slate">referrals closed</p>
+   150→   150→            </div>
+   151→   151→            {/* overlay badge */}
+   152→   152→            <div className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-red-300 bg-binti-card/95 px-4 py-2 shadow-lg backdrop-blur">
+   153→   153→              <span className="size-2 animate-pulse rounded-full bg-binti-danger" aria-hidden="true" />
+   154→   154→              <span className="font-display text-[12px] font-extrabold text-binti-ink">
+   155→   155→                S4 Breaking Silence · <span className="text-binti-danger">VERY HEAVY</span>
+   156→   156→              </span>
+   157→   157→            </div>
+   158→   158→            <div className="absolute right-0 top-6 rounded-full border border-binti-amber/40 bg-binti-card/95 px-3 py-1.5 shadow-md sm:-right-6">
+   159→   159→              <span className="text-[11px] font-bold text-binti-slate">Safeguarding on standby</span>
+   160→   160→            </div>
+   161→   161→          </motion.div>
+   162→   162→        </div>
+   163→   163→      </div>
+   164→   164→    </section>
+   165→   165→  );
+   166→   166→}
+   167→   167→
+   168→   168→/* ------------------------------------------------------------------ */
+   169→   169→/* TRUSTED BY - Shuga · PATH · Shujaaz (client-requested trust strip)  */
+   170→   170→/* Text wordmarks: no fabricated logo files, DPA/brand-safe.          */
+   171→   171→/* ------------------------------------------------------------------ */
+   172→   172→const TRUSTED_STYLES: Record<string, { icon: typeof Sparkles; chip: string; word: string }> = {
+   173→   173→  Shuga: { icon: Sparkles, chip: "hover:border-binti-pink/50 hover:shadow-binti-pink/20", word: "text-binti-pink" },
+   174→   174→  PATH: { icon: Globe, chip: "hover:border-binti/50 hover:shadow-binti/20", word: "text-binti dark:text-indigo-300" },
+   175→   175→  Shujaaz: { icon: Zap, chip: "hover:border-binti-amber/60 hover:shadow-binti-amber/20", word: "text-amber-500" },
+   176→   176→};
+   177→   177→
+   178→   178→function TrustedBy() {
+   179→   179→  return (
+   180→   180→    <section aria-label="Trusted by partners" className="border-b border-binti-sand bg-binti-card/70">
+   181→   181→      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 py-5 md:px-6">
+   182→   182→        <p className="font-display text-[11.5px] font-bold uppercase tracking-[0.22em] text-binti-slate">
+   183→   183→          Trusted by
+   184→   184→        </p>
+   185→   185→        {TRUSTED_BY.map((name) => {
+   186→   186→          const s = TRUSTED_STYLES[name] ?? TRUSTED_STYLES.PATH;
+   187→   187→          const Icon = s.icon;
+   188→   188→          return (
+   189→   189→            <span
+   190→   190→              key={name}
+   191→   191→              className={cn(
+   192→   192→                "binti-lift inline-flex items-center gap-2 rounded-full border border-binti-sand bg-binti-cream px-4 py-1.5 shadow-sm transition-all",
+   193→   193→                s.chip
+   194→   194→              )}
+   195→   195→            >
+   196→   196→              <Icon className="size-3.5" aria-hidden="true" />
+   197→   197→              <span className={cn("font-display text-[14px] font-extrabold tracking-wide", s.word)}>{name}</span>
+   198→   198→            </span>
+   199→   199→          );
+   200→   200→        })}
+   201→   201→        <span className="hidden text-[11px] text-binti-slate/70 sm:inline">
+   202→   202→          alongside LVCT Health, Nairobi County & Global Fund partners
+   203→   203→        </span>
+   204→   204→      </div>
+   205→   205→    </section>
+   206→   206→  );
+   207→   207→}
+   208→   208→
+   209→   209→/* ------------------------------------------------------------------ */
+   210→   210→/* IMPACT STRIP - count-up animated aggregated totals                  */
+   211→   211→/* ------------------------------------------------------------------ */
+   212→   212→function ImpactStrip() {
+   213→   213→  return (
+   214→   214→    <section aria-label="Impact at a glance" className="w-full bg-binti">
+   215→   215→      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 md:grid-cols-4 md:px-6 md:py-10">
+   216→   216→        {IMPACT_STRIP.map((s, i) => (
+   217→   217→          <div key={s.label} className={cn("binti-stat text-center", i > 0 && "md:pl-6")}>
+   218→   218→            <p className="font-display text-4xl font-extrabold text-white md:text-5xl">
+   219→   219→              <CountUp end={s.value} suffix={s.suffix} />
+   220→   220→            </p>
+   221→   221→            <p className="mt-1 font-display text-[13px] font-bold uppercase tracking-[0.18em] text-binti-amber">
+   222→   222→              {s.label}
+   223→   223→            </p>
+   224→   224→            <p className="text-[12px] text-white/60">{s.note}</p>
+   225→   225→          </div>
+   226→   226→        ))}
+   227→   227→      </div>
+   228→   228→    </section>
+   229→   229→  );
+   230→   230→}
+   231→   231→
+   232→   232→/* ------------------------------------------------------------------ */
+   233→   233→/* STORIES OF RISE - masked testimonials w/ Nairobi photos (DPA 2019)  */
+   234→   234→/* ------------------------------------------------------------------ */
+   235→   235→function StoriesOfRise() {
+   236→   236→  return (
+   237→   237→    <section aria-label="Stories of Rise" className="bg-gradient-to-b from-binti-cream to-binti-card py-14">
+   238→   238→      <div className="mx-auto max-w-7xl px-4 md:px-6">
+   239→   239→        <SectionReveal>
+   240→   240→          <SectionHeading
+   241→   241→            align="center"
+   242→   242→            eyebrow="Stories of Rise"
+   243→   243→            title={
+   244→   244→              <>
+   245→   245→                She carried the stone. <span className="font-hand text-4xl font-bold text-binti-pink">Then she set it down.</span>
+   246→   246→              </>
+   247→   247→            }
+   248→   248→            sub="Real journeys from the circles - names masked per Kenya DPA 2019, shared with each storyteller's consent."
+   249→   249→          />
+   250→   250→        </SectionReveal>
+   251→   251→        <div className="mt-9 grid gap-5 md:grid-cols-3">
+   252→   252→          {STORIES.map((s, i) => (
+   253→   253→            <SectionReveal key={s.initials} delay={i * 0.08}>
+   254→   254→              <Card className="binti-card-glow h-full overflow-hidden rounded-2xl border-binti-sand bg-binti-card pt-0">
+   255→   255→                <div className="binti-img-zoom relative h-44">
+   256→   256→                  <NairobiPhoto src={s.photo} alt={`Binti Rising circle session photo - ${s.area}`} sizes="(max-width: 768px) 100vw, 380px" />
+   257→   257→                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" aria-hidden="true" />
+   258→   258→                  <span className="absolute left-3 top-3 rounded-full bg-binti-card/95 px-2.5 py-1 text-[11px] font-bold text-binti dark:text-indigo-300 shadow-sm">
+   259→   259→                    {s.tag}
+   260→   260→                  </span>
+   261→   261→                  <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2.5">
+   262→   262→                    <span className="font-hand text-2xl font-bold text-white">{s.initials}</span>
+   263→   263→                    <span className="text-[11.5px] font-semibold text-white/85">
+   264→   264→                      {s.age} · {s.area}
+   265→   265→                    </span>
+   266→   266→                  </div>
+   267→   267→                </div>
+   268→   268→                <CardContent className="p-5">
+   269→   269→                  <QuoteIcon className="size-5 text-binti-pink/60" aria-hidden="true" />
+   270→   270→                  <p className="mt-2 text-[14px] leading-relaxed text-binti-ink">
+   271→   271→                    “{s.quote}”
+   272→   272→                  </p>
+   273→   273→                  <p className="mt-3 font-display text-[11.5px] font-extrabold uppercase tracking-widest text-binti dark:text-indigo-300">
+   274→   274→                    {s.session}
+   275→   275→                  </p>
+   276→   276→                </CardContent>
+   277→   277→              </Card>
+   278→   278→            </SectionReveal>
+   279→   279→          ))}
+   280→   280→        </div>
+   281→   281→        <SectionReveal delay={0.15}>
+   282→   282→          <p className="mx-auto mt-6 max-w-xl text-center text-[12px] leading-relaxed text-binti-slate/80">
+   283→   283→            Consent is renewed every cohort; any storyteller can withdraw her story at any time via the
+   284→   284→            Safeguarding Lead - no questions asked (DPA 2019, right to erasure).
+   285→   285→          </p>
+   286→   286→        </SectionReveal>
+   287→   287→      </div>
+   288→   288→    </section>
+   289→   289→  );
+   290→   290→}
+   291→   291→
+   292→   292→/* ------------------------------------------------------------------ */
+   293→   293→/* DONOR FAQ - accordion, donor-grade answers                          */
+   294→   294→/* ------------------------------------------------------------------ */
+   295→   295→function DonorFaq() {
+   296→   296→  const [query, setQuery] = useState("");
+   297→   297→  const q = query.trim().toLowerCase();
+   298→   298→  const results = q
+   299→   299→    ? FAQS.filter((f) => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q))
+   300→   300→    : FAQS;
+   301→   301→  return (
+   302→   302→    <section aria-label="Donor FAQ" className="bg-binti-card py-14">
+   303→   303→      <div className="mx-auto max-w-4xl px-4 md:px-6">
+   304→   304→        <SectionReveal>
+   305→   305→          <SectionHeading
+   306→   306→            align="center"
+   307→   307→            eyebrow="Donor FAQ"
+   308→   308→            title={
+   309→   309→              <>
+   310→   310→                Questions donors <span className="font-hand text-4xl font-bold text-binti-pink">actually ask</span>
+   311→   311→              </>
+   312→   312→            }
+   313→   313→          />
+   314→   314→        </SectionReveal>
+   315→   315→        {/* Live search - filters as you type (client-side, nothing stored) */}
+   316→   316→        <SectionReveal delay={0.05} className="mt-7">
+   317→   317→          <div className="relative mx-auto max-w-md">
+   318→   318→            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4.5 -translate-y-1/2 text-binti-slate/70" aria-hidden="true" />
+   319→   319→            <Input
+   320→   320→              type="search"
+   321→   321→              value={query}
+   322→   322→              onChange={(e) => setQuery(e.target.value)}
+   323→   323→              placeholder="Search the FAQ - try “referrals” or “tax”"
+   324→   324→              aria-label="Search frequently asked questions"
+   325→   325→              className="h-12 rounded-full border-binti/25 bg-binti-cream/60 pl-11 pr-4 text-[14px]"
+   326→   326→            />
+   327→   327→            {query && (
+   328→   328→              <button
+   329→   329→                onClick={() => setQuery("")}
+   330→   330→                aria-label="Clear search"
+   331→   331→                className="absolute right-3 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-binti-slate transition hover:bg-binti-sand hover:text-binti-ink"
+   332→   332→              >
+   333→   333→                <X className="size-4" aria-hidden="true" />
+   334→   334→              </button>
+   335→   335→            )}
+   336→   336→          </div>
+   337→   337→          {q && (
+   338→   338→            <p className="mt-2.5 text-center text-[12.5px] font-semibold text-binti-slate" role="status">
+   339→   339→              {results.length === 0
+   340→   340→                ? "No answers match - WhatsApp +254 758 919 709 and we'll reply within a day."
+   341→   341→                : `${results.length} of ${FAQS.length} questions match “${query.trim()}”`}
+   342→   342→            </p>
+   343→   343→          )}
+   344→   344→        </SectionReveal>
+   345→   345→        <SectionReveal delay={0.1} className="mt-6">
+   346→   346→          {results.length > 0 ? (
+   347→   347→            <Accordion type="single" collapsible className="space-y-3">
+   348→   348→              {results.map((f, i) => (
+   349→   349→                <AccordionItem
+   350→   350→                  key={f.q}
+   351→   351→                  value={`faq-${FAQS.indexOf(f)}`}
+   352→   352→                  className="rounded-2xl border border-binti-sand bg-binti-cream/50 px-5 last:border-b"
+   353→   353→                >
+   354→   354→                  <AccordionTrigger className="py-4 text-left font-display text-[15px] font-bold text-binti-ink hover:no-underline">
+   355→   355→                    {f.q}
+   356→   356→                  </AccordionTrigger>
+   357→   357→                  <AccordionContent className="pb-5 text-[13.5px] leading-relaxed text-binti-slate">
+   358→   358→                    {f.a}
+   359→   359→                  </AccordionContent>
+   360→   360→                </AccordionItem>
+   361→   361→              ))}
+   362→   362→            </Accordion>
+   363→   363→          ) : (
+   364→   364→            <div className="rounded-2xl border border-dashed border-binti-sand bg-binti-cream/40 p-8 text-center">
+   365→   365→              <MessageCircleQuestion className="mx-auto size-8 text-binti/50" aria-hidden="true" />
+   366→   366→              <p className="mt-2 font-display text-[14.5px] font-bold text-binti-ink">Ask Sema na Me instead</p>
+   367→   367→              <p className="mt-1 text-[13px] text-binti-slate">
+   368→   368→                Sema na Me, the WhatsApp chatbot by Shujaaz, answers joining, safety and donation questions, anonymously. WhatsApp only.
+   369→   369→              </p>
+   370→   370→            </div>
+   371→   371→          )}
+   372→   372→        </SectionReveal>
+   373→   373→      </div>
+   374→   374→    </section>
+   375→   375→  );
+   376→   376→}
+   377→   377→
+   378→   378→/* ------------------------------------------------------------------ */
+   379→   379→/* NEWSLETTER - monthly impact digest (DPA 2019 consent mandatory)     */
+   380→   380→/* ------------------------------------------------------------------ */
+   381→   381→function NewsletterSignup() {
+   382→   382→  const [email, setEmail] = useState("");
+   383→   383→  const [dpa, setDpa] = useState(false);
+   384→   384→  const [sending, setSending] = useState(false);
+   385→   385→  const [done, setDone] = useState(false);
+   386→   386→
+   387→   387→  const subscribe = async () => {
+   388→   388→    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
+   389→   389→      toast({ title: "Check your email", description: "That address doesn't look complete.", variant: "destructive" });
+   390→   390→      return;
+   391→   391→    }
+   392→   392→    if (!dpa) {
+   393→   393→      toast({ title: "Consent needed", description: "Please tick the DPA 2019 consent - the law requires it.", variant: "destructive" });
+   394→   394→      return;
+   395→   395→    }
+   396→   396→    setSending(true);
+   397→   397→    try {
+   398→   398→      const res = await fetch("/api/newsletter", {
+   399→   399→        method: "POST",
+   400→   400→        headers: { "Content-Type": "application/json" },
+   401→   401→        body: JSON.stringify({ email: email.trim(), consentDpa: dpa, source: "home-section" }),
+   402→   402→      });
+   403→   403→      const data = await res.json();
+   404→   404→      if (!res.ok) throw new Error(data.error || "Failed");
+   405→   405→      setDone(true);
+   406→   406→      toast({ title: "Karibu aboard! 💌", description: "Monthly impact digest - one email a month, no spam, ever." });
+   407→   407→    } catch (e) {
+   408→   408→      toast({
+   409→   409→        title: "Could not subscribe",
+   410→   410→        description: e instanceof Error ? e.message : "Please try again later.",
+   411→   411→        variant: "destructive",
+   412→   412→      });
+   413→   413→    } finally {
+   414→   414→      setSending(false);
+   415→   415→    }
+   416→   416→  };
+   417→   417→
+   418→   418→  return (
+   419→   419→    <section aria-label="Newsletter signup" className="mx-auto max-w-7xl px-4 py-12 md:px-6">
+   420→   420→      <SectionReveal>
+   421→   421→        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-binti via-binti-deep to-binti-pinkdeep px-6 py-10 md:px-12">
+   422→   422→          <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-binti-pink/30 blur-3xl" />
+   423→   423→          <div aria-hidden="true" className="pointer-events-none absolute -bottom-20 -left-10 size-64 rounded-full bg-binti-cyan/20 blur-3xl" />
+   424→   424→          <div className="relative mx-auto max-w-2xl text-center">
+   425→   425→            <Mail className="mx-auto size-10 text-binti-amber" aria-hidden="true" />
+   426→   426→            <h2 className="mt-3 font-display text-2xl font-extrabold text-white md:text-3xl">
+   427→   427→              One email a month. <span className="font-hand text-3xl font-bold text-binti-amber">Real numbers only.</span>
+   428→   428→            </h2>
+   429→   429→            <p className="mt-2 text-[14px] leading-relaxed text-white/80">
+   430→   430→              The Binti Digest: cohort outcomes, referral closures and finance lines - aggregated, audited, honest.
+   431→   431→            </p>
+   432→   432→            {done ? (
+   433→   433→              <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-2.5 rounded-2xl border border-green-300 bg-green-50 px-5 py-4" role="status">
+   434→   434→                <CheckCircle2 className="size-5 shrink-0 text-green-600 dark:text-green-400" aria-hidden="true" />
+   435→   435→                <p className="text-[13.5px] font-semibold text-green-800">You're subscribed. First digest arrives on the 1st.</p>
+   436→   436→              </div>
+   437→   437→            ) : (
+   438→   438→              <div className="mx-auto mt-6 max-w-md">
+   439→   439→                <div className="flex flex-col gap-2.5 sm:flex-row">
+   440→   440→                  <Input
+   441→   441→                    type="email"
+   442→   442→                    value={email}
+   443→   443→                    onChange={(e) => setEmail(e.target.value)}
+   444→   444→                    placeholder="you@example.org"
+   445→   445→                    aria-label="Email address for the Binti Digest"
+   446→   446→                    className="h-12 flex-1 rounded-full border-white/20 bg-binti-card/95 pl-5"
+   447→   447→                  />
+   448→   448→                  <Button
+   449→   449→                    onClick={subscribe}
+   450→   450→                    disabled={sending}
+   451→   451→                    className="h-12 rounded-full bg-binti-amber px-6 font-display text-[14px] font-extrabold text-binti-ink hover:bg-amber-400"
+   452→   452→                  >
+   453→   453→                    {sending ? "Subscribing…" : (<>Subscribe <Send className="size-4" aria-hidden="true" /></>)}
+   454→   454→                  </Button>
+   455→   455→                </div>
+   456→   456→                <label className="mt-3 flex cursor-pointer items-start justify-center gap-2 text-left text-[12px] leading-relaxed text-white/75">
+   457→   457→                  <input type="checkbox" checked={dpa} onChange={(e) => setDpa(e.target.checked)} className="mt-0.5 size-4 accent-binti-amber" />
+   458→   458→                  <span>
+   459→   459→                    I consent to Binti Rising storing my email for the monthly digest only (Kenya DPA 2019). Unsubscribe
+   460→   460→                    anytime with one click.
+   461→   461→                  </span>
+   462→   462→                </label>
+   463→   463→              </div>
+   464→   464→            )}
+   465→   465→          </div>
+   466→   466→        </div>
+   467→   467→      </SectionReveal>
+   468→   468→    </section>
+   469→   469→  );
+   470→   470→}
+   471→   471→
+   472→   472→/* ------------------------------------------------------------------ */
+   473→   473→/* WHAT WE DO - 4 cards using Nairobi photos only                      */
+   474→   474→/* ------------------------------------------------------------------ */
+   475→   475→function WhatWeDo() {
+   476→   476→  return (
+   477→   477→    <section aria-label="What we do" className="mx-auto max-w-7xl px-4 py-14 md:px-6">
+   478→   478→      <SectionHeading
+   479→   479→        eyebrow="What We Do"
+   480→   480→        title={<>Four pillars, <span className="font-hand text-4xl font-bold text-binti-pink">one sisterhood</span></>}
+   481→   481→        sub="Every pillar is peer-led, data-tracked and safeguarded. Photos are our real Nairobi team - never stock."
+   482→   482→      />
+   483→   483→      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+   484→   484→        {WHAT_WE_DO.map((p, i) => {
+   485→   485→          const Icon = ICONS[p.icon as keyof typeof ICONS];
+   486→   486→          return (
+   487→   487→            <motion.div
+   488→   488→              key={p.title}
+   489→   489→              initial={{ opacity: 0, y: 24 }}
+   490→   490→              whileInView={{ opacity: 1, y: 0 }}
+   491→   491→              viewport={{ once: true, margin: "-60px" }}
+   492→   492→              transition={{ delay: i * 0.08, duration: 0.45 }}
+   493→   493→            >
+   494→   494→              <Card className="binti-lift h-full overflow-hidden rounded-2xl border-binti-sand bg-binti-card pt-0">
+   495→   495→                <div className="binti-img-zoom relative h-36 w-full">
+   496→   496→                  <NairobiPhoto src={p.photo} alt={`${p.title} - Nairobi team photo`} sizes="(max-width: 640px) 100vw, 320px" />
+   497→   497→                  <span className="absolute left-3 top-3 rounded-full bg-binti-card/95 px-2.5 py-1 text-[11px] font-bold text-binti dark:text-indigo-300 shadow-sm">
+   498→   498→                    {p.tag}
+   499→   499→                  </span>
+   500→   500→                </div>
+   501→   501→                <CardContent className="p-4">
+   502→   502→                  <div className="flex items-center gap-2">
+   503→   503→                    <span className="flex size-8 items-center justify-center rounded-lg bg-binti/10">
+   504→   504→                      <Icon className="size-4 text-binti dark:text-indigo-300" aria-hidden="true" />
+   505→   505→                    </span>
+   506→   506→                    <h3 className="font-display text-[15px] font-bold text-binti-ink">{p.title}</h3>
+   507→   507→                  </div>
+   508→   508→                  <p className="mt-2 text-[13px] leading-relaxed text-binti-slate">{p.body}</p>
+   509→   509→                </CardContent>
+   510→   510→              </Card>
+   511→   511→            </motion.div>
+   512→   512→          );
+   513→   513→        })}
+   514→   514→      </div>
+   515→   515→    </section>
+   516→   516→  );
+   517→   517→}
+   518→   518→
+   519→   519→/* ------------------------------------------------------------------ */
+   520→   520→/* JTW TIMELINE TEASER - 8-step mini stepper                           */
+   521→   521→/* ------------------------------------------------------------------ */
+   522→   522→function JtwTeaser({ onNavigate }: { onNavigate: (s: SectionId) => void }) {
+   523→   523→  return (
+   524→   524→    <section aria-label="JTW journey teaser" className="bg-binti-card py-14">
+   525→   525→      <div className="mx-auto max-w-7xl px-4 md:px-6">
+   526→   526→        <div className="flex flex-wrap items-end justify-between gap-4">
+   527→   527→          <SectionHeading
+   528→   528→            eyebrow="Our Work"
+   529→   529→            title="The JTW Journey - 8 steps from silence to strength"
+   530→   530→            sub="Journey to Wholeness: field-tested Oct 2025–Mar 2026 by 24 facilitators working in 12 pairs, in Kibera, Mathare & Kawangware. All genders welcome."
+   531→   531→          />
+   532→   532→          <Button
+   533→   533→            onClick={() => onNavigate("work")}
+   534→   534→            variant="ghost"
+   535→   535→            className="font-bold text-binti dark:text-indigo-300 hover:bg-binti-sand"
+   536→   536→          >
+   537→   537→            Explore all sessions <ArrowRight className="size-4" aria-hidden="true" />
+   538→   538→          </Button>
+   539→   539→        </div>
+   540→   540→
+   541→   541→        <ol className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8" role="list" aria-label="JTW 8 sessions">
+   542→   542→          {JTW.map((s, i) => (
+   543→   543→            <li key={s.id}>
+   544→   544→              <button
+   545→   545→                onClick={() => onNavigate("work")}
+   546→   546→                className={cn(
+   547→   547→                  "binti-lift group h-full w-full rounded-2xl border p-3 text-left",
+   548→   548→                  s.risk === "Very Heavy"
+   549→   549→                    ? "border-red-300 bg-red-50"
+   550→   550→                    : "border-binti-sand bg-binti-cream"
+   551→   551→                )}
+   552→   552→                aria-label={`Session ${s.id}: ${s.title}, risk ${s.risk}`}
+   553→   553→              >
+   554→   554→                <span
+   555→   555→                  className={cn(
+   556→   556→                    "font-display text-[11px] font-extrabold",
+   557→   557→                    s.risk === "Very Heavy" ? "text-binti-danger" : "text-binti-pink"
+   558→   558→                  )}
+   559→   559→                >
+   560→   560→                  {s.id}
+   561→   561→                </span>
+   562→   562→                <p className="mt-0.5 font-display text-[13.5px] font-bold leading-tight text-binti-ink">{s.title}</p>
+   563→   563→                <div className="mt-2">
+   564→   564→                  <RiskBadge risk={s.risk} className="!text-[9px] px-1.5 py-0" />
+   565→   565→                </div>
+   566→   566→              </button>
+   567→   567→            </li>
+   568→   568→          ))}
+   569→   569→        </ol>
+   570→   570→        <DataNote className="mt-4">
+   571→   571→          Facilitator pairs co-lead every session · referral lists memorised before S4 · sessions follow the JTW Guide.
+   572→   572→        </DataNote>
+   573→   573→      </div>
+   574→   574→    </section>
+   575→   575→  );
+   576→   576→}
+   577→   577→
+   578→   578→/* ------------------------------------------------------------------ */
+   579→   579→/* PARTNERS MARQUEE                                                    */
+   580→   580→/* ------------------------------------------------------------------ */
+   581→   581→function PartnersMarquee() {
+   582→   582→  const items = [...PARTNERS, ...PARTNERS];
+   583→   583→  return (
+   584→   584→    <section aria-label="Partners" className="border-y border-binti-sand bg-binti-cream py-8">
+   585→   585→      <p className="text-center font-display text-[12px] font-bold uppercase tracking-[0.22em] text-binti-slate">
+   586→   586→        Trusted by · Donor & Community Partners
+   587→   587→      </p>
+   588→   588→      <div className="relative mt-5 overflow-hidden" aria-hidden="false">
+   589→   589→        <div className="binti-marquee-track flex w-max items-center gap-10 px-4">
+   590→   590→          {items.map((p, i) => (
+   591→   591→            <span
+   592→   592→              key={`${p}-${i}`}
+   593→   593→              aria-hidden={i >= PARTNERS.length}
+   594→   594→              className="whitespace-nowrap font-display text-lg font-bold text-binti-slate/50"
+   595→   595→            >
+   596→   596→              {p}
+   597→   597→            </span>
+   598→   598→          ))}
+   599→   599→        </div>
+   600→   600→        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-binti-cream to-transparent" />
+   601→   601→        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-binti-cream to-transparent" />
+   602→   602→      </div>
+   603→   603→    </section>
+   604→   604→  );
+   605→   605→}
+   606→   606→
+   607→   607→/* ------------------------------------------------------------------ */
+   608→   608→/* QUOTE - Caveat handwritten (Remember the stone…)                    */
+   609→   609→/* ------------------------------------------------------------------ */
+   610→   610→function Quote() {
+   611→   611→  return (
+   612→   612→    <section aria-label="Quote from a graduate" className="mx-auto max-w-4xl px-4 py-16 text-center md:px-6">
+   613→   613→      <p className="font-hand text-4xl leading-tight text-binti-ink md:text-[44px]">
+   614→   614→        “{HERO_QUOTE.text}”
+   615→   615→      </p>
+   616→   616→      <p className="mt-4 font-display text-sm font-bold text-binti dark:text-indigo-300">
+   617→   617→        {HERO_QUOTE.author} · {HERO_QUOTE.detail}
+   618→   618→      </p>
+   619→   619→      <p className="mt-1 text-[12px] text-binti-slate/70">Name masked per Kenya DPA 2019</p>
+   620→   620→    </section>
+   621→   621→  );
+   622→   622→}
+   623→   623→
+   624→   624→/* ------------------------------------------------------------------ */
+   625→   625→/* ALUMNI WALL - masked initials grid (DPA 2019) - "she rose, and stays" */
+   626→   626→/* ------------------------------------------------------------------ */
+   627→   627→const WALL_TONES: Record<AlumniTile["tone"], { ring: string; chip: string; grad: string }> = {
+   628→   628→  indigo: { ring: "hover:border-binti/60", chip: "bg-binti/10 text-binti dark:text-indigo-300", grad: "from-binti/25 to-binti-pink/20" },
+   629→   629→  pink: { ring: "hover:border-binti-pink/60", chip: "bg-binti-pink/10 text-binti-pinkdeep dark:text-pink-300", grad: "from-binti-pink/25 to-binti-amber/20" },
+   630→   630→  cyan: { ring: "hover:border-binti-cyan/60", chip: "bg-binti-cyan/10 text-binti-cyan", grad: "from-binti-cyan/25 to-binti/15" },
+   631→   631→  amber: { ring: "hover:border-binti-amber/60", chip: "bg-binti-amber/15 text-amber-600 dark:text-amber-300", grad: "from-binti-amber/25 to-binti-pink/15" },
+   632→   632→};
+   633→   633→
+   634→   634→function AlumniWall({ onNavigate }: { onNavigate: (s: SectionId) => void }) {
+   635→   635→  return (
+   636→   636→    <section aria-label="Alumni wall" className="relative overflow-hidden bg-binti-cream py-14 md:py-20">
+   637→   637→      <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-24 size-72 rounded-full bg-binti/10 blur-3xl" />
+   638→   638→      <div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-16 size-72 rounded-full bg-binti-pink/10 blur-3xl" />
+   639→   639→      <div className="relative mx-auto max-w-7xl px-4 md:px-6">
+   640→   640→        <SectionReveal>
+   641→   641→          <SectionHeading
+   642→   642→            align="center"
+   643→   643→            eyebrow="Alumni Wall · 4,500+ strong"
+   644→   644→            title={
+   645→   645→              <>
+   646→   646→                She rose. <span className="font-hand text-4xl font-bold text-binti-cyan">She's still rising.</span>
+   647→   647→              </>
+   648→   648→            }
+   649→   649→            sub="A wall of first names only - every alum chose to be shown here, initials and all. No faces, no contacts, ever (Kenya DPA 2019)."
+   650→   650→          />
+   651→   651→        </SectionReveal>
+   652→   652→
+   653→   653→        <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
+   654→   654→          {ALUMNI_WALL.map((a, i) => {
+   655→   655→            const tone = WALL_TONES[a.tone];
+   656→   656→            return (
+   657→   657→              <motion.div
+   658→   658→                key={a.initials + a.cohort}
+   659→   659→                initial={{ opacity: 0, y: 16 }}
+   660→   660→                whileInView={{ opacity: 1, y: 0 }}
+   661→   661→                viewport={{ once: true, margin: "-40px" }}
+   662→   662→                transition={{ duration: 0.32, delay: Math.min(i * 0.045, 0.35), ease: [0.22, 1, 0.36, 1] }}
+   663→   663→                className={cn(
+   664→   664→                  "binti-lift group rounded-2xl border border-binti-sand bg-binti-card p-4 text-center shadow-sm",
+   665→   665→                  tone.ring
+   666→   666→                )}
+   667→   667→              >
+   668→   668→                {/* initials medallion */}
+   669→   669→                <div className="relative mx-auto flex size-14 items-center justify-center">
+   670→   670→                  <span
+   671→   671→                    aria-hidden="true"
+   672→   672→                    className={cn("absolute inset-0 rounded-full bg-gradient-to-br", tone.grad)}
+   673→   673→                  />
+   674→   674→                  <span className="relative font-hand text-2xl font-bold text-binti-ink">{a.initials}</span>
+   675→   675→                </div>
+   676→   676→                <p className="mt-2.5 font-display text-[13px] font-extrabold tracking-tight text-binti-ink">
+   677→   677→                  {a.initials.replace(".", "")} - {a.area}
+   678→   678→                </p>
+   679→   679→                <p className="mt-1 line-clamp-2 min-h-[2.4em] text-[12px] leading-snug text-binti-slate">{a.now}</p>
+   680→   680→                <span
+   681→   681→                  className={cn(
+   682→   682→                    "mt-2.5 inline-block rounded-full px-2.5 py-0.5 text-[10.5px] font-extrabold tracking-wide",
+   683→   683→                    tone.chip
+   684→   684→                  )}
+   685→   685→                >
+   686→   686→                  CLASS OF {a.cohort}
+   687→   687→                </span>
+   688→   688→              </motion.div>
+   689→   689→            );
+   690→   690→          })}
+   691→   691→        </div>
+   692→   692→
+   693→   693→        {/* Footer row: note + CTA */}
+   694→   694→        <SectionReveal delay={0.1} className="mt-8">
+   695→   695→          <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-3xl border border-binti-sand bg-binti-card p-5 text-center sm:flex-row sm:justify-between sm:text-left">
+   696→   696→            <p className="text-[12.5px] leading-relaxed text-binti-slate">
+   697→   697→              <strong className="text-binti-ink">Showing 12 of 4,500+</strong> - the rest chose to stay off the wall.
+   698→   698→              Both choices are equally respected. Initials published only with written, revocable consent.
+   699→   699→            </p>
+   700→   700→            <Button
+   701→   701→              onClick={() => onNavigate("involved")}
+   702→   702→              className="h-11 shrink-0 rounded-full bg-binti px-6 font-bold text-white shadow-lg shadow-binti/25 hover:bg-binti-deep"
+   703→   703→            >
+   704→   704→              Join the next cohort <ArrowRight className="size-4.5" aria-hidden="true" />
+   705→   705→            </Button>
+   706→   706→          </div>
+   707→   707→        </SectionReveal>
+   708→   708→      </div>
+   709→   709→    </section>
+   710→   710→  );
+   711→   711→}
+   712→   712→
+   713→   713→/* ------------------------------------------------------------------ */
+   714→   714→export function HomeSection({ onNavigate }: { onNavigate: (s: SectionId) => void }) {
+   715→   715→  return (
+   716→   716→    <>
+   717→   717→      <Hero onNavigate={onNavigate} />
+   718→   718→      <TrustedBy />
+   719→   719→      <ImpactStrip />
+   720→   720→      <WhatWeDo />
+   721→   721→      <JtwTeaser onNavigate={onNavigate} />
+   722→   722→      <OurStoryTimeline />
+   723→   723→      <StoriesOfRise />
+   724→   724→      <CircleGallery />
+   725→   725→      <AlumniWall onNavigate={onNavigate} />
+   726→   726→      <PartnersMarquee />
+   727→   727→      <Quote />
+   728→   728→      <DonorFaq />
+   729→   729→      <NewsletterSignup />
+   730→   730→    </>
+   731→   731→  );
+   732→   732→}
+   733→   733→
+   734→   734→/* ------------------------------------------------------------------ */
+   735→   735→/* OUR STORY - milestone timeline 2023 → 2026 (aggregate facts only)   */
+   736→   736→/* Gradient spine + scroll-reveal nodes; alternating cards on desktop. */
+   737→   737→/* ------------------------------------------------------------------ */
+   738→   738→const MILESTONE_TONES: Record<string, { dot: string; chip: string }> = {
+   739→   739→  indigo: { dot: "bg-binti", chip: "bg-binti/10 text-binti dark:text-indigo-300" },
+   740→   740→  pink: { dot: "bg-binti-pink", chip: "bg-binti-pink/10 text-binti-pinkdeep dark:text-pink-300" },
+   741→   741→  cyan: { dot: "bg-binti-cyan", chip: "bg-binti-cyan/10 text-binti-cyan" },
+   742→   742→  amber: { dot: "bg-binti-amber", chip: "bg-binti-amber/10 text-amber-600 dark:text-amber-300" },
+   743→   743→};
+   744→   744→
+   745→   745→function OurStoryTimeline() {
+   746→   746→  return (
+   747→   747→    <section aria-label="Our story 2023 to 2026" className="relative overflow-hidden bg-binti-cream py-14 md:py-20">
+   748→   748→      {/* soft glow decorations */}
+   749→   749→      <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-24 size-72 rounded-full bg-binti-pink/10 blur-3xl" />
+   750→   750→      <div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-10 size-72 rounded-full bg-binti-cyan/10 blur-3xl" />
+   751→   751→      <div className="relative mx-auto max-w-5xl px-4 md:px-6">
+   752→   752→        <SectionReveal>
+   753→   753→          <SectionHeading
+   754→   754→            align="center"
+   755→   755→            eyebrow="Our Story · 2023 → 2026"
+   756→   756→            title={
+   757→   757→              <>
+   758→   758→                Three years ago, fifty girls sat in a circle.{" "}
+   759→   759→                <span className="font-hand text-4xl font-bold text-binti-pink">They never stopped rising.</span>
+   760→   760→              </>
+   761→   761→            }
+   762→   762→            sub="From one room in Laini Saba to a live, audited movement - told in four milestones."
+   763→   763→          />
+   764→   764→        </SectionReveal>
+   765→   765→
+   766→   766→        <ol className="relative mt-12 space-y-10 md:space-y-0" role="list">
+   767→   767→          {/* spine */}
+   768→   768→          <span
+   769→   769→            aria-hidden="true"
+   770→   770→            className="absolute left-[19px] top-2 bottom-2 w-1 rounded-full bg-gradient-to-b from-binti via-binti-pink to-binti-amber md:left-1/2 md:-translate-x-1/2"
+   771→   771→          />
+   772→   772→          {MILESTONES.map((m, i) => {
+   773→   773→            const tone = MILESTONE_TONES[m.tone] ?? MILESTONE_TONES.indigo;
+   774→   774→            const leftSide = i % 2 === 0;
+   775→   775→            return (
+   776→   776→              <li key={m.year} className="relative md:grid md:grid-cols-2 md:gap-12 md:py-6">
+   777→   777→                {/* node */}
+   778→   778→                <span
+   779→   779→                  aria-hidden="true"
+   780→   780→                  className="absolute left-[19px] top-1.5 z-10 flex size-5 -translate-x-1/2 items-center justify-center md:left-1/2 md:top-1/2 md:-translate-y-1/2"
+   781→   781→                >
+   782→   782→                  <span className={cn("absolute inline-flex size-5 rounded-full opacity-25", tone.dot, "animate-ping")} />
+   783→   783→                  <span className={cn("relative inline-flex size-3.5 rounded-full ring-4 ring-binti-cream", tone.dot)} />
+   784→   784→                </span>
+   785→   785→                <SectionReveal delay={i * 0.06} className={cn("pl-12 md:pl-0", leftSide ? "md:col-start-1 md:pr-4 md:text-right" : "md:col-start-2 md:pl-4")}>
+   786→   786→                  <div className={cn("binti-card-glow rounded-2xl border border-binti-sand bg-binti-card p-5 shadow-sm md:p-6", leftSide && "md:ml-auto")}>
+   787→   787→                    <div className={cn("flex items-center gap-3", leftSide && "md:flex-row-reverse")}>
+   788→   788→                      <span className={cn("rounded-full px-3 py-1 font-display text-[13px] font-extrabold", tone.chip)}>{m.year}</span>
+   789→   789→                      <h3 className="font-display text-[16px] font-extrabold leading-snug text-binti-ink md:text-[17px]">{m.title}</h3>
+   790→   790→                    </div>
+   791→   791→                    <p className="mt-2.5 text-[13.5px] leading-relaxed text-binti-slate">{m.body}</p>
+   792→   792→                    <p className={cn("mt-3 font-hand text-xl font-bold text-binti dark:text-indigo-300", leftSide && "md:text-left")}>{m.stat}</p>
+   793→   793→                  </div>
+   794→   794→                </SectionReveal>
+   795→   795→              </li>
+   796→   796→            );
+   797→   797→          })}
+   798→   798→        </ol>
+   799→   799→
+   800→   800→        <SectionReveal className="mt-10 text-center">
+   801→   801→          <p className="font-hand text-2xl text-binti dark:text-indigo-300">Karibu - the next milestone is written with our donors.</p>
+   802→   802→        </SectionReveal>
+   803→   803→      </div>
+   804→   804→    </section>
+   805→   805→  );
+   806→   806→}
+   807→   807→

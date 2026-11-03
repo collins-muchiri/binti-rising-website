@@ -1,0 +1,620 @@
+     1→'use client';
+     2→
+     3→import { useEffect, useRef, useState } from 'react';
+     4→import {
+     5→  Heart, HandHeart, Users, Share2, Send, MapPin, Phone, Mail,
+     6→  Instagram, Facebook, Twitter, Banknote, Smartphone, Building2,
+     7→  CheckCircle2, Loader2,
+     8→} from 'lucide-react';
+     9→import { Button } from '@/components/ui/button';
+    10→import { Input } from '@/components/ui/input';
+    11→import { Textarea } from '@/components/ui/textarea';
+    12→import { Label } from '@/components/ui/label';
+    13→import { Badge } from '@/components/ui/badge';
+    14→import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+    15→
+    16→const nairobiSubCounties = [
+    17→  'Westlands', 'Dagoretti North', 'Dagoretti South', 'Langata', 'Kibra',
+    18→  'Roysambu', 'Kasarani', 'Ruaraka', 'Embakasi Central', 'Embakasi North',
+    19→  'Embakasi South', 'Embakasi West', 'Embakasi East', 'Makadara', 'Kamukunji',
+    20→  'Starehe', 'Mathare',
+    21→];
+    22→
+    23→const partnershipTypes = [
+    24→  'Capacity Building',
+    25→  'Funding',
+    26→  'Technical Support',
+    27→  'Research',
+    28→  'Advocacy',
+    29→];
+    30→
+    31→const skillOptions = [
+    32→  'Facilitation', 'Mentoring', 'Counseling', 'Data Collection',
+    33→  'Communications', 'IT & Design', 'Finance', 'Legal',
+    34→  'Photography/Video', 'Event Planning', 'First Aid', 'Other',
+    35→];
+    36→
+    37→export default function GetInvolved() {
+    38→  const sectionRef = useRef<HTMLElement>(null);
+    39→  const [isVisible, setIsVisible] = useState(false);
+    40→  const [activeTab, setActiveTab] = useState('donate');
+    41→
+    42→  // Volunteer form state
+    43→  const [volunteerForm, setVolunteerForm] = useState({
+    44→    name: '', email: '', phone: '', county: '', skills: [] as string[], availability: '', message: '',
+    45→  });
+    46→  const [partnerForm, setPartnerForm] = useState({
+    47→    orgName: '', contactPerson: '', email: '', phone: '', partnershipType: '', message: '',
+    48→  });
+    49→  const [isSubmitting, setIsSubmitting] = useState('');
+    50→  const [submitted, setSubmitted] = useState('');
+    51→  const [skillInput, setSkillInput] = useState('');
+    52→
+    53→  useEffect(() => {
+    54→    const observer = new IntersectionObserver(
+    55→      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+    56→      { threshold: 0.05 }
+    57→    );
+    58→    if (sectionRef.current) observer.observe(sectionRef.current);
+    59→    return () => observer.disconnect();
+    60→  }, []);
+    61→
+    62→  const addSkill = (skill: string) => {
+    63→    if (!volunteerForm.skills.includes(skill) && volunteerForm.skills.length < 5) {
+    64→      setVolunteerForm(prev => ({ ...prev, skills: [...prev.skills, skill] }));
+    65→    }
+    66→    setSkillInput('');
+    67→  };
+    68→
+    69→  const removeSkill = (skill: string) => {
+    70→    setVolunteerForm(prev => ({ ...prev, skills: prev.skills.filter(s => s !== skill) }));
+    71→  };
+    72→
+    73→  const filteredSkills = skillOptions.filter(
+    74→    s => s.toLowerCase().includes(skillInput.toLowerCase()) && !volunteerForm.skills.includes(s)
+    75→  );
+    76→
+    77→  const handleSubmitVolunteer = async (e: React.FormEvent) => {
+    78→    e.preventDefault();
+    79→    setIsSubmitting('volunteer');
+    80→    try {
+    81→      const res = await fetch('/api/contact', {
+    82→        method: 'POST',
+    83→        headers: { 'Content-Type': 'application/json' },
+    84→        body: JSON.stringify({
+    85→          type: 'volunteer',
+    86→          name: volunteerForm.name,
+    87→          email: volunteerForm.email,
+    88→          phone: volunteerForm.phone,
+    89→          county: volunteerForm.county,
+    90→          skills: volunteerForm.skills.join(', '),
+    91→          availability: volunteerForm.availability,
+    92→          message: volunteerForm.message,
+    93→        }),
+    94→      });
+    95→      if (res.ok) {
+    96→        setSubmitted('volunteer');
+    97→        setVolunteerForm({ name: '', email: '', phone: '', county: '', skills: [], availability: '', message: '' });
+    98→      }
+    99→    } catch {
+   100→      // Error handling
+   101→    } finally {
+   102→      setIsSubmitting('');
+   103→    }
+   104→  };
+   105→
+   106→  const handleSubmitPartner = async (e: React.FormEvent) => {
+   107→    e.preventDefault();
+   108→    setIsSubmitting('partner');
+   109→    try {
+   110→      const res = await fetch('/api/contact', {
+   111→        method: 'POST',
+   112→        headers: { 'Content-Type': 'application/json' },
+   113→        body: JSON.stringify({
+   114→          type: 'partner',
+   115→          name: partnerForm.orgName,
+   116→          email: partnerForm.email,
+   117→          phone: partnerForm.phone,
+   118→          contactPerson: partnerForm.contactPerson,
+   119→          partnershipType: partnerForm.partnershipType,
+   120→          message: partnerForm.message,
+   121→        }),
+   122→      });
+   123→      if (res.ok) {
+   124→        setSubmitted('partner');
+   125→        setPartnerForm({ orgName: '', contactPerson: '', email: '', phone: '', partnershipType: '', message: '' });
+   126→      }
+   127→    } catch {
+   128→      // Error handling
+   129→    } finally {
+   130→      setIsSubmitting('');
+   131→    }
+   132→  };
+   133→
+   134→  return (
+   135→    <section id="get-involved" ref={sectionRef} className="py-20 md:py-28 bg-binti-warm-gray/50">
+   136→      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   137→        {/* Section Header */}
+   138→        <div className={`text-center max-w-2xl mx-auto mb-12 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+   139→          <span className="inline-block text-sm font-bold uppercase tracking-widest text-binti-pink mb-3">
+   140→            Make a Difference
+   141→          </span>
+   142→          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-binti-navy">
+   143→            Get{' '}
+   144→            <span className="text-gradient">Involved</span>
+   145→          </h2>
+   146→          <p className="mt-4 text-binti-navy/70 text-base sm:text-lg">
+   147→            Whether you donate, volunteer, or partner with us — every action counts in empowering
+   148→            young women across Nairobi.
+   149→          </p>
+   150→        </div>
+   151→
+   152→        {/* Quick Ways to Help */}
+   153→        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 ${isVisible ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
+   154→          {[
+   155→            { icon: Heart, title: 'Donate', desc: 'Every KES transforms lives', onClick: () => setActiveTab('donate') },
+   156→            { icon: HandHeart, title: 'Volunteer', desc: 'Share your skills and time', onClick: () => setActiveTab('volunteer') },
+   157→            { icon: Users, title: 'Partner', desc: 'Collaborate for impact', onClick: () => setActiveTab('partner') },
+   158→            { icon: Share2, title: 'Share', desc: 'Spread the word', onClick: () => {} },
+   159→          ].map((way, i) => (
+   160→            <button
+   161→              key={way.title}
+   162→              onClick={way.onClick}
+   163→              className="group p-5 bg-white rounded-xl border border-binti-warm-gray hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-left"
+   164→            >
+   165→              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-binti-pink/10 mb-3 transition-transform group-hover:scale-110">
+   166→                <way.icon className="w-6 h-6 text-binti-pink" />
+   167→              </div>
+   168→              <h4 className="font-bold text-binti-navy mb-1">{way.title}</h4>
+   169→              <p className="text-xs text-binti-navy/60 leading-relaxed">{way.desc}</p>
+   170→            </button>
+   171→          ))}
+   172→        </div>
+   173→
+   174→        {/* Tabs */}
+   175→        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+   176→          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto mb-8">
+   177→            <TabsTrigger value="donate" className="rounded-full text-sm font-medium">
+   178→              <Banknote className="w-4 h-4 mr-1.5" />
+   179→              Donate
+   180→            </TabsTrigger>
+   181→            <TabsTrigger value="volunteer" className="rounded-full text-sm font-medium">
+   182→              <HandHeart className="w-4 h-4 mr-1.5" />
+   183→              Volunteer
+   184→            </TabsTrigger>
+   185→            <TabsTrigger value="partner" className="rounded-full text-sm font-medium">
+   186→              <Users className="w-4 h-4 mr-1.5" />
+   187→              Partner
+   188→            </TabsTrigger>
+   189→          </TabsList>
+   190→
+   191→          {/* Donate Tab */}
+   192→          <TabsContent value="donate">
+   193→            <div className="grid lg:grid-cols-2 gap-8">
+   194→              {/* M-Pesa */}
+   195→              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-binti-warm-gray shadow-sm">
+   196→                <div className="flex items-center gap-3 mb-6">
+   197→                  <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+   198→                    <Smartphone className="w-6 h-6 text-green-600" />
+   199→                  </div>
+   200→                  <div>
+   201→                    <h3 className="font-bold text-binti-navy text-lg">M-Pesa (Lipa na M-Pesa)</h3>
+   202→                    <p className="text-sm text-binti-navy/60">Every KES counts</p>
+   203→                  </div>
+   204→                </div>
+   205→                <div className="space-y-3">
+   206→                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
+   207→                    <div className="text-sm text-binti-navy/60 mb-1">Paybill Number</div>
+   208→                    <div className="text-2xl font-extrabold text-binti-navy">123456</div>
+   209→                  </div>
+   210→                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
+   211→                    <div className="text-sm text-binti-navy/60 mb-1">Account Number</div>
+   212→                    <div className="text-xl font-bold text-binti-pink">BINTI</div>
+   213→                  </div>
+   214→                  <div className="p-3 bg-binti-pink/5 rounded-xl border border-binti-pink/10">
+   215→                    <p className="text-xs text-binti-navy/70 leading-relaxed">
+   216→                      Go to M-Pesa &gt; Lipa na M-Pesa &gt; Paybill &gt; Enter 123456 &gt; Account: BINTI &gt; Enter Amount &gt; Confirm
+   217→                    </p>
+   218→                  </div>
+   219→                </div>
+   220→              </div>
+   221→
+   222→              {/* Bank Transfer */}
+   223→              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-binti-warm-gray shadow-sm">
+   224→                <div className="flex items-center gap-3 mb-6">
+   225→                  <div className="w-12 h-12 rounded-xl bg-binti-teal/10 flex items-center justify-center">
+   226→                    <Building2 className="w-6 h-6 text-binti-teal" />
+   227→                  </div>
+   228→                  <div>
+   229→                    <h3 className="font-bold text-binti-navy text-lg">Bank Transfer</h3>
+   230→                    <p className="text-sm text-binti-navy/60">Direct bank deposit</p>
+   231→                  </div>
+   232→                </div>
+   233→                <div className="space-y-3">
+   234→                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
+   235→                    <div className="text-sm text-binti-navy/60 mb-1">Bank</div>
+   236→                    <div className="text-lg font-bold text-binti-navy">Kenya Commercial Bank (KCB)</div>
+   237→                  </div>
+   238→                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
+   239→                    <div className="text-sm text-binti-navy/60 mb-1">Account Name</div>
+   240→                    <div className="text-lg font-bold text-binti-navy">BINTI Rising Initiative</div>
+   241→                  </div>
+   242→                  <div className="p-4 bg-binti-warm-gray/50 rounded-xl">
+   243→                    <div className="text-sm text-binti-navy/60 mb-1">Branch</div>
+   244→                    <div className="text-lg font-bold text-binti-navy">Nairobi Main</div>
+   245→                  </div>
+   246→                </div>
+   247→              </div>
+   248→            </div>
+   249→
+   250→            {/* Donation Impact Calculator */}
+   251→            <div className="mt-8 bg-gradient-navy rounded-2xl p-6 sm:p-8 text-white">
+   252→              <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+   253→                <Heart className="w-5 h-5 text-binti-pink" />
+   254→                Your Donation&apos;s Impact
+   255→              </h3>
+   256→              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+   257→                {[
+   258→                  { amount: 'KES 1,000', impact: '1 training session for a young woman' },
+   259→                  { amount: 'KES 5,000', impact: 'Complete pillar training (6-8 sessions)' },
+   260→                  { amount: 'KES 10,000', impact: 'Materials for a cohort of 20 participants' },
+   261→                  { amount: 'KES 20,000', impact: 'Sponsor an entire cohort of 20 young women' },
+   262→                ].map((tier) => (
+   263→                  <div key={tier.amount} className="bg-white/10 rounded-xl p-4 text-center border border-white/10">
+   264→                    <div className="text-binti-gold font-extrabold text-lg">{tier.amount}</div>
+   265→                    <div className="text-white/70 text-xs mt-1 leading-relaxed">{tier.impact}</div>
+   266→                  </div>
+   267→                ))}
+   268→              </div>
+   269→              <div className="text-center mt-6">
+   270→                <Button
+   271→                  size="lg"
+   272→                  className="bg-binti-pink hover:bg-binti-pink/90 text-white rounded-full px-10 shadow-lg shadow-binti-pink/25 transition-all hover:shadow-binti-pink/40"
+   273→                >
+   274→                  Donate Now - Change a Life
+   275→                </Button>
+   276→              </div>
+   277→            </div>
+   278→          </TabsContent>
+   279→
+   280→          {/* Volunteer Tab */}
+   281→          <TabsContent value="volunteer">
+   282→            <div className="max-w-2xl mx-auto">
+   283→              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-binti-warm-gray">
+   284→                <h3 className="text-xl font-bold text-binti-navy mb-2">Volunteer With Us</h3>
+   285→                <p className="text-sm text-binti-navy/60 mb-6">
+   286→                  Join our mission in Nairobi. Fill out the form below and we&apos;ll get back to you within 48 hours.
+   287→                </p>
+   288→
+   289→                {submitted === 'volunteer' ? (
+   290→                  <div className="text-center py-12">
+   291→                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+   292→                      <CheckCircle2 className="w-7 h-7 text-green-600" />
+   293→                    </div>
+   294→                    <h4 className="text-lg font-bold text-binti-navy mb-2">Application Submitted!</h4>
+   295→                    <p className="text-sm text-binti-navy/60">
+   296→                      Thank you for volunteering! We&apos;ll review your application and reach out soon.
+   297→                    </p>
+   298→                    <Button
+   299→                      onClick={() => setSubmitted('')}
+   300→                      variant="outline"
+   301→                      className="mt-4 border-binti-pink text-binti-pink hover:bg-binti-pink/5"
+   302→                    >
+   303→                      Submit Another Application
+   304→                    </Button>
+   305→                  </div>
+   306→                ) : (
+   307→                  <form onSubmit={handleSubmitVolunteer} className="space-y-4">
+   308→                    <div className="grid sm:grid-cols-2 gap-4">
+   309→                      <div className="space-y-2">
+   310→                        <Label htmlFor="v-name">Full Name *</Label>
+   311→                        <Input
+   312→                          id="v-name"
+   313→                          placeholder="Your name"
+   314→                          value={volunteerForm.name}
+   315→                          onChange={(e) => setVolunteerForm(prev => ({ ...prev, name: e.target.value }))}
+   316→                          required
+   317→                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   318→                        />
+   319→                      </div>
+   320→                      <div className="space-y-2">
+   321→                        <Label htmlFor="v-email">Email Address *</Label>
+   322→                        <Input
+   323→                          id="v-email"
+   324→                          type="email"
+   325→                          placeholder="your@email.com"
+   326→                          value={volunteerForm.email}
+   327→                          onChange={(e) => setVolunteerForm(prev => ({ ...prev, email: e.target.value }))}
+   328→                          required
+   329→                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   330→                        />
+   331→                      </div>
+   332→                    </div>
+   333→                    <div className="grid sm:grid-cols-2 gap-4">
+   334→                      <div className="space-y-2">
+   335→                        <Label htmlFor="v-phone">Phone Number *</Label>
+   336→                        <Input
+   337→                          id="v-phone"
+   338→                          placeholder="+254 7XX XXX XXX"
+   339→                          value={volunteerForm.phone}
+   340→                          onChange={(e) => setVolunteerForm(prev => ({ ...prev, phone: e.target.value }))}
+   341→                          required
+   342→                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   343→                        />
+   344→                      </div>
+   345→                      <div className="space-y-2">
+   346→                        <Label htmlFor="v-county">Sub-County in Nairobi *</Label>
+   347→                        <select
+   348→                          id="v-county"
+   349→                          value={volunteerForm.county}
+   350→                          onChange={(e) => setVolunteerForm(prev => ({ ...prev, county: e.target.value }))}
+   351→                          required
+   352→                          className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+   353→                        >
+   354→                          <option value="">Select sub-county</option>
+   355→                          {nairobiSubCounties.map((sc) => (
+   356→                            <option key={sc} value={sc}>{sc}</option>
+   357→                          ))}
+   358→                        </select>
+   359→                      </div>
+   360→                    </div>
+   361→
+   362→                    {/* Skills multi-select */}
+   363→                    <div className="space-y-2">
+   364→                      <Label>Skills (up to 5) *</Label>
+   365→                      <div className="flex flex-wrap gap-2 mb-2">
+   366→                        {volunteerForm.skills.map((skill) => (
+   367→                          <Badge
+   368→                            key={skill}
+   369→                            variant="secondary"
+   370→                            className="bg-binti-pink/10 text-binti-pink border-binti-pink/20 cursor-pointer hover:bg-binti-pink/20"
+   371→                            onClick={() => removeSkill(skill)}
+   372→                          >
+   373→                            {skill} ×
+   374→                          </Badge>
+   375→                        ))}
+   376→                      </div>
+   377→                      <Input
+   378→                        placeholder="Type to search skills..."
+   379→                        value={skillInput}
+   380→                        onChange={(e) => setSkillInput(e.target.value)}
+   381→                        onFocus={() => setSkillInput(' ')}
+   382→                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   383→                      />
+   384→                      {skillInput && filteredSkills.length > 0 && (
+   385→                        <div className="bg-white rounded-lg border border-binti-warm-gray shadow-lg max-h-32 overflow-y-auto custom-scrollbar">
+   386→                          {filteredSkills.map((skill) => (
+   387→                            <button
+   388→                              key={skill}
+   389→                              type="button"
+   390→                              onClick={() => addSkill(skill)}
+   391→                              className="w-full text-left px-3 py-2 text-sm text-binti-navy/70 hover:bg-binti-warm-gray transition-colors"
+   392→                            >
+   393→                              + {skill}
+   394→                            </button>
+   395→                          ))}
+   396→                        </div>
+   397→                      )}
+   398→                    </div>
+   399→
+   400→                    <div className="space-y-2">
+   401→                      <Label htmlFor="v-availability">Availability *</Label>
+   402→                      <select
+   403→                        id="v-availability"
+   404→                        value={volunteerForm.availability}
+   405→                        onChange={(e) => setVolunteerForm(prev => ({ ...prev, availability: e.target.value }))}
+   406→                        required
+   407→                        className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+   408→                      >
+   409→                        <option value="">Select availability</option>
+   410→                        <option value="Weekdays (Morning)">Weekdays (Morning)</option>
+   411→                        <option value="Weekdays (Afternoon)">Weekdays (Afternoon)</option>
+   412→                        <option value="Weekends">Weekends</option>
+   413→                        <option value="Flexible">Flexible</option>
+   414→                        <option value="One-time events">One-time events only</option>
+   415→                      </select>
+   416→                    </div>
+   417→
+   418→                    <div className="space-y-2">
+   419→                      <Label htmlFor="v-message">Message (optional)</Label>
+   420→                      <Textarea
+   421→                        id="v-message"
+   422→                        placeholder="Tell us about yourself and why you want to volunteer..."
+   423→                        rows={3}
+   424→                        value={volunteerForm.message}
+   425→                        onChange={(e) => setVolunteerForm(prev => ({ ...prev, message: e.target.value }))}
+   426→                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20 resize-none"
+   427→                      />
+   428→                    </div>
+   429→
+   430→                    <Button
+   431→                      type="submit"
+   432→                      disabled={isSubmitting === 'volunteer'}
+   433→                      className="w-full bg-binti-pink hover:bg-binti-pink/90 text-white rounded-full py-6 shadow-lg shadow-binti-pink/25 transition-all hover:shadow-binti-pink/40"
+   434→                    >
+   435→                      {isSubmitting === 'volunteer' ? (
+   436→                        <span className="flex items-center gap-2">
+   437→                          <Loader2 className="w-4 h-4 animate-spin" />
+   438→                          Submitting...
+   439→                        </span>
+   440→                      ) : (
+   441→                        <span className="flex items-center gap-2">
+   442→                          <Send className="w-4 h-4" />
+   443→                          Submit Volunteer Application
+   444→                        </span>
+   445→                      )}
+   446→                    </Button>
+   447→                  </form>
+   448→                )}
+   449→              </div>
+   450→            </div>
+   451→          </TabsContent>
+   452→
+   453→          {/* Partner Tab */}
+   454→          <TabsContent value="partner">
+   455→            <div className="max-w-2xl mx-auto">
+   456→              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-binti-warm-gray">
+   457→                <h3 className="text-xl font-bold text-binti-navy mb-2">Partner With Us</h3>
+   458→                <p className="text-sm text-binti-navy/60 mb-6">
+   459→                  We welcome partnerships with NGOs, government agencies, private sector, and academic
+   460→                  institutions working in Nairobi.
+   461→                </p>
+   462→
+   463→                {submitted === 'partner' ? (
+   464→                  <div className="text-center py-12">
+   465→                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+   466→                      <CheckCircle2 className="w-7 h-7 text-green-600" />
+   467→                    </div>
+   468→                    <h4 className="text-lg font-bold text-binti-navy mb-2">Inquiry Submitted!</h4>
+   469→                    <p className="text-sm text-binti-navy/60">
+   470→                      Thank you for your interest in partnering with BINTI Rising. We&apos;ll be in touch soon.
+   471→                    </p>
+   472→                    <Button
+   473→                      onClick={() => setSubmitted('')}
+   474→                      variant="outline"
+   475→                      className="mt-4 border-binti-pink text-binti-pink hover:bg-binti-pink/5"
+   476→                    >
+   477→                      Submit Another Inquiry
+   478→                    </Button>
+   479→                  </div>
+   480→                ) : (
+   481→                  <form onSubmit={handleSubmitPartner} className="space-y-4">
+   482→                    <div className="space-y-2">
+   483→                      <Label htmlFor="p-org">Organization Name *</Label>
+   484→                      <Input
+   485→                        id="p-org"
+   486→                        placeholder="Your organization"
+   487→                        value={partnerForm.orgName}
+   488→                        onChange={(e) => setPartnerForm(prev => ({ ...prev, orgName: e.target.value }))}
+   489→                        required
+   490→                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   491→                      />
+   492→                    </div>
+   493→                    <div className="space-y-2">
+   494→                      <Label htmlFor="p-contact">Contact Person *</Label>
+   495→                      <Input
+   496→                        id="p-contact"
+   497→                        placeholder="Full name of contact person"
+   498→                        value={partnerForm.contactPerson}
+   499→                        onChange={(e) => setPartnerForm(prev => ({ ...prev, contactPerson: e.target.value }))}
+   500→                        required
+   501→                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   502→                      />
+   503→                    </div>
+   504→                    <div className="grid sm:grid-cols-2 gap-4">
+   505→                      <div className="space-y-2">
+   506→                        <Label htmlFor="p-email">Email Address *</Label>
+   507→                        <Input
+   508→                          id="p-email"
+   509→                          type="email"
+   510→                          placeholder="contact@org.com"
+   511→                          value={partnerForm.email}
+   512→                          onChange={(e) => setPartnerForm(prev => ({ ...prev, email: e.target.value }))}
+   513→                          required
+   514→                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   515→                        />
+   516→                      </div>
+   517→                      <div className="space-y-2">
+   518→                        <Label htmlFor="p-phone">Phone Number *</Label>
+   519→                        <Input
+   520→                          id="p-phone"
+   521→                          placeholder="+254 7XX XXX XXX"
+   522→                          value={partnerForm.phone}
+   523→                          onChange={(e) => setPartnerForm(prev => ({ ...prev, phone: e.target.value }))}
+   524→                          required
+   525→                          className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20"
+   526→                        />
+   527→                      </div>
+   528→                    </div>
+   529→                    <div className="space-y-2">
+   530→                      <Label htmlFor="p-type">Partnership Type *</Label>
+   531→                      <select
+   532→                        id="p-type"
+   533→                        value={partnerForm.partnershipType}
+   534→                        onChange={(e) => setPartnerForm(prev => ({ ...prev, partnershipType: e.target.value }))}
+   535→                        required
+   536→                        className="w-full h-10 rounded-md border border-binti-warm-gray bg-white px-3 py-2 text-sm focus:border-binti-pink focus:ring-binti-pink/20 focus:outline-none"
+   537→                      >
+   538→                        <option value="">Select partnership type</option>
+   539→                        {partnershipTypes.map((pt) => (
+   540→                          <option key={pt} value={pt}>{pt}</option>
+   541→                        ))}
+   542→                      </select>
+   543→                    </div>
+   544→                    <div className="space-y-2">
+   545→                      <Label htmlFor="p-message">Message *</Label>
+   546→                      <Textarea
+   547→                        id="p-message"
+   548→                        placeholder="Tell us about your organization and the partnership you envision..."
+   549→                        rows={4}
+   550→                        value={partnerForm.message}
+   551→                        onChange={(e) => setPartnerForm(prev => ({ ...prev, message: e.target.value }))}
+   552→                        required
+   553→                        className="border-binti-warm-gray focus:border-binti-pink focus:ring-binti-pink/20 resize-none"
+   554→                      />
+   555→                    </div>
+   556→                    <Button
+   557→                      type="submit"
+   558→                      disabled={isSubmitting === 'partner'}
+   559→                      className="w-full bg-binti-teal hover:bg-binti-teal/90 text-white rounded-full py-6 shadow-lg shadow-binti-teal/25 transition-all hover:shadow-binti-teal/40"
+   560→                    >
+   561→                      {isSubmitting === 'partner' ? (
+   562→                        <span className="flex items-center gap-2">
+   563→                          <Loader2 className="w-4 h-4 animate-spin" />
+   564→                          Submitting...
+   565→                        </span>
+   566→                      ) : (
+   567→                        <span className="flex items-center gap-2">
+   568→                          <Send className="w-4 h-4" />
+   569→                          Submit Partnership Inquiry
+   570→                        </span>
+   571→                      )}
+   572→                    </Button>
+   573→                  </form>
+   574→                )}
+   575→              </div>
+   576→            </div>
+   577→          </TabsContent>
+   578→        </Tabs>
+   579→
+   580→        {/* Contact Info */}
+   581→        <div className={`mt-12 ${isVisible ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
+   582→          <div className="p-6 bg-binti-navy rounded-2xl text-white">
+   583→            <h4 className="font-bold mb-4 text-center">Contact Information</h4>
+   584→            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+   585→              <div className="flex items-center gap-3">
+   586→                <MapPin className="w-4 h-4 text-binti-gold shrink-0" />
+   587→                <span className="text-sm text-white/80">Nairobi, Kenya</span>
+   588→              </div>
+   589→              <div className="flex items-center gap-3">
+   590→                <Phone className="w-4 h-4 text-binti-gold shrink-0" />
+   591→                <span className="text-sm text-white/80">+254 700 000 000</span>
+   592→              </div>
+   593→              <div className="flex items-center gap-3">
+   594→                <Mail className="w-4 h-4 text-binti-gold shrink-0" />
+   595→                <span className="text-sm text-white/80">info@bintirising.org</span>
+   596→              </div>
+   597→            </div>
+   598→            {/* Social Links */}
+   599→            <div className="mt-4 flex justify-center gap-3">
+   600→              {[
+   601→                { icon: Instagram, label: 'Instagram' },
+   602→                { icon: Facebook, label: 'Facebook' },
+   603→                { icon: Twitter, label: 'Twitter' },
+   604→              ].map((social) => (
+   605→                <button
+   606→                  key={social.label}
+   607→                  aria-label={social.label}
+   608→                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-binti-pink flex items-center justify-center transition-colors"
+   609→                >
+   610→                  <social.icon className="w-4 h-4" />
+   611→                </button>
+   612→              ))}
+   613→            </div>
+   614→          </div>
+   615→        </div>
+   616→      </div>
+   617→    </section>
+   618→  );
+   619→}
+   620→

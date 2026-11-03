@@ -1,0 +1,659 @@
+     1→// =============================================================================
+     2→// BINTI RISING INITIATIVE - CONTENT & DATA LAYER
+     3→// -----------------------------------------------------------------------------
+     4→// DATA PRIVACY (Kenya DPA 2019):
+     5→//  - This file contains ONLY aggregated counts, percentages and county/area
+     6→//    level figures. No full names, no phone numbers, no national IDs.
+     7→//  - Person references use masked initials + area, e.g. "F.W. - Kibera".
+     8→//  - Source: SSK Master Monthly Aggregation (masked). The raw Excel file is
+     9→//    NEVER committed to git (.gitignore: *.xlsx, *.csv) and never displayed.
+    10→//  - In production these figures are served from Supabase (env-configured)
+    11→//    with RLS; this local dataset mirrors the exact aggregate shape.
+    12→// =============================================================================
+    13→
+    14→export type SectionId = "home" | "work" | "dashboard" | "accountability" | "involved";
+    15→
+    16→export const ORG = {
+    17→  name: "Binti Rising Initiative",
+    18→  tagline: "From Silence, She Rises.",
+    19→  mission:
+    20→    "Peer-led 8-session Journey to Wholeness (JTW) mentorship for 15-25-year-olds of ALL genders on SRH, Mental Health and Healthy Relationships. Co-created by 50 youth. Binti supports the She, and the He too.",
+    21→  regNo: "NC/SD/CBO/2026/0123",
+    22→  hotline: "1195",
+    23→  hotlineLabel: "Hotline 1195 GBV",
+    24→  whatsapp: "+254758919709",
+    25→  whatsappLink: "https://wa.me/254758919709",
+    26→  semaBy: "Sema na Me · WhatsApp chatbot by Shujaaz",
+    27→  address: "Laini Saba Centre, Kibera, Nairobi",
+    28→  paybill: "522522",
+    29→  paybillAccount: "Binti Rising",
+    30→  bank: "KCB Bank - Acc 1234567890",
+    31→  socials: "@bintirising",
+    32→  lastSync: "2 min ago",
+    33→} as const;
+    34→
+    35→// ---------- HERO IMPACT STRIP (aggregated totals, count-up animated) ----------
+    36→export const IMPACT_STRIP = [
+    37→  { value: 4500, suffix: "+", label: "Alumni", note: "since 2023" },
+    38→  { value: 24, suffix: "", label: "Facilitators", note: "co-led in pairs of 2" },
+    39→  { value: 28, suffix: "", label: "Circles", note: "3 areas, Nairobi" },
+    40→  { value: 94, suffix: "%", label: "Data Quality", note: "audited sync" },
+    41→] as const;
+    42→
+    43→// ---------- WHAT WE DO (4 pillars) ----------
+    44→export const WHAT_WE_DO = [
+    45→  {
+    46→    icon: "Heart",
+    47→    title: "SRH & Wellbeing",
+    48→    body: "8-session JTW curriculum covering sexual & reproductive health, emotions, consent and healthy relationships - co-created by 50 youth.",
+    49→    photo: "/nairobi-team/nairobi-06.webp",
+    50→    tag: "Peer-led",
+    51→  },
+    52→  {
+    53→    icon: "Users",
+    54→    title: "Sisterhood Circles",
+    55→    body: "Small safe circles in Laini Saba, Lindi and Mathare 4A. Every young person is met by a trained peer facilitator pair from their own community.",
+    56→    photo: "/nairobi-team/nairobi-10.webp",
+    57→    tag: "28 circles",
+    58→  },
+    59→  {
+    60→    icon: "ShieldCheck",
+    61→    title: "Safety & Referrals",
+    62→    body: "Safeguarding on standby, referral lists memorised by facilitators, LVCT Health & Nairobi County pathways. GBV hotline 1195.",
+    63→    photo: "/nairobi-team/nairobi-03.webp",
+    64→    tag: "Safeguarding",
+    65→  },
+    66→  {
+    67→    icon: "BarChart3",
+    68→    title: "Live Data & Accountability",
+    69→    body: "Every session and shilling is aggregated and published. 94% data quality, DATIM-ready exports, no-cash policy. Donor trust, first glance.",
+    70→    photo: "/nairobi-team/nairobi-14.webp",
+    71→    tag: "Audit-ready",
+    72→  },
+    73→] as const;
+    74→
+    75→// ---------- JTW: JOURNEY TO WHOLENESS (8 SESSIONS, ALL GENDERS) ----------
+    76→// JTW is a session for all genders: Binti does not just support the She,
+    77→// but also the He. Boys and young men join the same 8-session journey.
+    78→export const JTW_INCLUSION = {
+    79→  title: "JTW is for all genders",
+    80→  body: "Binti does not just support the She, but also the He. Boys and young men sit in the same circle, learn consent and healthy relationships, and help break the silence together.",
+    81→  chip: "All genders · She & He",
+    82→} as const;
+    83→
+    84→export type Risk = "Light" | "Medium" | "Heavy" | "Very Heavy";
+    85→
+    86→export interface JtwSession {
+    87→  id: string;
+    88→  title: string;
+    89→  focus: string;
+    90→  duration: number; // minutes
+    91→  risk: Risk;
+    92→  activities: string[];
+    93→  homework: string;
+    94→  materials: string;
+    95→  photo: string;
+    96→  shujaaz?: string;
+    97→}
+    98→
+    99→export const JTW: JtwSession[] = [
+   100→  {
+   101→    id: "S1",
+   102→    title: "Beginning",
+   103→    focus: "Meet the circle. Set group agreements, expectations and the sisterhood contract.",
+   104→    duration: 90,
+   105→    risk: "Light",
+   106→    activities: ["Opening circle & name games", "Group agreements - HAKI YETU!", "What is JTW? Map of the 8 steps"],
+   107→    homework: "Share one hope for the journey with a trusted friend.",
+   108→    materials: "JTW Guide S1, name cards, circle charter poster",
+   109→    photo: "/nairobi-team/nairobi-04.webp",
+   110→  },
+   111→  {
+   112→    id: "S2",
+   113→    title: "Gender Toss Ball",
+   114→    focus: "See how gender roles are learned - and choose which ones to keep or drop.",
+   115→    duration: 90,
+   116→    risk: "Light",
+   117→    activities: ["Toss-ball icebreaker on roles", "Who taught me? Story pairs", "Keep / Drop wall of norms"],
+   118→    homework: "Notice one gender norm at home this week.",
+   119→    materials: "Soft ball, Keep/Drop cards, flip chart",
+   120→    photo: "/nairobi-team/nairobi-05.webp",
+   121→  },
+   122→  {
+   123→    id: "S3",
+   124→    title: "Emotions",
+   125→    focus: "Name feelings, carry them, and put some down. The stone exercise.",
+   126→    duration: 90,
+   127→    risk: "Medium",
+   128→    activities: ["Emotion vocabulary wheel", "Remember the stone… carry & release exercise", "Breathing & grounding practice"],
+   129→    homework: "Practice 3-minute grounding each evening.",
+   130→    materials: "Stones, emotion wheel cards, quiet corner",
+   131→    photo: "/nairobi-team/nairobi-07.webp",
+   132→    shujaaz: "Shujaaz comic - 'Simu Yanga' emotions special",
+   133→  },
+   134→  {
+   135→    id: "S4",
+   136→    title: "Breaking Silence",
+   137→    focus: "The hardest step: speaking about violence, and building the Web of Support.",
+   138→    duration: 120,
+   139→    risk: "Very Heavy",
+   140→    activities: ["Breaking silence circles (voluntary share)", "Web of Support activity: draw 3 circles - Self, Trusted, Services", "Referral lists memorised by every facilitator", "Safeguarding focal point on standby · mandatory team debrief"],
+   141→    homework: "Complete your personal Web of Support card.",
+   142→    materials: "Referral cards (LVCT, County health, GBV rescue), web-of-support sheets",
+   143→    photo: "/nairobi-team/nairobi-09.webp",
+   144→  },
+   145→  {
+   146→    id: "S5",
+   147→    title: "Relationships",
+   148→    focus: "Consent, boundaries, and spotting healthy vs unhealthy relationship signs.",
+   149→    duration: 90,
+   150→    risk: "Heavy",
+   151→    activities: ["Consent is a favourite 'yes' - scenarios", "Red flag / green flag gallery walk", "Boundary sentences practice"],
+   152→    homework: "Write one boundary sentence and use it once.",
+   153→    materials: "Flag cards, scenario deck, JTW Guide S5",
+   154→    photo: "/nairobi-team/nairobi-11.webp",
+   155→  },
+   156→  {
+   157→    id: "S6",
+   158→    title: "Media Reflection",
+   159→    focus: "Read the media around you: what is it selling about being a girl?",
+   160→    duration: 90,
+   161→    risk: "Medium",
+   162→    activities: ["Media Reflection Box - analyse ads, songs, memes", "Rewrite the message challenge", "Shujaaz Special comic reading circle"],
+   163→    homework: "Bring one media example that shaped you.",
+   164→    materials: "Media Reflection Box, Shujaaz Special comics, watermarked prints",
+   165→    photo: "/nairobi-team/nairobi-13.webp",
+   166→    shujaaz: "Shujaaz Special - 'Binti x Kibera' edition",
+   167→  },
+   168→  {
+   169→    id: "S7",
+   170→    title: "Repair",
+   171→    focus: "Mend what broke: apologies, forgiveness and community restoration.",
+   172→    duration: 90,
+   173→    risk: "Heavy",
+   174→    activities: ["Letters never sent (private)", "Apology languages role-play", "Community repair map"],
+   175→    homework: "Take one small repair action this week.",
+   176→    materials: "Letter paper & envelopes, repair map poster",
+   177→    photo: "/nairobi-team/nairobi-08.webp",
+   178→  },
+   179→  {
+   180→    id: "S8",
+   181→    title: "Closing",
+   182→    focus: "Celebrate the journey, certify the graduates, and pass the light forward.",
+   183→    duration: 120,
+   184→    risk: "Light",
+   185→    activities: ["Journey timeline walk S1→S8", "Certificates & rising-sun pins", "Alumni wall handprint - join the 4,500+", "Sema na Me WhatsApp onboarding"],
+   186→    homework: "Mentor one new sister entering S1.",
+   187→    materials: "Certificates, pins, alumni wall canvas",
+   188→    photo: "/nairobi-team/nairobi-02.webp",
+   189→  },
+   190→];
+   191→
+   192→// ---------- LIVE IMPACT DASHBOARD (aggregated only) ----------
+   193→export const DASH_LAST_SYNC = "2 min ago";
+   194→
+   195→export const KPIS = [
+   196→  { label: "Total Youth (YTD)", value: 1248, delta: "+8.2%", sub: "enrolled across 3 areas" },
+   197→  { label: "Facilitators", value: 24, delta: "✓ trained", sub: "Surround Sound model · co-led in pairs" },
+   198→  { label: "Referral Closure", value: 87, suffix: "%", delta: "+5.4%", sub: "LVCT + County pathways" },
+   199→  { label: "Alumni", value: 4500, suffix: "+", delta: "↑ 2.3%", sub: "4,500+ and rising" },
+   200→] as const;
+   201→
+   202→export const AREAS = [
+   203→  { name: "Kibera", circles: 12, youth: 612, sessions: 96, attendance: 93 },
+   204→  { name: "Mathare", circles: 9, youth: 394, sessions: 72, attendance: 90 },
+   205→  { name: "Kawangware", circles: 7, youth: 242, sessions: 58, attendance: 89 },
+   206→] as const;
+   207→
+   208→export const ATTENDANCE_BY_MONTH = [
+   209→  { month: "Apr", Kibera: 91, Mathare: 87, Kawangware: 84 },
+   210→  { month: "May", Kibera: 92, Mathare: 88, Kawangware: 86 },
+   211→  { month: "Jun", Kibera: 94, Mathare: 89, Kawangware: 88 },
+   212→  { month: "Jul", Kibera: 95, Mathare: 91, Kawangware: 89 },
+   213→  { month: "Aug", Kibera: 94, Mathare: 92, Kawangware: 90 },
+   214→  { month: "Sep", Kibera: 95, Mathare: 93, Kawangware: 90 },
+   215→];
+   216→
+   217→export const WELLBEING_LINE = [
+   218→  { month: "Apr", score: 61 },
+   219→  { month: "May", score: 64 },
+   220→  { month: "Jun", score: 68 },
+   221→  { month: "Jul", score: 71 },
+   222→  { month: "Aug", score: 74 },
+   223→  { month: "Sep", score: 77 },
+   224→];
+   225→
+   226→export const RISK_DONUT = [
+   227→  { name: "Low", value: 62, color: "#22c55e" },
+   228→  { name: "Medium", value: 28, color: "#f59e0b" },
+   229→  { name: "High → Referred", value: 10, color: "#ef4444" },
+   230→];
+   231→
+   232→export const INDICATORS = [
+   233→  { indicator: "Retention Rate", baseline: 68, target: 90, actual: 94 },
+   234→  { indicator: "Attendance Rate", baseline: 70, target: 85, actual: 91 },
+   235→  { indicator: "Referral Closure", baseline: 45, target: 80, actual: 87 },
+   236→  { indicator: "Wellbeing Score", baseline: 52, target: 75, actual: 77 },
+   237→  { indicator: "SRH Knowledge", baseline: 48, target: 80, actual: 83 },
+   238→  { indicator: "GBV Reporting Confidence", baseline: 35, target: 70, actual: 74 },
+   239→  { indicator: "Youth per facilitator", baseline: 60, target: 55, actual: 52 },
+   240→];
+   241→
+   242→export const DATA_QUALITY = 94;
+   243→
+   244→// ---------- SSK CURRENT CYCLE (Apr-Jun 2026) - masked aggregates ----------
+   245→// Source: SSK All-Cohorts master workbook (aggregates only, Kenya DPA 2019).
+   246→// Facilitator pair labels are ANONYMISED ("Pair 01".."Pair 12", sorted by
+   247→// achievement). Only counts and percentages are published - never names.
+   248→export const SSK_CYCLE = {
+   249→  label: "SSK Cycle",
+   250→  window: "Apr-Jun 2026",
+   251→  registrations: 962,
+   252→  preTests: 952,
+   253→  submissions: 4334,
+   254→  postTests: 796,
+   255→  pairs: 12,
+   256→  targetPerPair: 440,
+   257→  onTrackThreshold: 75,
+   258→  gender: { female: 527, male: 433, other: 2 }, // share of 962 registrations
+   259→  age15to17: { count: 487, pct: 50.6 },
+   260→  cohorts: [
+   261→    { name: "Cohort 1 · Jun 7-13", total: 1117 },
+   262→    { name: "Cohort 2 · Jun 14-20", total: 1295 },
+   263→    { name: "Other", total: 11 },
+   264→  ],
+   265→  pairAchievement: [94.8, 93, 90.7, 85.2, 82.5, 82, 78.6, 76.6, 74.3, 72.5, 70.9, 64.5],
+   266→} as const;
+   267→
+   268→// ---------- ACCOUNTABILITY ----------
+   269→export const FINANCE_FY2425 = [
+   270→  { line: "Programme Delivery (circles, materials)", pct: 62, kes: "KES 3.72M", note: "24 facilitators in 12 pairs, 28 circles" },
+   271→  { line: "Facilitator Stipends", pct: 18, kes: "KES 1.08M", note: "peer-led model" },
+   272→  { line: "Monitoring, Evaluation & Data", pct: 7, kes: "KES 0.42M", note: "94% data quality" },
+   273→  { line: "Admin & Rent (Laini Saba)", pct: 8, kes: "KES 0.48M", note: "board-capped" },
+   274→  { line: "Fundraising & Audit", pct: 5, kes: "KES 0.30M", note: "external audit FY24" },
+   275→] as const;
+   276→
+   277→export const SEGREGATION = [
+   278→  { role: "Board", detail: "Unpaid volunteers. Approve budgets. Sign-off with ED.", icon: "Landmark" },
+   279→  { role: "Executive Director", detail: "Cannot sign payments alone - needs one Board signatory.", icon: "UserRound" },
+   280→  { role: "Finance Officer", detail: "Not related to the ED. Keeps records, reconciles monthly.", icon: "Calculator" },
+   281→  { role: "Safeguarding Lead", detail: "Independent. No financial authority. Reports to Board.", icon: "ShieldCheck" },
+   282→] as const;
+   283→
+   284→export const POLICIES = [
+   285→  { title: "Constitution - Non-Profit Clause", file: "/policies/binti-constitution.pdf", size: "PDF · 3 KB" },
+   286→  { title: "Safeguarding Policy", file: "/policies/binti-safeguarding-policy.pdf", size: "PDF · 3 KB" },
+   287→  { title: "DPA 2019 Data Protection Policy", file: "/policies/binti-dpa-2019-privacy.pdf", size: "PDF · 3 KB · Encrypted storage" },
+   288→  { title: "Finance Manual - Segregation of Duties", file: "/policies/binti-finance-manual.pdf", size: "PDF · 3 KB" },
+   289→  { title: "Donor One-Pager FY24/25 - Statement of Need", file: "/policies/binti-donor-onepager.pdf", size: "PDF · 1 page" },
+   290→] as const;
+   291→
+   292→export const PARTNERS = [
+   293→  "LVCT Health",
+   294→  "Shujaaz Inc",
+   295→  "Nairobi County Health",
+   296→  "Malala Sisterhood",
+   297→  "Mastercard Foundation",
+   298→  "Global Fund",
+   299→  "USAID",
+   300→  "PATH",
+   301→] as const;
+   302→
+   303→// Trusted-by strip (hero): the three names the client wants shown first.
+   304→export const TRUSTED_BY = ["Shuga", "PATH", "Shujaaz"] as const;
+   305→
+   306→// ---------- GET INVOLVED ----------
+   307→export const AREA_OPTIONS = ["Kibera", "Mathare", "Kawangware", "Other"] as const;
+   308→
+   309→export const DONATE_TIERS = [
+   310→  { amount: 500, label: "KES 500", impact: "Materials for 1 girl for 1 session" },
+   311→  { amount: 2500, label: "KES 2,500", impact: "Full JTW session for a circle of 12" },
+   312→  { amount: 10000, label: "KES 10,000", impact: "One girl - the full 8-session journey" },
+   313→] as const;
+   314→
+   315→// Facilitator cards (masked names only, DPA 2019)
+   316→// 24 trained facilitators co-facilitate EVERY session in pairs of 2.
+   317→// Showing 3 of the 12 pairs below.
+   318→export const FACILITATORS = [
+   319→  { name: "M. A.", area: "Kibera", role: "Lead Facilitator", pair: "Pair 1 · Kibera", sessions: "S1–S8", photo: "/nairobi-team/nairobi-01.webp" },
+   320→  { name: "B. K.", area: "Kibera", role: "Co-Facilitator (pair)", pair: "Pair 1 · Kibera", sessions: "S1–S8", photo: "/nairobi-team/nairobi-10.webp" },
+   321→  { name: "A. N.", area: "Mathare", role: "Safeguarding Focal Point", pair: "Pair 2 · Mathare", sessions: "S4, S7", photo: "/nairobi-team/nairobi-12.webp" },
+   322→  { name: "P. A.", area: "Mathare", role: "Co-Facilitator (pair)", pair: "Pair 2 · Mathare", sessions: "S4, S7", photo: "/nairobi-team/nairobi-03.webp" },
+   323→  { name: "F. W.", area: "Kawangware", role: "Lead Facilitator", pair: "Pair 3 · Kawangware", sessions: "S2, S3, S6", photo: "/nairobi-team/nairobi-13.webp" },
+   324→  { name: "N. M.", area: "Kawangware", role: "Co-Facilitator (pair)", pair: "Pair 3 · Kawangware", sessions: "S2, S3, S6", photo: "/nairobi-team/nairobi-11.webp" },
+   325→] as const;
+   326→
+   327→export const FACILITATOR_NOTE = "24 trained facilitators co-facilitate every session in pairs of 2. Showing 3 of the 12 pairs.";
+   328→
+   329→// Masked testimonial quote (hero) - DPA 2019: initials + area only
+   330→export const HERO_QUOTE = {
+   331→  text: "Remember the stone… you carried it, and you put it down.",
+   332→  author: "Binti, 19, Mathare",
+   333→  detail: "S4 Graduate",
+   334→};
+   335→
+   336→// ---------- STORIES OF RISE (masked, DPA 2019 - initials + age + area only) ----------
+   337→export const STORIES = [
+   338→  {
+   339→    initials: "A. N.",
+   340→    age: 17,
+   341→    area: "Mathare",
+   342→    session: "S4 · Breaking Silence",
+   343→    quote:
+   344→      "In S4 I spoke for the first time about what happened to me. The Web of Support card has three numbers I now know by heart.",
+   345→    photo: "/nairobi-team/nairobi-09.webp",
+   346→    tag: "Referral closed in 48h",
+   347→  },
+   348→  {
+   349→    initials: "F. W.",
+   350→    age: 19,
+   351→    area: "Kibera",
+   352→    session: "S8 · Closing",
+   353→    quote:
+   354→      "I joined in silence. I left with a certificate, a pin, and my little sister's hand - I mentor her circle now.",
+   355→    photo: "/nairobi-team/nairobi-02.webp",
+   356→    tag: "Alumni → mentor",
+   357→  },
+   358→  {
+   359→    initials: "M. A.",
+   360→    age: 22,
+   361→    area: "Kawangware",
+   362→    session: "S6 · Media Reflection",
+   363→    quote:
+   364→      "The Media Box taught me to read the ads that were reading me. Now I rewrite the message - and my story.",
+   365→    photo: "/nairobi-team/nairobi-13.webp",
+   366→    tag: "Shujaaz Special featured",
+   367→  },
+   368→] as const;
+   369→
+   370→// ---------- DONOR FAQ (accordion) ----------
+   371→export const FAQS = [
+   372→  {
+   373→    q: "Where exactly does my donation go?",
+   374→    a: "62% funds programme delivery (circles, materials, referrals), 18% peer-facilitator stipends, 7% monitoring & data, 8% admin (board-capped) and 5% fundraising & audit. Every line is published in aggregate on the Accountability page.",
+   375→  },
+   376→  {
+   377→    q: "Is my gift eligible for a tax receipt?",
+   378→    a: "Yes. Every M-Pesa or bank gift auto-generates a receipt for your records. We operate a strict no-cash policy: money never touches our hands.",
+   379→  },
+   380→  {
+   381→    q: "How is girls' data protected?",
+   382→    a: "Kenya DPA 2019 compliant end-to-end: initials only on forms, guardian consent for 15-17, encrypted storage, aggregates-only reporting. The masked Excel master never leaves the encrypted store and is never committed to any repository.",
+   383→  },
+   384→  {
+   385→    q: "What makes S4 'Very Heavy'?",
+   386→    a: "Session 4, Breaking Silence, is where young people of all genders speak about violence. Safeguarding focal points are on standby, referral lists are memorised by every facilitator pair, and the team holds a mandatory debrief the same day.",
+   387→  },
+   388→  {
+   389→    q: "Can donors visit a circle?",
+   390→    a: "Yes - with a 2-week notice and our safeguarding escort protocol. Donor observation never includes photography of youth without DPA consent from guardians.",
+   391→  },
+   392→  {
+   393→    q: "How do referrals actually close?",
+   394→    a: "Facilitator pairs memorise the LVCT Health and Nairobi County referral lists. A case is opened the day it is disclosed and tracked until the service confirms attendance, currently 87% closure.",
+   395→  },
+   396→] as const;
+   397→
+   398→// ---------- DONATE: impact preview map + frequency copy ----------
+   399→export const DONATE_IMPACT: Record<number, string> = {
+   400→  500: "Materials for 1 girl for 1 session",
+   401→  2500: "A full JTW session for a circle of 12",
+   402→  10000: "One girl - the complete 8-session journey",
+   403→};
+   404→
+   405→// ---------- DASHBOARD EXTRAS: sparklines + YoY comparison (aggregates only) ----------
+   406→export const KPI_SPARKS: Record<string, number[]> = {
+   407→  "Total Youth (YTD)": [820, 878, 942, 1030, 1118, 1248],
+   408→  Facilitators: [12, 14, 17, 19, 22, 24],
+   409→  "Referral Closure": [64, 68, 73, 79, 82, 87],
+   410→  Alumni: [3600, 3850, 4020, 4210, 4380, 4500],
+   411→};
+   412→
+   413→export const ATTENDANCE_FY2425 = [
+   414→  { month: "Oct", Kibera: 88, Mathare: 84, Kawangware: 81 },
+   415→  { month: "Nov", Kibera: 89, Mathare: 85, Kawangware: 83 },
+   416→  { month: "Dec", Kibera: 87, Mathare: 83, Kawangware: 80 },
+   417→  { month: "Jan", Kibera: 89, Mathare: 86, Kawangware: 84 },
+   418→  { month: "Feb", Kibera: 90, Mathare: 87, Kawangware: 85 },
+   419→  { month: "Mar", Kibera: 91, Mathare: 87, Kawangware: 86 },
+   420→];
+   421→
+   422→export const WELLBEING_FY2425 = [
+   423→  { month: "Oct", score: 52 },
+   424→  { month: "Nov", score: 54 },
+   425→  { month: "Dec", score: 53 },
+   426→  { month: "Jan", score: 56 },
+   427→  { month: "Feb", score: 58 },
+   428→  { month: "Mar", score: 61 },
+   429→];
+   430→
+   431→// ---------- IMPACT CALCULATOR (donor conversion tool) ----------
+   432→// Unit costs from FY24/25 aggregate: KES 500 = 1 girl's materials for a
+   433→// session · KES 2,500 = one JTW session for a circle of 12 · KES 10,000 =
+   434→// one girl's full 8-session journey.
+   435→export const CALC_UNIT_COSTS = {
+   436→  materials: 500,
+   437→  session: 2500,
+   438→  journey: 10000,
+   439→} as const;
+   440→
+   441→// ---------- CURRENCIES (international donors) ----------
+   442→// rate = KES per 1 unit, indicative interbank mid-rates (checked monthly,
+   443→// clearly labelled "indicative" in the UI). M-Pesa always charges KES.
+   444→export interface Currency {
+   445→  code: "KES" | "USD" | "EUR" | "GBP";
+   446→  symbol: string;
+   447→  rate: number; // KES per unit
+   448→  step: number; // slider step in this currency
+   449→}
+   450→
+   451→export const CURRENCIES: Currency[] = [
+   452→  { code: "KES", symbol: "KSh ", rate: 1, step: 500 },
+   453→  { code: "USD", symbol: "$", rate: 129, step: 5 },
+   454→  { code: "EUR", symbol: "€", rate: 141, step: 5 },
+   455→  { code: "GBP", symbol: "£", rate: 165, step: 5 },
+   456→];
+   457→
+   458→export const toKes = (amount: number, rate: number) => Math.round(amount * rate);
+   459→export const fromKes = (kes: number, rate: number, round5 = true) =>
+   460→  round5 ? Math.max(5, Math.round(kes / rate / 5) * 5) : Math.round(kes / rate);
+   461→
+   462→// ---------- OUR STORY - milestone timeline 2023 → 2026 (aggregate facts) ----------
+   463→export const MILESTONES = [
+   464→  {
+   465→    year: "2023",
+   466→    title: "Fifty youth, one room in Laini Saba",
+   467→    body: "Binti Rising is born: 50 young women co-design the Journey to Wholeness curriculum in Kibera - because nothing about us, without us.",
+   468→    stat: "50 co-creators · 1 circle",
+   469→    tone: "indigo",
+   470→  },
+   471→  {
+   472→    year: "2024",
+   473→    title: "From one circle to a movement",
+   474→    body: "Sisterhood circles open across Mathare and Kawangware. First external audit, no-cash M-Pesa policy and the Finance Manual with segregation of duties.",
+   475→    stat: "28 circles · 3 areas · first audit",
+   476→    tone: "pink",
+   477→  },
+   478→  {
+   479→    year: "2025",
+   480→    title: "Data becomes our superpower",
+   481→    body: "The masked SSK master aggregation goes live: 94% data quality, Kenya DPA 2019 compliance, DATIM-ready exports. 24 peer facilitators certified (S1–S8), co-facilitating in 12 pairs.",
+   482→    stat: "24 facilitators · 12 pairs · 94% data quality",
+   483→    tone: "cyan",
+   484→  },
+   485→  {
+   486→    year: "2026",
+   487→    title: "JTW field-tested. Donors, you can watch it live.",
+   488→    body: "Oct 2025 – Mar 2026 cohort completes the 8-session journey. This donor dashboard, the accountability page and 4,500+ alumni - every number aggregated, every shilling receipted.",
+   489→    stat: "4,500+ alumni · live dashboard",
+   490→    tone: "amber",
+   491→  },
+   492→] as const;
+   493→
+   494→// ---------- PER-AREA AGGREGATES (dashboard filter) ----------
+   495→// Everything below is area-level aggregation - no facility coords, no names.
+   496→export type AreaName = "Kibera" | "Mathare" | "Kawangware";
+   497→
+   498→export const AREA_KPIS: Record<
+   499→  AreaName,
+   500→  { youth: number; facilitators: number; referralClosure: number; attendance: number }
+   501→> = {
+   502→  Kibera: { youth: 612, facilitators: 11, referralClosure: 89, attendance: 93 },
+   503→  Mathare: { youth: 394, facilitators: 8, referralClosure: 86, attendance: 90 },
+   504→  Kawangware: { youth: 242, facilitators: 5, referralClosure: 84, attendance: 89 },
+   505→};
+   506→
+   507→// Risk split per area: [Low %, Medium %, High→Referred %]
+   508→export const AREA_RISK: Record<AreaName, [number, number, number]> = {
+   509→  Kibera: [64, 26, 10],
+   510→  Mathare: [61, 29, 10],
+   511→  Kawangware: [58, 31, 11],
+   512→};
+   513→
+   514→// Wellbeing score per area per month (matches the org line, ±2 pts)
+   515→export const WELLBEING_BY_AREA: Record<AreaName, { month: string; score: number }[]> = {
+   516→  Kibera: [
+   517→    { month: "Apr", score: 63 },
+   518→    { month: "May", score: 66 },
+   519→    { month: "Jun", score: 70 },
+   520→    { month: "Jul", score: 73 },
+   521→    { month: "Aug", score: 76 },
+   522→    { month: "Sep", score: 79 },
+   523→  ],
+   524→  Mathare: [
+   525→    { month: "Apr", score: 60 },
+   526→    { month: "May", score: 63 },
+   527→    { month: "Jun", score: 67 },
+   528→    { month: "Jul", score: 70 },
+   529→    { month: "Aug", score: 73 },
+   530→    { month: "Sep", score: 76 },
+   531→  ],
+   532→  Kawangware: [
+   533→    { month: "Apr", score: 59 },
+   534→    { month: "May", score: 62 },
+   535→    { month: "Jun", score: 66 },
+   536→    { month: "Jul", score: 69 },
+   537→    { month: "Aug", score: 72 },
+   538→    { month: "Sep", score: 75 },
+   539→  ],
+   540→};
+   541→
+   542→export const WELLBEING_FY2425_BY_AREA: Record<AreaName, { month: string; score: number }[]> = {
+   543→  Kibera: [
+   544→    { month: "Oct", score: 54 },
+   545→    { month: "Nov", score: 56 },
+   546→    { month: "Dec", score: 55 },
+   547→    { month: "Jan", score: 58 },
+   548→    { month: "Feb", score: 60 },
+   549→    { month: "Mar", score: 63 },
+   550→  ],
+   551→  Mathare: [
+   552→    { month: "Oct", score: 51 },
+   553→    { month: "Nov", score: 53 },
+   554→    { month: "Dec", score: 52 },
+   555→    { month: "Jan", score: 55 },
+   556→    { month: "Feb", score: 57 },
+   557→    { month: "Mar", score: 60 },
+   558→  ],
+   559→  Kawangware: [
+   560→    { month: "Oct", score: 50 },
+   561→    { month: "Nov", score: 52 },
+   562→    { month: "Dec", score: 51 },
+   563→    { month: "Jan", score: 54 },
+   564→    { month: "Feb", score: 56 },
+   565→    { month: "Mar", score: 59 },
+   566→  ],
+   567→};
+   568→
+   569→// ---------- LIVE ACTIVITY FEED (aggregate, privacy-safe) ----------
+   570→// Masked circle events - areas + counts only, NEVER names or identifiers.
+   571→export const ACTIVITY_FEED = [
+   572→  { id: "a1", area: "Mathare", event: "Circle completed S4 · Breaking Silence", meta: "12 present · 2 referrals opened", ago: "2 h ago" },
+   573→  { id: "a2", area: "Kibera", event: "Referral closed at LVCT Health", meta: "48 h turnaround", ago: "5 h ago" },
+   574→  { id: "a3", area: "Kawangware", event: "S6 Media Reflection Box session", meta: "Shujaaz Special comics read", ago: "yesterday" },
+   575→  { id: "a4", area: "Kibera", event: "New facilitator pair certified (S1–S8)", meta: "23 → 24 trained", ago: "yesterday" },
+   576→  { id: "a5", area: "Mathare", event: "Guardian consent drive", meta: "9 consents for next cohort", ago: "2 d ago" },
+   577→  { id: "a6", area: "Kawangware", event: "S8 Closing · certificates + pins", meta: "11 graduates joined alumni wall", ago: "3 d ago" },
+   578→] as const;
+   579→
+   580→// ---------- SEMA NA ME - canned safe flows ----------
+   581→// Sema na Me is a chatbot BY SHUJAAZ, available ONLY on WhatsApp.
+   582→export const SEMA_FLOWS = {
+   583→  greet: "Karibu! I'm Sema na Me 💬, the WhatsApp chatbot by Shujaaz. What would you like to do today?",
+   584→  byline: "A chatbot by Shujaaz · on WhatsApp only",
+   585→  options: [
+   586→    { id: "join", label: "Join a circle" },
+   587→    { id: "safe", label: "I need help now" },
+   588→    { id: "jtw", label: "What is JTW?" },
+   589→    { id: "donate", label: "Donate / support" },
+   590→  ],
+   591→  replies: {
+   592→    join:
+   593→      "Wonderful! 💛 Joining takes 2 minutes: initials only (never your full name), age 15–25, your area, and a guardian's OK if you're 15–17. Tap \"Join a circle\" on the Get Involved page, or WhatsApp us on +254758919709.",
+   594→    safe:
+   595→      "You are not alone. ❤️ For immediate help call the FREE GBV Hotline 1195 (24/7, all networks). You can also WhatsApp +254758919709 and a trained safeguarding listener replies. If you're in danger right now, try to reach a trusted adult or the nearest health centre. Your message stays anonymous.",
+   596→    jtw:
+   597→      "JTW = Journey to Wholeness, our peer-led 8-session programme (S1–S8) for 15–25-year-olds of ALL genders (Binti supports the She, and the He too) on SRH, emotions, consent and healthy relationships. Session 4, Breaking Silence, is where the healing gets real, with safeguarding on standby throughout.",
+   598→    donate:
+   599→      "Asante sana! 🙏 Every shilling is M-Pesa-receipted and audit-logged: Paybill 522522, account \"Binti Rising\". KES 10,000 takes one girl through the full journey. Tap \"Donate M-Pesa\" any time.",
+   600→  } as Record<string, string>,
+   601→  fallback:
+   602→    "I can help with: joining a circle, immediate support, what JTW is, or donating. For anything else, WhatsApp +254758919709 or dial 1195 if you need help now.",
+   603→} as const;
+   604→
+   605→// ---------- GALLERY - "Inside the Circles" --------------------------------
+   606→// Photos come ONLY from /public/nairobi-team/ (Drive manifest). Captions are
+   607→// activity-level and DPA-safe: NEVER names, never faces-identified claims.
+   608→export type GalleryKind = "Circle Session" | "Facilitator Training" | "Community Day";
+   609→export type GalleryItem = {
+   610→  src: string;
+   611→  area: AreaName;
+   612→  kind: GalleryKind;
+   613→  caption: string;
+   614→  session?: string; // JTW session label where relevant
+   615→};
+   616→
+   617→export const GALLERY: GalleryItem[] = [
+   618→  { src: "/nairobi-team/nairobi-02.webp", area: "Kibera", kind: "Circle Session", caption: "Opening round - every voice heard before the session begins", session: "S1 · Welcome" },
+   619→  { src: "/nairobi-team/nairobi-04.webp", area: "Mathare", kind: "Circle Session", caption: "Body mapping exercise - naming emotions without shame", session: "S3 · My Body" },
+   620→  { src: "/nairobi-team/nairobi-05.webp", area: "Kawangware", kind: "Facilitator Training", caption: "Facilitators rehearse referral scripts before every heavy session" },
+   621→  { src: "/nairobi-team/nairobi-07.webp", area: "Kibera", kind: "Community Day", caption: "Guardians' open day - families tour the circle space" },
+   622→  { src: "/nairobi-team/nairobi-08.webp", area: "Mathare", kind: "Circle Session", caption: "Web of Support - each thread is a person she can call", session: "S4 · Breaking Silence" },
+   623→  { src: "/nairobi-team/nairobi-09.webp", area: "Kawangware", kind: "Community Day", caption: "Shujaaz comics distribution - learning between sessions" },
+   624→  { src: "/nairobi-team/nairobi-10.webp", area: "Kibera", kind: "Facilitator Training", caption: "Monthly data huddle - registers checked, no names on paper" },
+   625→  { src: "/nairobi-team/nairobi-12.webp", area: "Mathare", kind: "Circle Session", caption: "Media Reflection Box - unpacking what the feeds tell us", session: "S6 · Media" },
+   626→  { src: "/nairobi-team/nairobi-13.webp", area: "Kawangware", kind: "Circle Session", caption: "Money heist skit - practising savings goals with laughter", session: "S7 · Money" },
+   627→  { src: "/nairobi-team/nairobi-14.webp", area: "Kibera", kind: "Community Day", caption: "Closing circle - certificates, pins and proud guardians", session: "S8 · Closing" },
+   628→  { src: "/nairobi-team/nairobi-03.webp", area: "Mathare", kind: "Facilitator Training", caption: "New cohort training - 24 facilitators co-led in 12 pairs" },
+   629→  { src: "/nairobi-team/nairobi-11.webp", area: "Kawangware", kind: "Circle Session", caption: "Trust game - the quiet half of the room speaks first", session: "S2 · Trust" },
+   630→];
+   631→
+   632→export const GALLERY_KINDS: GalleryKind[] = ["Circle Session", "Facilitator Training", "Community Day"];
+   633→
+   634→// ---------- ALUMNI WALL - masked initials only (DPA 2019) ----------------
+   635→// Style matches STORIES: "F.F - Kibera". No names, no faces, no contacts.
+   636→// consentNote: every alum listed gave written consent for initials-only use.
+   637→export type AlumniTile = {
+   638→  initials: string;
+   639→  area: AreaName;
+   640→  cohort: string; // graduation year
+   641→  now: string; // aggregate-status line, never identifying
+   642→  tone: "indigo" | "pink" | "cyan" | "amber";
+   643→};
+   644→
+   645→export const ALUMNI_WALL: AlumniTile[] = [
+   646→  { initials: "F. W.", area: "Kibera", cohort: "2025", now: "Mentors her sister's circle", tone: "pink" },
+   647→  { initials: "A. N.", area: "Mathare", cohort: "2025", now: "Peer facilitator · cohort 7", tone: "indigo" },
+   648→  { initials: "M. A.", area: "Kawangware", cohort: "2024", now: "Shujaaz Special contributor", tone: "cyan" },
+   649→  { initials: "C. K.", area: "Kibera", cohort: "2024", now: "County youth rep · SRH forum", tone: "amber" },
+   650→  { initials: "P. A.", area: "Mathare", cohort: "2025", now: "Saved KES 8,400 in circle bank", tone: "indigo" },
+   651→  { initials: "N. M.", area: "Kawangware", cohort: "2026", now: "First in family to sit KCSE", tone: "pink" },
+   652→  { initials: "S. O.", area: "Kibera", cohort: "2026", now: "Referral closed · now a buddy", tone: "cyan" },
+   653→  { initials: "J. N.", area: "Mathare", cohort: "2024", now: "Runs a market produce stall", tone: "amber" },
+   654→  { initials: "E. W.", area: "Kawangware", cohort: "2025", now: "Alumni hub volunteer · Fridays", tone: "indigo" },
+   655→  { initials: "G. A.", area: "Kibera", cohort: "2026", now: "Debate club captain · school", tone: "pink" },
+   656→  { initials: "R. M.", area: "Mathare", cohort: "2026", now: "Guardian- approved peer educator", tone: "cyan" },
+   657→  { initials: "B. K.", area: "Kawangware", cohort: "2024", now: "4.5 years on the alumni wall", tone: "amber" },
+   658→];
+   659→
