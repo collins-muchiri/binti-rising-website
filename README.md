@@ -98,6 +98,11 @@ Highlights:
   polls `GET /api/version` and shows a discreet "Site update available"
   notice when a newer deployment is live (keeps open tabs off stale
   bundles).
+- **Visitor analytics** — Vercel Web Analytics (`@vercel/analytics`) is
+  wired into the root layout and measures production only. Enable it under
+  Project → Analytics in the dashboard (free); see
+  [docs/DEPLOYMENT.md §5](docs/DEPLOYMENT.md#5-visitor-analytics-vercel-web-analytics)
+  for the troubleshooting checklist (content blockers first).
 - **Preview protection** — set `PREVIEW_USERNAME` + `PREVIEW_PASSWORD`
   (Preview scope) in Vercel to Basic-Auth-gate every preview deployment;
   production stays public for SEO. Optionally set `PROTECT_PRODUCTION=true`

@@ -188,10 +188,58 @@ Expect roughly **US$10–12/year** for `.org`.
 
 ---
 
+## 5. Visitor analytics (Vercel Web Analytics)
+
+**Goal:** track page views and visitor interactions (paths, referrers,
+browsers, countries) without cookies and without a cookie banner.
+
+**What was implemented**
+
+- Installed `@vercel/analytics` (bun, recorded in `package.json` + `bun.lock`).
+- Mounted `<Analytics mode="auto" />` in `src/app/layout.tsx`, just before
+  the GA4 conditional block. `mode="auto"` activates collection **only on
+  production** — local dev and preview deployments stay measurement-free.
+- The component injects Vercel's first-party script (`/_vercel/insights/*`)
+  on production deploys only; nothing is served on other environments.
+
+**DASHBOARD — activate (one click, free on Hobby):**
+
+1. Vercel dashboard → the project → **Analytics** tab → **Enable Web
+   Analytics**. (The code side is already done; without this toggle the
+   script loads but views are not recorded.)
+2. Visit the site, then check the Analytics tab: page views appear within
+   ~30 seconds.
+
+**If data does not show up after deploying**
+
+1. **Content blockers first** — uBlock Origin, Brave Shields, AdGuard and
+   similar filter `/_vercel/insights/*` as a "tracker". Test in a private
+   window with blockers off, or check the browser's Network tab for a failed
+   `/_vercel/insights/view` request.
+2. Confirm the **Analytics tab toggle** is enabled (step 1 above).
+3. Confirm you are on the **production** URL, not a preview deployment
+   (`mode="auto"` only measures production).
+4. Ad-blocked corporate networks / iOS Safari with "Prevent Cross-Site
+   Tracking" can also drop the beacon intermittently.
+
+**Note on the "Vercel Agent" auto-setup option:** Vercel can generate a PR
+that adds analytics automatically ("install Vercel Agent" flow in the
+dashboard). It was not used — the same one-line integration is implemented
+directly in this repository, reviewed and documented here, which keeps the
+code the single source of truth.
+
+**GA4 coexistence:** the optional GA4 integration (`NEXT_PUBLIC_GA_MEASUREMENT_ID`)
+remains in place and independent; the two can run side by side (GA4 for
+Search Console-linked reporting, Vercel Analytics for lightweight
+first-party stats).
+
+---
+
 ## Change log (this repository)
 
 | Change | File(s) |
 | --- | --- |
+| Vercel Web Analytics | `package.json`, `src/app/layout.tsx` |
 | Parallel CI (lint + build) | `.github/workflows/ci.yml` |
 | Build stamping | `next.config.ts` |
 | Version probe API | `src/app/api/version/route.ts` |

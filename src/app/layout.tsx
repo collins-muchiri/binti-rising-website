@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -247,6 +248,17 @@ export default function RootLayout({
         <ScrollRestoration />
         {children}
         <Toaster />
+        {/* Vercel Web Analytics: privacy-friendly, cookie-free page-view and
+            visitor tracking served from Vercel's own edge (/\_vercel/insights).
+            mode="auto" (the default, kept explicit here) activates collection
+            ONLY on production deployments, so local dev and preview
+            deployments stay measurement-free. Data appears in the Vercel
+            dashboard under Project → Analytics once Web Analytics is enabled
+            there (free on Hobby). If numbers stay at zero right after deploy,
+            check content blockers (uBlock/Brave/AdGuard) — they filter
+            /_vercel/insights/* — and confirm the dashboard toggle is on.
+            See docs/DEPLOYMENT.md §5 for the full checklist. */}
+        <Analytics mode="auto" />
         {/* Google Analytics 4: active only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set,
             keeping preview deployments and local dev measurement-free. */}
         {GA_ID && (
