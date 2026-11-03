@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { SiteNav } from "@/components/story/site-nav";
 import { BackToTop } from "@/components/story/back-to-top";
+import { VersionNotifier } from "@/components/story/version-notifier";
 import { Reveal } from "@/components/story/reveal";
 import { PlatesGallery } from "@/components/story/plates-gallery";
 import { VideoFacade } from "@/components/story/video-facade";
@@ -646,6 +647,10 @@ export default function Home() {
 
       {/* Floating back-to-top arrow (appears after scrolling past the hero). */}
       <BackToTop />
+
+      {/* Deploy-sync island: polls /api/version and nudges visitors with an
+          open tab when a newer deployment goes live (bottom-left corner). */}
+      <VersionNotifier />
 
       {/* ───────────────────────────────── FOOTER ───────────────────────────────── */}
       {/* mt-auto keeps the footer pinned to the viewport bottom on short pages

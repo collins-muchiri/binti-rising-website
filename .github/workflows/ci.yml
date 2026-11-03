@@ -1,0 +1,57 @@
+# CI for the Binti Rising website.
+#
+# Two INDEPENDENT jobs (lint + build) run IN PARALLEL on every push and pull
+# request, so fast feedback never waits behind the slower production build.
+# This complements Vercel (which builds its own deployment on the same push):
+#   - Vercel concurrency is plan-governed (Hobby: 1 concurrent build,
+#     Pro: 12) — see docs/DEPLOYMENT.md, "Concurrent builds".
+#   - GitHub Actions gives every push/PR its own parallel verification lane
+#     regardless of Vercel's queue depth.
+#
+# The project has no build-time secrets: SEO integrations are env-optional
+# and nothing imports the database client, so a plain `next build` passes
+# without extra configuration.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: ESLint
+        run: bun run lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Mirrors Vercel's production build (`next build`). The package.json
+      # "build" script additionally copies static assets into the standalone
+      # output for local serving — unnecessary on CI, so the CLI is invoked
+      # directly here.
+      - name: Next.js build
+        run: bunx next build

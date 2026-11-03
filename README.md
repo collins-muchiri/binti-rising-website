@@ -85,14 +85,35 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the w
 
 ## 🌐 Deployment
 
-This project is configured for easy deployment on Vercel. See [VERCEL_DEPLOYMENT_GUIDE.md](VERCEL_DEPLOYMENT_GUIDE.md) for detailed deployment instructions.
+This project deploys to Vercel automatically on every push to `main`.
+Full operational documentation — concurrent builds, client/server version
+sync, preview-deployment protection, and the custom-domain guide — lives in
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+Highlights:
+
+- **CI (`.github/workflows/ci.yml`)** — lint and build run as two parallel
+  GitHub Actions jobs on every push/PR, independent of Vercel's build queue.
+- **Deploy sync** — every build is stamped with its commit SHA; the client
+  polls `GET /api/version` and shows a discreet "Site update available"
+  notice when a newer deployment is live (keeps open tabs off stale
+  bundles).
+- **Preview protection** — set `PREVIEW_USERNAME` + `PREVIEW_PASSWORD`
+  (Preview scope) in Vercel to Basic-Auth-gate every preview deployment;
+  production stays public for SEO. Optionally set `PROTECT_PRODUCTION=true`
+  to lock production temporarily.
+- **Custom domain** — `bintirising.org` was verified available to register;
+  the step-by-step purchase + DNS + Vercel connection guide is in
+  [docs/DEPLOYMENT.md §4](docs/DEPLOYMENT.md#4-custom-domain).
 
 ### Environment Variables for Production
 
 Set these in your Vercel dashboard:
 - `INDEXNOW_KEY`: Your IndexNow API key
 - `CONTACT_EMAIL`: Contact email address
-- `NEXT_PUBLIC_SITE_URL`: Your production URL
+- `NEXT_PUBLIC_SITE_URL`: Your production URL (set to the custom domain on launch day; defaults to the vercel.app URL)
+- `PREVIEW_USERNAME` / `PREVIEW_PASSWORD`: Preview deployment credentials (Preview scope)
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` / `NEXT_PUBLIC_GA_MEASUREMENT_ID`: optional SEO/analytics integrations
 
 ## 📁 Project Structure
 
