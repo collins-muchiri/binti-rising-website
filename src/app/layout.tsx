@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { Playfair_Display, Inter } from "next/font/google";
@@ -24,6 +24,12 @@ const inter = Inter({
 
 /** Google Analytics 4 Measurement ID: rendered only when configured on Vercel. */
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
+/** Mobile browser chrome colour + viewport defaults (Next.js Viewport API).
+    Kept separate from metadata per Next.js 16 conventions. */
+export const viewport: Viewport = {
+  themeColor: "#1a1626",
+};
 
 export const metadata: Metadata = {
   title: "Binti Rising Initiative | Empowering Young Women in Nairobi, Kenya",
@@ -70,23 +76,20 @@ export const metadata: Metadata = {
       "Empowering adolescent girls and young women aged 15-25 through comprehensive programs in SRHR, mental health, financial freedom, and leadership in Nairobi, Kenya. Your support directly transforms lives.",
     url: SITE_URL,
     siteName: "Binti Rising Initiative",
-    images: [
-      {
-        url: "/binti-logo.jpg",
-        width: 1024,
-        height: 1024,
-        alt: "Binti Rising Initiative Logo",
-      },
-    ],
+    // og:image is injected by the src/app/opengraph-image.tsx file convention
+    // (a 1200×630 next/og social card, the Vercel SEO Playbook pattern) —
+    // the previous explicit 1024×1024 square logo entry was removed so the
+    // convention applies.
     locale: "en_KE",
     type: "website",
   },
   twitter: {
+    // summary_large_image + twitter:image fall back to the same
+    // opengraph-image.tsx card automatically.
     card: "summary_large_image",
     title: "Binti Rising Initiative",
     description:
       "Empowering young women in Nairobi, Kenya through SRHR education, health, and leadership programs. Donate today to change lives.",
-    images: ["/binti-logo.jpg"],
   },
   robots: {
     index: true,
