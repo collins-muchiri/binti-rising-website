@@ -95,12 +95,18 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
+    // Sync the scroll-button state from the embla instance. The initial
+    // snapshot is deferred with requestAnimationFrame so no setState happens
+    // synchronously inside the effect body (react-hooks/set-state-in-effect),
+    // and both listeners are detached on cleanup to avoid leaks.
+    const raf = requestAnimationFrame(() => onSelect(api))
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 
     return () => {
-      api?.off("select", onSelect)
+      cancelAnimationFrame(raf)
+      api.off("select", onSelect)
+      api.off("reInit", onSelect)
     }
   }, [api, onSelect])
 
