@@ -831,19 +831,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Colophon: copyright, registration, archive provenance, and the
-            trademark note for third-party partner logos.
+        {/* Colophon: copyright, registration, and the trademark note for
+            third-party partner logos.
             Extra bottom padding on small screens keeps the last lines clear
             of the floating back-to-top arrow. */}
         <div className="border-t border-white/10">
           <p className="mx-auto max-w-6xl px-4 pb-16 pt-4 text-[11px] leading-relaxed text-[#f6f3ee]/40 sm:px-6 sm:pb-4">
             © {new Date().getFullYear()} Binti Rising Initiative · {CONTACT.registration},
-            Kiambu, Kenya. Photographs: the initiative&apos;s own Nairobi archive, tagged{" "}
-            <span className="font-mono">nairobi-photos-v1.0</span>, traceable via{" "}
-            <span className="font-mono">manifest.json</span>. No stock imagery. Kenya DPA
-            2019: aggregates only, no personal identifiers. Partner names and logos are
-            trademarks of their respective organizations and appear here for partnership
-            acknowledgement only.
+            Kiambu, Kenya. Partner names and logos are trademarks of their respective
+            organizations and appear here for partnership acknowledgement only.
           </p>
         </div>
       </footer>
