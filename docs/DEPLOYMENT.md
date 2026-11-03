@@ -4,7 +4,7 @@ Operational documentation for the Binti Rising website on Vercel
 (https://binti-rising-initiative.vercel.app), covering four areas:
 
 1. [Concurrent builds (no queued builds)](#1-concurrent-builds)
-2. [Frontend–backend version sync](#2-frontendbackend-version-sync)
+2. [Frontend-backend version sync](#2-frontend-backend-version-sync)
 3. [Securing preview (and production) deployments](#3-securing-deployments)
 4. [Custom domain: purchase and connect](#4-custom-domain)
 
@@ -38,24 +38,24 @@ Vercel parallelises across them subject to the plan limit.
   single-page surface, no database at build time), which keeps the site near
   the front of the queue on Hobby.
 
-**DASHBOARD — if queueing becomes frequent**
+**DASHBOARD: if queueing becomes frequent**
 
 - Upgrade path: **Project → Settings → Usage** / team **Settings → Billing →
   Upgrade** to Pro for 12 concurrent builds (the standard fix).
-- Free mitigations first: keep pushes atomic (avoid 5 rapid-fire commits —
+- Free mitigations first: keep pushes atomic (avoid 5 rapid-fire commits, 
   they are 5 builds), and let the most recent commit supersede older ones
   (Vercel automatically cancels nothing on Hobby; older builds finishing is
   harmless because only the newest is aliased to production).
 
 ---
 
-## 2. Frontend–backend version sync
+## 2. Frontend-backend version sync
 
 **Goal:** an open browser tab must never run a stale frontend against a
 newer deployment (the classic mismatch: old JS calls new API or vice versa).
 
 **Why mismatch can only come from open tabs:** Vercel deployments are
-*atomic* — the static bundle, server components and API routes of one
+*atomic*: the static bundle, server components and API routes of one
 deployment always ship together and are aliased to production in a single
 switch. The only stale surface is a visitor who loaded the page *before*
 the switch.
@@ -75,7 +75,7 @@ the switch.
 - Dismissing the notice stores the build id in `sessionStorage`
   (`binti-dismissed-build`); a *newer* deployment re-triggers the notice.
 - Accessible: `role="status"` + `aria-live="polite"`, reduced-motion safe.
-- Local dev stamps itself `local-dev`, which always matches — no noise.
+- Local dev stamps itself `local-dev`, which always matches: no noise.
 
 **Verify it works**
 
@@ -99,19 +99,19 @@ a **DASHBOARD** toggle.
 
 - **Preview deployments are gated** with HTTP Basic Auth as soon as
   credentials exist; production stays public by default (protecting SEO and
-  AI discoverability — the site's core growth channel).
+  AI discoverability: the site's core growth channel).
 - **Fail-open by design:** without credentials nothing is gated, so local
   dev and CI are unaffected.
 - Optional production lock: set `PROTECT_PRODUCTION="true"` to gate
-  production too (private review windows only — crawlers are blocked while
+  production too (private review windows only: crawlers are blocked while
   it is on, so switch it off afterwards).
 
-**DASHBOARD — enable it (one time, ~2 minutes):**
+**DASHBOARD: enable it (one time, ~2 minutes):**
 
 1. Vercel dashboard → the project → **Settings → Environment Variables**.
 2. Add two variables, scope **Preview** (and **Development** if desired):
-   - `PREVIEW_USERNAME` — e.g. `binti-preview`
-   - `PREVIEW_PASSWORD` — a long random string from a password manager
+   - `PREVIEW_USERNAME`: e.g. `binti-preview`
+   - `PREVIEW_PASSWORD`: a long random string from a password manager
 3. Redeploy any branch (or push). Preview URLs now return **401** until the
    credentials are entered once per browser session.
 4. (Optional) Add `PROTECT_PRODUCTION` = `true` scoped to **Production** to
@@ -127,7 +127,7 @@ a **DASHBOARD** toggle.
 | Option | Plan | Effect |
 | --- | --- | --- |
 | **Standard Protection** (default on) | All | Preview URLs require Vercel Authentication |
-| **All Deployments** | All | Production aliases also require Vercel Authentication (breaks public access — not recommended for this site) |
+| **All Deployments** | All | Production aliases also require Vercel Authentication (breaks public access, not recommended for this site) |
 | **Password Protection** for deployments | Pro | Shareable password, no Vercel login needed |
 | **Trusted IPs** | Enterprise | IP allow-list |
 
@@ -141,7 +141,7 @@ non-Vercel stakeholders such as partners and volunteers.
 
 **Goal:** branding + accessibility + stronger SEO identity.
 
-**Recommended name: `bintirising.org`** — verified **available to register**
+**Recommended name: `bintirising.org`**: verified **available to register**
 (RDAP lookup returned 404 on 2026-02-06). It matches the brand and the
 `info@bintirising.org` address already used in site content. A strong
 Kenyan alternative for a CBO is **`bintirising.or.ke`** (the `.or.ke` TLD is
@@ -156,32 +156,32 @@ reserved for Kenyan not-for-profits, via KeNIC-accredited registrars).
 | Namecheap | Widely used, frequent promos |
 | Truehost / Sasahost / HostPoa (KeNIC registrars) | For `.or.ke` |
 
-Expect roughly **US$10–12/year** for `.org`.
+Expect roughly **US$10-12/year** for `.org`.
 
-### Connect the domain — step by step
+### Connect the domain: step by step
 
-1. **DASHBOARD — purchase** `bintirising.org` at the registrar of choice
-   (payment step — project owner action).
-2. **DASHBOARD — add to Vercel:** Project → **Settings → Domains → Add** →
+1. **DASHBOARD: purchase** `bintirising.org` at the registrar of choice
+  (payment step: project owner action).
+2. **DASHBOARD: add to Vercel:** Project → **Settings → Domains → Add** →
    enter `bintirising.org` (Vercel automatically adds `www.` too).
 3. **At the registrar**, create the records Vercel displays (values can
-   change over time — always follow what the dashboard shows):
+   change over time: always follow what the dashboard shows):
    - Apex `A` record → Vercel's anycast IP (e.g. `76.76.21.21`)
    - `www` `CNAME` record → `cname.vercel-dns.com`
    - (Or, simplest: switch the domain's nameservers to Vercel DNS and let
      Vercel manage the records.)
 4. Wait for DNS propagation (minutes to ~48 h). Vercel issues free
    auto-renewing HTTPS certificates (Let's Encrypt) once DNS verifies.
-5. **DASHBOARD — set production domain:** ensure `bintirising.org` is the
+5. **DASHBOARD: set production domain:** ensure `bintirising.org` is the
    production alias and enable **Redirect to Domain** so
    `binti-rising-initiative.vercel.app` and `www` 301-redirect to the apex.
-6. **Repository — flip the canonical URL (already prepared):** set
+6. **Repository: flip the canonical URL (already prepared):** set
    `NEXT_PUBLIC_SITE_URL=https://bintirising.org` in
    **Settings → Environment Variables** (Production scope) and redeploy.
    Because `SITE_URL` is now env-driven (`src/lib/seo/site-url.ts`),
    canonical, Open Graph, Twitter, sitemap, JSON-LD and IndexNow all switch
-   in one deploy — no code edit needed.
-7. **Repository — one file edit:** update the `Sitemap:` line in
+   in one deploy: no code edit needed.
+7. **Repository: one file edit:** update the `Sitemap:` line in
    `public/robots.txt` to `https://bintirising.org/sitemap.xml`.
 8. Re-submit the new domain in Google Search Console and re-fire
    `POST /api/seo/ping` (IndexNow) after the switch.
@@ -198,11 +198,11 @@ browsers, countries) without cookies and without a cookie banner.
 - Installed `@vercel/analytics` (bun, recorded in `package.json` + `bun.lock`).
 - Mounted `<Analytics mode="auto" />` in `src/app/layout.tsx`, just before
   the GA4 conditional block. `mode="auto"` activates collection **only on
-  production** — local dev and preview deployments stay measurement-free.
+  production**: local dev and preview deployments stay measurement-free.
 - The component injects Vercel's first-party script (`/_vercel/insights/*`)
   on production deploys only; nothing is served on other environments.
 
-**DASHBOARD — activate (one click, free on Hobby):**
+**DASHBOARD: activate (one click, free on Hobby):**
 
 1. Vercel dashboard → the project → **Analytics** tab → **Enable Web
    Analytics**. (The code side is already done; without this toggle the
@@ -212,7 +212,7 @@ browsers, countries) without cookies and without a cookie banner.
 
 **If data does not show up after deploying**
 
-1. **Content blockers first** — uBlock Origin, Brave Shields, AdGuard and
+1. **Content blockers first**: uBlock Origin, Brave Shields, AdGuard and
    similar filter `/_vercel/insights/*` as a "tracker". Test in a private
    window with blockers off, or check the browser's Network tab for a failed
    `/_vercel/insights/view` request.
@@ -224,7 +224,7 @@ browsers, countries) without cookies and without a cookie banner.
 
 **Note on the "Vercel Agent" auto-setup option:** Vercel can generate a PR
 that adds analytics automatically ("install Vercel Agent" flow in the
-dashboard). It was not used — the same one-line integration is implemented
+dashboard). It was not used: the same one-line integration is implemented
 directly in this repository, reviewed and documented here, which keeps the
 code the single source of truth.
 

@@ -1,6 +1,6 @@
 # Binti Rising Initiative Website
 
-*Public website of the Binti Rising initiative — modern TypeScript build deployed on Vercel; canonical repository.*
+*Public website of the Binti Rising initiative: modern TypeScript build deployed on Vercel; canonical repository.*
 
 ![category](https://img.shields.io/badge/category-web-platform-EC4899?style=flat-square) ![language](https://img.shields.io/badge/language-TypeScript-2563EB?style=flat-square) ![maintenance](https://img.shields.io/badge/maintenance-active-16A34A?style=flat-square) ![repo](https://img.shields.io/badge/repo-binti--rising--website-111827?style=flat-square)
 
@@ -74,40 +74,40 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the w
 
 ## 📜 Available Scripts
 
-- `npm run dev` - Start the development server
-- `npm run build` - Build the project for production
-- `npm run start` - Start the production server
-- `npm run lint` - Run ESLint for code quality checks
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:push` - Push database schema changes
-- `npm run db:migrate` - Run database migrations
-- `npm run db:reset` - Reset the database
+- `npm run dev`: Start the development server
+- `npm run build`: Build the project for production
+- `npm run start`: Start the production server
+- `npm run lint`: Run ESLint for code quality checks
+- `npm run db:generate`: Generate Prisma client
+- `npm run db:push`: Push database schema changes
+- `npm run db:migrate`: Run database migrations
+- `npm run db:reset`: Reset the database
 
 ## 🌐 Deployment
 
 This project deploys to Vercel automatically on every push to `main`.
-Full operational documentation — concurrent builds, client/server version
-sync, preview-deployment protection, and the custom-domain guide — lives in
+Full operational documentation: concurrent builds, client/server version
+sync, preview-deployment protection, and the custom-domain guide: lives in
 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 Highlights:
 
-- **CI (`.github/workflows/ci.yml`)** — lint and build run as two parallel
+- **CI (`.github/workflows/ci.yml`)**: lint and build run as two parallel
   GitHub Actions jobs on every push/PR, independent of Vercel's build queue.
-- **Deploy sync** — every build is stamped with its commit SHA; the client
+- **Deploy sync**: every build is stamped with its commit SHA; the client
   polls `GET /api/version` and shows a discreet "Site update available"
   notice when a newer deployment is live (keeps open tabs off stale
   bundles).
-- **Visitor analytics** — Vercel Web Analytics (`@vercel/analytics`) is
+- **Visitor analytics**: Vercel Web Analytics (`@vercel/analytics`) is
   wired into the root layout and measures production only. Enable it under
   Project → Analytics in the dashboard (free); see
   [docs/DEPLOYMENT.md §5](docs/DEPLOYMENT.md#5-visitor-analytics-vercel-web-analytics)
   for the troubleshooting checklist (content blockers first).
-- **Preview protection** — set `PREVIEW_USERNAME` + `PREVIEW_PASSWORD`
+- **Preview protection**: set `PREVIEW_USERNAME` + `PREVIEW_PASSWORD`
   (Preview scope) in Vercel to Basic-Auth-gate every preview deployment;
   production stays public for SEO. Optionally set `PROTECT_PRODUCTION=true`
   to lock production temporarily.
-- **Custom domain** — `bintirising.org` was verified available to register;
+- **Custom domain**: `bintirising.org` was verified available to register;
   the step-by-step purchase + DNS + Vercel connection guide is in
   [docs/DEPLOYMENT.md §4](docs/DEPLOYMENT.md#4-custom-domain).
 
@@ -169,12 +169,12 @@ The site is optimized so searches for **“Binti Rising Initiative”**, **“Bi
 ### Google Search Console
 1. Add the property `https://binti-rising-initiative.vercel.app` at [search.google.com/search-console](https://search.google.com/search-console).
 2. Choose the **HTML tag** verification method and copy the `content` value of the `google-site-verification` tag.
-3. On Vercel, set the environment variable `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and redeploy — the verification meta tag is then rendered automatically.
+3. On Vercel, set the environment variable `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and redeploy: the verification meta tag is then rendered automatically.
 4. Submit `https://binti-rising-initiative.vercel.app/sitemap.xml` under **Sitemaps**. Google & Bing can also be notified via `GET /api/seo/ping`.
 
 ### Google Analytics 4
 1. Create a GA4 property and copy the Measurement ID (`G-XXXXXXXXXX`).
-2. On Vercel, set `NEXT_PUBLIC_GA_MEASUREMENT_ID` and redeploy — the gtag.js snippets render only when this variable is set, so local dev and preview deployments stay measurement-free.
+2. On Vercel, set `NEXT_PUBLIC_GA_MEASUREMENT_ID` and redeploy: the gtag.js snippets render only when this variable is set, so local dev and preview deployments stay measurement-free.
 
 ### IndexNow (Bing, Yandex & others)
 - The key file is served at `/indexnow-key.txt`.
@@ -182,9 +182,9 @@ The site is optimized so searches for **“Binti Rising Initiative”**, **“Bi
 
 ### Structured data
 Three JSON-LD blocks are rendered from `src/app/layout.tsx`:
-- `NGO` — organization identity, registration number, real contact points (email, WhatsApp, GBV hotline 1195), GitHub profile;
-- `WebSite` — site identity and publisher;
-- `FAQPage` — generated from the same `FAQS` array the on-page accordion renders, so schema always matches visible content.
+- `NGO`: organization identity, registration number, real contact points (email, WhatsApp, GBV hotline 1195), GitHub profile;
+- `WebSite`: site identity and publisher;
+- `FAQPage`: generated from the same `FAQS` array the on-page accordion renders, so schema always matches visible content.
 
 ## 🎨 Brand & Partner Assets
 
@@ -207,4 +207,4 @@ and are shown for partnership acknowledgement only.
 
 ## Contribution and license
 
-Issues and pull requests are welcome — please open an issue describing the proposed change before submitting substantive work. No license file is present; the work remains under the author's default copyright. Contact the owner for reuse terms.
+Issues and pull requests are welcome: please open an issue describing the proposed change before submitting substantive work. No license file is present; the work remains under the author's default copyright. Contact the owner for reuse terms.

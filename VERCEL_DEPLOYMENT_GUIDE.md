@@ -1,4 +1,4 @@
-# BINTI Rising Initiative - Vercel Deployment Guide
+# BINTI Rising Initiative: Vercel Deployment Guide
 
 ## Quick Deploy Steps
 
@@ -16,7 +16,7 @@ git push -u origin main
 1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
 2. Click **"Add New" → "Project"**
 3. Import your `binti-rising` repository
-4. Vercel auto-detects Next.js — click **"Deploy"**
+4. Vercel auto-detects Next.js: click **"Deploy"**
 5. Wait 2-3 minutes for build to complete
 
 ### 3. Set Environment Variables
